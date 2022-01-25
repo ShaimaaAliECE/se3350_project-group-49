@@ -1,5 +1,4 @@
-// Merge sort that outputs a 2D array consisting of every step required to sort the array.
-const mergesort = (arr) => {
+export const mergesort = (arr) => {
     // If the array only has one number or is empty, return the array as an element in an array (return type is 2D array)
     if (arr.length <= 1) return [arr];
     let ans = [arr];
