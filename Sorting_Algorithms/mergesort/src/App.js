@@ -1,79 +1,88 @@
 import './App.css';
 import { mergesort } from "./MergeSort.js";
 import { useEffect, useState } from 'react';
+import { MergeTree } from './MergeTree';
 
 function App() {
   const [sorted, setSorted] = useState([]);
   const [step, setStep] = useState(0);
+  const [userIn, setUserIn] = useState({l:0,r:0});
+
 
   useEffect(() => {
-    let newSorted = mergesort([4,3,2,1,8,7,6,5]);
+    let newSorted = mergesort([4,3,2,1,8,7,6, 8, 5]);
     setSorted([...newSorted]);
     setStep(0);
   }, []);
 
-  const calcArr = () => {
-    if (sorted.length === 0) return [];
-    let out = [];
-    let stack = [0];
-    let sumLoss = 0;
-    out[out.length] = sorted[0];
-    for (let i = 1; i <= step; i++) {
-      if (sorted[i].length <= sorted[stack[stack.length-1]].length) {
-        stack[stack.length] = i;
-        out[out.length] = sorted[i];
-        sumLoss = 0;
+  const makeTree = () => {
+    let a = [...sorted];
+    if (a.length === 0) return new MergeTree([0]);
+    let cur = new MergeTree(a[0])
+    if (a.length === 1) return cur;
+    for (let i = 1; i <= step;i++) {
+      if (a[i].length < cur.val.length) {
+        let newNode = new MergeTree(a[i]);
+        newNode.setParent(cur);
+        cur.addChild(newNode);
+        if (a[i].length !== 1) cur = newNode; 
+      } else {
+        cur.val = a[i];
+        if (cur.parent !== null)
+          cur = cur.parent;
       }
-      else {
-        sumLoss += sorted[i].length;
-        stack = stack.slice(0,-2);
-        stack[stack.length-1] = i;
-        out[out.length-1-sumLoss] = sorted[i];
+      if (cur.full()) {
+        cur.close();
       }
     }
-    return out;
+    return cur;
   }
 
-  const displayArr = (arr) => {
-    if (arr.length === 0) return;
-    let newStack = [arr[0].length];
-    let out =  
-              '<div key="Frame" class="Frame">' +
-              '<div key="0" class="Container">';
-              for (let v = 0; v < arr[0].length; v++) {
-                out=out+'<Button>'+arr[0][v]+'</Button>';
-              }
-              out = out + '<br/>'
-    for (let i = 1; i < arr.length; i++) {
-      while (arr[i].length >= newStack[newStack.length-1]) {
-        out += '</div>';
-        newStack = newStack.slice(0,-1);
-      }
-        if (arr[i].length < newStack[newStack.length-1] && arr[i].length > 1) {
-          newStack[newStack.length] = arr[i].length;
-        } 
-        out=out+'<div key='+i+' class="Container">';
-        for (let v = 0; v < arr[i].length; v++) {
-          out=out+'<Button>'+arr[i][v]+'</Button>';
-        }
-        if (arr[i].length !== 1) out = out + '<br/>';
-        else out = out + '</div>';
+  const displayTree = (tree, cur) => {
+    if (tree === null) return;
+    let out = tree.val;
+    let check = false;
+    if (cur.open)
+      check = tree === cur;
+    else {
+      check = tree === cur.left || tree === cur.right;
     }
-    for (let i = 0; i <= newStack.length; i++) {
-      out = out+'</div>';
-    }
-      return <div className='Frame' dangerouslySetInnerHTML={{__html: out}}></div>;
+    console.log(check);
+    let buttonList = <div className='Container' key={tree.val}>
+                        {
+                          out.map((n,i) => 
+                            <button style={{backgroundColor:check?"blue":"yellow"}} key={i}>{n}</button>
+                          )
+                        }
+                      </div>
+    if (tree.leaf()) return (buttonList);
+    if (tree.right!=null) return (
+      <div className='Container' key={tree.val}>
+        {buttonList}
+        <br/>
+        {displayTree(tree.left,cur)}{displayTree(tree.right,cur)}
+      </div>
+    );
+    return (
+      <div className='Container' key={tree.val}>
+        {buttonList}
+        <br/>
+        {displayTree(tree.left, cur)}
+      </div>
+    );
   }
 
   const display = () => {
-    let arr = calcArr();
-    console.log(arr);
-    return displayArr(arr);
+    let cur = makeTree();
+    let root = cur.root();
+    console.log(cur.print());
+    return displayTree(root, cur);
   }
 
   return (
     <div className="App">
-    <button onClick={() => setStep((step+1)%sorted.length)}></button>
+          <button onClick={() => setStep((step+1)%sorted.length)}>{step}</button>
+    <br/>
       {display()}
     </div>
   );
