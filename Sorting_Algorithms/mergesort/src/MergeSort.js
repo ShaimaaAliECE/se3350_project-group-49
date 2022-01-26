@@ -32,7 +32,7 @@ export const mergesort = (arr) => {
         }
     }
     // Merge any remaining numbers in the non-empty array.
-    if (l == la.length) out = out.concat(ra.slice(r));
+    if (l === la.length) out = out.concat(ra.slice(r));
     else out = out.concat(la.slice(l));
 
     // Push the sorted array to the end of the output array and return.

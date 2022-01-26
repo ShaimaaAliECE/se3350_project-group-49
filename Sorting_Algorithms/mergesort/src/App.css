@@ -32,6 +32,7 @@
   display:inline-block;
   border: 1px solid black;
   vertical-align: top;
+  font-size:xx-small;
 }
 
 @keyframes App-logo-spin {

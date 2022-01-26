@@ -7,10 +7,10 @@ function App() {
   const [sorted, setSorted] = useState([]);
   const [step, setStep] = useState(0);
   const [userIn, setUserIn] = useState({l:0,r:0});
-
+  const [turn, setTurn] = useState(true);
 
   useEffect(() => {
-    let newSorted = mergesort([4,3,2,1,8,7,6, 8, 5]);
+    let newSorted = mergesort([4,3,2,45,8,4,23,45,26,54,84]);
     setSorted([...newSorted]);
     setStep(0);
   }, []);
@@ -38,20 +38,71 @@ function App() {
     return cur;
   }
 
+  const handleButton = (e, tree, i) => {
+    e.preventDefault();
+    let newRange = {...userIn};
+    if (tree.open) {
+      if (turn) {
+        newRange.l = i;
+      } else {
+        newRange.r = i;
+      }
+      if (newRange.l > newRange.r) {
+        let r = newRange.r;
+        newRange.r = newRange.l;
+        newRange.l = r;
+      }
+      setTurn(!turn);
+      setUserIn({...newRange})
+    } else if (userIn.l + userIn.r < tree.parent.val.length) {
+      if (tree.parent.left === tree) {
+        tree.parent.val[userIn.l + userIn.r] = tree.val[userIn.l];
+        setUserIn({l:userIn.l+1, r:userIn.r});
+      } else {
+        tree.parent.val[userIn.l + userIn.r] = tree.val[userIn.r];
+        setUserIn({l:userIn.l, r:userIn.r+1});
+      }
+    } else setUserIn({l:0,r:0});
+  }
+
+  const chooseButtonColor = (tree, cur, i) => {
+    let color = "#CBF";
+    if (cur.open) {
+      if (tree === cur) {
+        if (i >= userIn.l && i <= userIn.r) {
+          color = "#5D8";
+        } else color = "#C38";
+      }
+    }
+    else {
+      if (tree === cur) {
+        if (i === userIn.l+userIn.r) color = "#AA4"
+      }
+      if (tree === cur.left) color = "#3D5";
+      else if (tree === cur.right) color = "#D35";
+    }
+    return color;
+  }
+
   const displayTree = (tree, cur) => {
     if (tree === null) return;
     let out = tree.val;
-    let check = false;
-    if (cur.open)
-      check = tree === cur;
-    else {
-      check = tree === cur.left || tree === cur.right;
-    }
-    console.log(check);
+    let check = (tree.open && tree===cur) || (!cur.open && (tree===cur.left || tree===cur.right));
+
     let buttonList = <div className='Container' key={tree.val}>
                         {
                           out.map((n,i) => 
-                            <button style={{backgroundColor:check?"blue":"yellow"}} key={i}>{n}</button>
+                          <div className='Container' key={i}> 
+                          {i}
+                            <br/>
+                            <button 
+                              disabled={!check} 
+                              style={{backgroundColor:chooseButtonColor(tree, cur, i)}} 
+                              onClick={(e) => handleButton(e,tree,i)}
+                              key={i}>
+                              {n}
+                            </button>
+                          </div>
                           )
                         }
                       </div>
@@ -75,14 +126,42 @@ function App() {
   const display = () => {
     let cur = makeTree();
     let root = cur.root();
-    console.log(cur.print());
-    return displayTree(root, cur);
+    return <>
+      <button onClick={(e) => checkStep(e, cur)}>{step}</button>
+      <br/>
+      {displayTree(root, cur)}
+      <br/>
+      <label>left: {userIn.l} right: {userIn.r}</label>
+    </>
+  }
+
+  const checkStep = (e, cur) => {
+    e.preventDefault();
+    let v = cur.val;
+    if (cur.open) v = cur.val.slice(userIn.l, userIn.r+1);
+    
+    let s = sorted[step+1];
+    if (compareArrays(v,s)) {
+      if (step === sorted.length-2) {
+        setStep(0);
+        setUserIn({l:0,r:0});
+        return;
+      }
+      setStep((step+1)%sorted.length);
+      setUserIn({l:0,r:0});
+    }
+  }
+
+  const compareArrays = (a1, a2) => {
+    if (a1.length !== a2.length) return false;
+    for (let i = 0; i < a1.length;i++) {
+      if (a1[i] !== a2[i]) return false;
+    }
+    return true;
   }
 
   return (
     <div className="App">
-          <button onClick={() => setStep((step+1)%sorted.length)}>{step}</button>
-    <br/>
       {display()}
     </div>
   );

@@ -6,7 +6,7 @@ export class MergeTree {
     right = null;
     constructor(val) {
         this.val = val;
-        this.open = val.length!=1;
+        this.open = val.length!==1;
     }
     addChild(child) {
         if (this.left == null) {
