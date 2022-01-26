@@ -15,7 +15,7 @@ function App() {
   useEffect(() => {
     if (playing) {
       if (step === 0) {
-        let newSorted = mergesort([69,21,420,888]);
+        let newSorted = mergesort([69,21,420,888,9,14,546,75]);
         setSorted([...newSorted]);
       }
       if (step < sorted.length-1) {
@@ -147,7 +147,7 @@ function App() {
   const drawLives = () => {
     let dispLives = [];
     for (let i = 0; i < lives; i++) {
-      dispLives.push(<label style={{border:"solid 1px black"}}>{"<3"}</label>);
+      dispLives.push(<label key={i} style={{border:"solid 1px black"}}>{"<3"}</label>);
     }
     return (
       <span className='leftright'>
