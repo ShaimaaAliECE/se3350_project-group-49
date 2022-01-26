@@ -2,21 +2,28 @@ import './App.css';
 import { mergesort } from "./MergeSort.js";
 import { useEffect, useState } from 'react';
 import { MergeTree } from './MergeTree';
-import { Timer } from './Clock';
 
 function App() {
   const [sorted, setSorted] = useState([]);
   const [step, setStep] = useState(0);
   const [userIn, setUserIn] = useState({l:0,r:0});
   const [turn, setTurn] = useState(true);
+  const [lives, setlives] = useState(3);
+  const [time, setTime] = useState(0);
+  const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
-    if (step === 0) {
-      let newSorted = mergesort([69,21,420,888]);
-      setSorted([...newSorted]);
-      setStep(0);
+    if (playing) {
+      if (step === 0) {
+        let newSorted = mergesort([69,21,420,888]);
+        setSorted([...newSorted]);
+      }
+      if (step < sorted.length-1) {
+        const timerId = setInterval(() => setTime(time+1), 10);
+        return () => clearInterval(timerId);
+      }
     }
-  }, [step]);
+  }, [step, time, playing, sorted.length]);
 
   const makeTree = () => {
     let a = [...sorted];
@@ -137,6 +144,27 @@ function App() {
     );
   }
 
+  const drawLives = () => {
+    let dispLives = [];
+    for (let i = 0; i < lives; i++) {
+      dispLives.push(<label style={{border:"solid 1px black"}}>{"<3"}</label>);
+    }
+    return (
+      <span className='leftright'>
+          {
+            dispLives
+          }
+      </span>
+    );
+  }
+
+  const displayTime = () => {
+    let minutes = Math.floor((time/100/60)).toString().padStart(2,"0");
+    let seconds = Math.floor((time/100%60)).toString().padStart(2,"0");
+    let ms = (time).toString().padStart(2,"0").slice(-2);
+    return minutes+":"+seconds+":"+ms;
+  }
+
   const display = () => {
     let cur = makeTree();
     let root = cur.root();
@@ -146,33 +174,65 @@ function App() {
       <div className='displaybox'>
         <div className='displayHead'>
           <label className='leftright'>left: {userIn.l} right: {userIn.r}</label>
-          <Timer/>
+          <label className="timer">{displayTime()}</label>
         </div>
         {displayTree(root, cur)}
+        <br/>
+        {drawLives()}
       </div>
-      <br/>
-      <button className='nextstep' onClick={(e) => checkStep(e, cur)}>{(step+1 < sorted.length-1)?"Next":step+1===sorted.length-1?"Finish":"Restart"}</button>
+      <button className='nextstep' 
+        onClick={(e) => checkStep(e, cur)}>
+        {playing?step+1 < sorted.length-1?"Next":step+1===sorted.length-1?"Finish":"Restart":"Start"}
+        </button>
     </div>
     );
   }
 
   const checkStep = (e, cur) => {
+    if (!playing) {
+      setPlaying(true); 
+      setTime(0);
+      setStep(0);
+      setlives(3);
+      return;
+    }
     let newStep = (step+1);
     e.preventDefault();
     if (newStep > sorted.length-1) {setStep(0);setUserIn({l:0,r:0});return;}
-    if (newStep === sorted.length-1) {
-      alert("WINNER");
-      setUserIn({l:0,r:0});
-      setStep(step+1);
-      return;
-    }
     let v = cur.val;
     if (cur.open) v = cur.val.slice(userIn.l, userIn.r+1);
     let s = sorted[newStep];
     if (compareArrays(v,s)) {
+      if (newStep === sorted.length-1) {
+        setUserIn({l:0,r:0});
+        setStep(step+1);
+        endGame(true);
+        return;
+      }
       setStep(newStep);
+    } else {
+      setlives(lives-1);
+      if (lives <= 1) {
+        endGame(false);
+      }
     }
     setUserIn({l:0,r:0});
+  }
+
+  const endGame = (win) => {
+    let out = "";
+    if (win) {
+      out+= "WINNER!\n\n"
+      out+= "Lives: " + lives + "/3\n"
+    } else {
+      out+= "FAILURE!\n\n"
+      setTime(0);
+    }
+    out+= "Time: " + displayTime();
+    alert(out);
+    setStep(0);
+    setlives(3);
+    setPlaying(false);
   }
 
   const compareArrays = (a1, a2) => {

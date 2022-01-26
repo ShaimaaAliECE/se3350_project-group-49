@@ -45,10 +45,9 @@
 .Frame {
   display:inline-block;
   vertical-align: top;
-  height: 0;
   margin:auto;
   width: 80%;
-  height: max-content;
+  height: min-content;
   background-color: rgb(73, 85, 255);
 }
 
@@ -58,7 +57,7 @@
   background-color:rgb(214, 254, 255);
   margin: 5%;
   width:90%;
-  padding-bottom: 5%;
+  padding:1%;
 }
 
 .displayHead {

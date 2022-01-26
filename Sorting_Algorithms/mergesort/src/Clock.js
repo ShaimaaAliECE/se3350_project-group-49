@@ -1,24 +1,33 @@
-import { useEffect, useState } from "react"
 
-export const Timer = () => {
-    const [time, setTime] = useState(0);
-
-    const tick = () => {
-        setTime(time+1);
+export class Clock {
+    time;
+    on;
+    constructor() {
+        this.time = 0;
+        this.on = false;
     }
 
-    const displayTime = () => {
-        let minutes = Math.floor((time/60)).toString().padStart(2,"0");
-        let seconds = Math.floor((time%60)).toString().padStart(2,"0");
-        return (
-            <label className="timer">{minutes}:{seconds}</label>
-        );
+    tick() {
+        if (this.on) {
+            this.time+=1
+        }
     }
 
-    useEffect(() => {
-        const timerId = setInterval(() => tick(), 1000);
-        return () => clearInterval(timerId);
-    }, [time])
+    reset() {
+        this.time = 0;
+    }
 
-    return displayTime();
+    start() {
+        this.on = true;
+    }
+
+    pause() {
+        this.on = false;
+    }
+
+    toString() {
+        let minutes = Math.floor((this.time/60)).toString().padStart(2,"0");
+        let seconds = Math.floor((this.time%60)).toString().padStart(2,"0");
+        return minutes + ":" + seconds;
+    }
 }
