@@ -2,6 +2,7 @@ import './App.css';
 import { mergesort } from "./MergeSort.js";
 import { useEffect, useState } from 'react';
 import { MergeTree } from './MergeTree';
+import { Timer } from './Clock';
 
 function App() {
   const [sorted, setSorted] = useState([]);
@@ -86,6 +87,14 @@ function App() {
     return color;
   }
 
+  const chooseBorder = (tree, cur, i) => {
+    let border = "";
+    if (!cur.open && ((tree === cur.left && i === userIn.l) || (tree === cur.right &&  i === userIn.r))) {
+      return "solid gold 2px";
+    }
+    return border;
+  }
+
   const displayTree = (tree, cur) => {
     if (tree === null) return;
     let out = tree.val;
@@ -99,7 +108,10 @@ function App() {
                             <br/>
                             <button 
                               disabled={!check} 
-                              style={{backgroundColor:chooseButtonColor(tree, cur, i)}} 
+                              style={{
+                                backgroundColor:chooseButtonColor(tree, cur, i),
+                                border:chooseBorder(tree,cur,i)
+                              }} 
                               onClick={(e) => handleButton(e,tree,i)}
                               key={i}>
                               {n}
@@ -128,21 +140,30 @@ function App() {
   const display = () => {
     let cur = makeTree();
     let root = cur.root();
-    return <>
-      <button onClick={(e) => checkStep(e, cur)}>{step}</button>
+    if (step === sorted.length-1) cur.open = true;
+    return (
+    <div className='Frame'>
+      <div className='displaybox'>
+        <div className='displayHead'>
+          <label className='leftright'>left: {userIn.l} right: {userIn.r}</label>
+          <Timer/>
+        </div>
+        {displayTree(root, cur)}
+      </div>
       <br/>
-      {displayTree(root, cur)}
-      <br/>
-      <label>left: {userIn.l} right: {userIn.r}</label>
-    </>
+      <button className='nextstep' onClick={(e) => checkStep(e, cur)}>{(step+1 < sorted.length-1)?"Next":step+1===sorted.length-1?"Finish":"Restart"}</button>
+    </div>
+    );
   }
 
   const checkStep = (e, cur) => {
-    let newStep = (step+1)%sorted.length;
-    //e.preventDefault();
+    let newStep = (step+1);
+    e.preventDefault();
+    if (newStep > sorted.length-1) {setStep(0);setUserIn({l:0,r:0});return;}
     if (newStep === sorted.length-1) {
       alert("WINNER");
-      setStep(0);
+      setUserIn({l:0,r:0});
+      setStep(step+1);
       return;
     }
     let v = cur.val;
