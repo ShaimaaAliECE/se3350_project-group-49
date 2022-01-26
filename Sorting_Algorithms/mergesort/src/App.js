@@ -10,10 +10,12 @@ function App() {
   const [turn, setTurn] = useState(true);
 
   useEffect(() => {
-    let newSorted = mergesort([4,3,2,45,8,4,23,45,26,54,84]);
-    setSorted([...newSorted]);
-    setStep(0);
-  }, []);
+    if (step === 0) {
+      let newSorted = mergesort([69,21,420,888]);
+      setSorted([...newSorted]);
+      setStep(0);
+    }
+  }, [step]);
 
   const makeTree = () => {
     let a = [...sorted];
@@ -136,20 +138,20 @@ function App() {
   }
 
   const checkStep = (e, cur) => {
-    e.preventDefault();
+    let newStep = (step+1)%sorted.length;
+    //e.preventDefault();
+    if (newStep === sorted.length-1) {
+      alert("WINNER");
+      setStep(0);
+      return;
+    }
     let v = cur.val;
     if (cur.open) v = cur.val.slice(userIn.l, userIn.r+1);
-    
-    let s = sorted[step+1];
+    let s = sorted[newStep];
     if (compareArrays(v,s)) {
-      if (step === sorted.length-2) {
-        setStep(0);
-        setUserIn({l:0,r:0});
-        return;
-      }
-      setStep((step+1)%sorted.length);
-      setUserIn({l:0,r:0});
+      setStep(newStep);
     }
+    setUserIn({l:0,r:0});
   }
 
   const compareArrays = (a1, a2) => {
