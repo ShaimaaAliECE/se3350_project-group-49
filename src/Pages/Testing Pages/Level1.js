@@ -28,7 +28,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-
+import App from "../../mergesort/src/App.js"
 //THIS PAGE IS BUILT ON THE DESIGN INSPIRED BY THE OWL WEBSITE, SKELETON VERSION WITH 2 ACTIVE PAGE BUTTONS, COURSE CONTENT AND OVERVIEW
 import StarIcon from '@mui/icons-material/Star';
 export default function Level1() {
@@ -40,22 +40,16 @@ export default function Level1() {
   return (
     
     <Box >
-
       <Grid container spacing={1}>
-
-
-      <Grid item xs={1} >
-                        <Box sx={{ bgcolor: '#ff9800', height: '100vh' }} />
-
-                    </Grid>
+        <Grid item xs={1} >
+            <Box sx={{ bgcolor: '#ff9800', height: '100vh' }} />
+        </Grid>
       <Grid item xs={11}>
-     
     <Box >
         
     <Box sx={{ height: '40vh' }} />
-
-   LEVEL 1 PAGE
-        </Box>
+      <App mode={-1}/>
+    </Box>
 
 
 

@@ -2,8 +2,13 @@ import './App.css';
 import { mergesort } from "./MergeSort.js";
 import { useEffect, useState } from 'react';
 import { MergeTree } from './MergeTree';
+import { waitFor } from '@testing-library/react';
 
-function App() {
+// modes: -1 = lesson
+//         0 = practice
+//        >0 = levels
+
+function App({mode}) {
   const [sorted, setSorted] = useState([]);
   const [step, setStep] = useState(0);
   const [userIn, setUserIn] = useState({l:0,r:0});
@@ -11,26 +16,30 @@ function App() {
   const [lives, setlives] = useState(3);
   const [time, setTime] = useState(0);
   const [playing, setPlaying] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
-    if (playing) {
-      if (step === 0) {
-        let newSorted = mergesort([69,21,420,888,9,14,546,75]);
-        setSorted([...newSorted]);
+    if (step === 0) {
+      let out = [];
+      for (let i = 6; i >0; i--) {
+        out[out.length] = i;
       }
-      if (step < sorted.length-1) {
-        const timerId = setInterval(() => setTime(time+1), 10);
-        return () => clearInterval(timerId);
-      }
+      let newSorted = mergesort(out);
+      setSorted([...newSorted]);
     }
-  }, [step, time, playing, sorted.length]);
+    if (playing && step < sorted.length-1) {
+      const timerId = setInterval(() => setTime(time+1), 10);
+      return () => clearInterval(timerId);
+    }
+  }, [step, time, playing]);
 
   const makeTree = () => {
     let a = [...sorted];
     if (a.length === 0) return new MergeTree([0]);
-    let cur = new MergeTree(a[0])
+    let cur = new MergeTree(a[0]);
     if (a.length === 1) return cur;
-    for (let i = 1; i <= step;i++) {
+    let max = step < sorted.length? step : sorted.length-1;
+    for (let i = 1; i <= max;i++) {
       if (a[i].length < cur.val.length) {
         let newNode = new MergeTree(a[i]);
         newNode.setParent(cur);
@@ -103,10 +112,12 @@ function App() {
   }
 
   const displayTree = (tree, cur) => {
+    if (sorted.length === 0) return;
     if (tree === null) return;
     let out = tree.val;
     let check = (tree.open && tree===cur) || (!cur.open && (tree===cur.left || tree===cur.right));
-
+    let s = sorted[sorted.length-1];
+    let num = s[s.length-1];
     let buttonList = <div className='Container' key={tree.val}>
                         {
                           out.map((n,i) => 
@@ -116,6 +127,8 @@ function App() {
                             <button 
                               disabled={!check} 
                               style={{
+                                height:(n/num+1)*20,
+                                bottom:0,
                                 backgroundColor:chooseButtonColor(tree, cur, i),
                                 border:chooseBorder(tree,cur,i)
                               }} 
@@ -162,7 +175,7 @@ function App() {
     let minutes = Math.floor((time/100/60)).toString().padStart(2,"0");
     let seconds = Math.floor((time/100%60)).toString().padStart(2,"0");
     let ms = (time).toString().padStart(2,"0").slice(-2);
-    return minutes+":"+seconds+":"+ms;
+    return minutes+":"+seconds+"."+ms;
   }
 
   const display = () => {
@@ -171,15 +184,17 @@ function App() {
     if (step === sorted.length-1) cur.open = true;
     return (
     <div className='Frame'>
-      <div className='displaybox'>
+      {playing&&<div className='displaybox'>
         <div className='displayHead'>
           <label className='leftright'>left: {userIn.l} right: {userIn.r}</label>
-          <label className="timer">{displayTime()}</label>
+          <label className='leftright'>Step: {step+1}/{sorted.length-1}</label>
+          <label className="timer">{mode>=0 && displayTime()}</label>
         </div>
         {displayTree(root, cur)}
         <br/>
-        {drawLives()}
-      </div>
+        {mode>0&&drawLives()}
+      </div>}
+      {mode<0&&<label> {printStep(cur)}</label>}
       <button className='nextstep' 
         onClick={(e) => checkStep(e, cur)}>
         {playing?step+1 < sorted.length-1?"Next":step+1===sorted.length-1?"Finish":"Restart":"Start"}
@@ -188,7 +203,63 @@ function App() {
     );
   }
 
+  const printStep = (cur) => {
+    if (cur === new MergeTree([0]) || cur === null) return "";
+    if (mode < 0 && refresh) {
+      console.log(cur);
+      if (cur.open || step === 0) {
+        console.log(cur);
+        if (cur.left === null) {
+          setUserIn({l:0,r:Math.floor((cur.val.length+1)/2)-1});
+        } else if (cur.right === null) {
+          setUserIn({l:Math.floor((cur.val.length+1)/2),r:cur.val.length});
+        } else {
+          setUserIn({l:0, r:cur.val.length})
+        }
+        setRefresh(false);
+      } else if (time%25===0) {
+        if (userIn.l + userIn.r < cur.val.length) {
+          cur.val[userIn.l+userIn.r] = cur.right.val[userIn.r];
+          if (userIn.l >= cur.left.val.length) setUserIn({l:userIn.l, r:userIn.r+1});
+          else if (cur.right.val[userIn.r] <= cur.left.val[userIn.l]) setUserIn({l:userIn.l, r:userIn.r+1});
+          else {
+            cur.val[userIn.l+userIn.r] = cur.left.val[userIn.l];
+            if (userIn.r >= cur.right.val.length) setUserIn({l:userIn.l+1, r:userIn.r});
+            else if (cur.left.val[userIn.l] <= cur.right.val[userIn.r]) setUserIn({l:userIn.l+1, r:userIn.r});
+          }
+          setTime(time+1);
+        } else {
+          setRefresh(false);
+        }
+      }
+    }
+
+    if (!playing) return;
+    if (cur.open) {
+      if (cur.left === null) {
+        return "Select the first half of the array.";
+      } else if (cur.right == null) {
+        return "Select the second half of the array."
+      }
+    } else {
+      return "Merge numbers one by one, choosing the array with the lowest number"
+    }
+  }
+
   const checkStep = (e, cur) => {
+    if (mode < 0) {
+      setTime(1);
+      setUserIn({l:0,r:0});
+      setRefresh(true);
+      if (!playing) {
+        setPlaying(true); 
+        setStep(0);
+        return;
+      }
+      if (step+1 > sorted.length-1) {setStep(0);setUserIn({l:0,r:0});return;}
+      setStep(step+1);
+      return; 
+    }
     if (!playing) {
       setPlaying(true); 
       setTime(0);
@@ -198,7 +269,7 @@ function App() {
     }
     let newStep = (step+1);
     e.preventDefault();
-    if (newStep > sorted.length-1) {setStep(0);setUserIn({l:0,r:0});return;}
+    console.log(mode);
     let v = cur.val;
     if (cur.open) v = cur.val.slice(userIn.l, userIn.r+1);
     let s = sorted[newStep];
