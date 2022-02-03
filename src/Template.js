@@ -107,7 +107,7 @@ function Template() {
         aria-label="Vertical tabs example"
         sx={{ borderRight: 1, borderColor: 'divider' }}
       >
-        <Tab label="Sort Type 1" {...a11yProps(0)} />
+        <Tab label="MergeSort" {...a11yProps(0)} />
         <Tab label="Sort Type 2" {...a11yProps(1)} />
         <Tab label="Sort Type 3" {...a11yProps(2)} />
         <Tab label="Sort Type 4" {...a11yProps(3)} />
@@ -136,6 +136,7 @@ function Template() {
       <TabPanel value={value} index={2}>
         Item Three
       </TabPanel>
+      
       <TabPanel value={value} index={3}>
         Item Four
       </TabPanel>
