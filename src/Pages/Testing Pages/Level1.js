@@ -44,21 +44,16 @@ export default function Level1() {
         <Grid item xs={1} >
             <Box sx={{ bgcolor: '#ff9800', height: '100vh' }} />
         </Grid>
-      <Grid item xs={11}>
-    <Box >
-        
-    <Box sx={{ height: '40vh' }} />
-      <App mode={-1}/>
-    </Box>
-
-
-
-      </Grid>
-
-      <Grid item xs={1}>
+        <Grid item xs={11}>
+          <Box > 
+            <Box sx={{ height: '40vh' }}>
+              <App mode={1}/>
+            </Box>
+          </Box>
+        </Grid>
+        <Grid item xs={1}>
           <Box sx={{ height: '100vh' }} />
         </Grid>
-
       </Grid>
     </Box>
   );

@@ -18,20 +18,35 @@ function App({mode}) {
   const [playing, setPlaying] = useState(false);
   const [refresh, setRefresh] = useState(false);
 
+
   useEffect(() => {
-    if (step === 0) {
-      let out = [];
-      for (let i = 6; i >0; i--) {
-        out[out.length] = i;
+    if (playing && step === 0) {
+      if (sorted.length === 0) { 
+        let out = [];
+        if (mode < 0) out = generateArray(10, 20);
+        else if (mode === 0) out = generateArray(10, 50);
+        else out = generateArray(mode*10, mode *100);
+        let newSorted = mergesort(out);
+        setSorted([...newSorted]);
       }
-      let newSorted = mergesort(out);
-      setSorted([...newSorted]);
     }
     if (playing && step < sorted.length-1) {
       const timerId = setInterval(() => setTime(time+1), 10);
       return () => clearInterval(timerId);
     }
   }, [step, time, playing]);
+
+  const generateArray = (len, range) => {
+    let out = [];
+    for (let i = 0; i < len; i++) {
+      out[out.length] = Math.floor(Math.random()*range)+1;
+    }
+    return out;
+  }
+
+  const uiArray = () => {
+
+  }
 
   const makeTree = () => {
     let a = [...sorted];
@@ -125,9 +140,10 @@ function App({mode}) {
                           {i}
                             <br/>
                             <button 
+                              className='mergebutton'
                               disabled={!check} 
                               style={{
-                                height:(n/num+1)*20,
+                                height:`calc(${(n/num+1)}*2vh)`,
                                 bottom:0,
                                 backgroundColor:chooseButtonColor(tree, cur, i),
                                 border:chooseBorder(tree,cur,i)
@@ -184,27 +200,29 @@ function App({mode}) {
     if (step === sorted.length-1) cur.open = true;
     return (
     <div className='Frame'>
+    <button className='nextstep' 
+        onClick={(e) => checkStep(e, cur)}>
+        {playing?step+1 < sorted.length-1?"Next":step+1===sorted.length-1?"Finish":"Restart":"Start"}
+    </button>
       {playing&&<div className='displaybox'>
         <div className='displayHead'>
           <label className='leftright'>left: {userIn.l} right: {userIn.r}</label>
-          <label className='leftright'>Step: {step+1}/{sorted.length-1}</label>
+          <label className='timer' style={{alignSelf:"center"}}>Step: {(step+1)%(sorted.length)}/{sorted.length-1}</label>
           <label className="timer">{mode>=0 && displayTime()}</label>
         </div>
+        <div className='Frame'>
         {displayTree(root, cur)}
-        <br/>
+        </div>
         {mode>0&&drawLives()}
       </div>}
-      {mode<0&&<label> {printStep(cur)}</label>}
-      <button className='nextstep' 
-        onClick={(e) => checkStep(e, cur)}>
-        {playing?step+1 < sorted.length-1?"Next":step+1===sorted.length-1?"Finish":"Restart":"Start"}
-        </button>
+      {mode<0&&<label style={{color:"white"}}>{printStep(cur)}</label>}
+      
     </div>
     );
   }
 
   const printStep = (cur) => {
-    if (cur === new MergeTree([0]) || cur === null) return "";
+    if (cur.val.length === 1 || cur === null) return "";
     if (mode < 0 && refresh) {
       console.log(cur);
       if (cur.open || step === 0) {
@@ -247,6 +265,7 @@ function App({mode}) {
   }
 
   const checkStep = (e, cur) => {
+    
     if (mode < 0) {
       setTime(1);
       setUserIn({l:0,r:0});
@@ -281,7 +300,7 @@ function App({mode}) {
         return;
       }
       setStep(newStep);
-    } else {
+    } else if (mode > 0) {
       setlives(lives-1);
       if (lives <= 1) {
         endGame(false);
@@ -293,8 +312,10 @@ function App({mode}) {
   const endGame = (win) => {
     let out = "";
     if (win) {
-      out+= "WINNER!\n\n"
-      out+= "Lives: " + lives + "/3\n"
+      if (mode > 0) {
+        out+= "WINNER!\n\n"
+        out+= "Lives: " + lives + "/3\n";
+      } else out += "Complete!\n\n";
     } else {
       out+= "FAILURE!\n\n"
       setTime(0);
@@ -306,6 +327,21 @@ function App({mode}) {
     setPlaying(false);
   }
 
+  const startPage = () => {
+    let out = "MergeSort ";
+    if (mode < 0) {
+      return <label className='Title'>MergeSort Lesson <br/><p style={{fontSize:"small"}}>Interactive! Practice the controls here</p></label>
+
+    } else if (mode === 0) {
+      out += "Practice"
+    } else {
+      out += "Level " + mode;
+    }
+    return (
+      <label className='Title'>{out}</label>
+    );
+  }
+
   const compareArrays = (a1, a2) => {
     if (a1.length !== a2.length) return false;
     for (let i = 0; i < a1.length;i++) {
@@ -315,7 +351,8 @@ function App({mode}) {
   }
 
   return (
-    <div className="App">
+    <div className="MergeSort">
+      {startPage()}
       {display()}
     </div>
   );
