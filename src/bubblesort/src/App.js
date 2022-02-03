@@ -3,7 +3,7 @@ import './App.css';
 
 
 import React, {useState, useReducer, useEffect, useRef, useCallback} from 'react';
-
+import { useTimer } from 'react-timer-hook';
 
 let w=0
 let x=0 
@@ -28,7 +28,19 @@ const [resetCount, reset] =useReducer(0,(state)=> state+1);
 const [barEffects, setBarEffects] =useState([]) 
 const handleClickRef=useRef(()=>{})
 const [lives,setLives]=useState([3]);
+const [playing, setPlaying] = useState(false);
 
+let arsort=[...baseArray];
+arsort=arsort.sort();
+
+
+const compareArrays = (a1, a2) => {
+    if (a1.length !== a2.length) return false;
+    for (let i = 0; i < a1.length;i++) {
+      if (a1[i] !== a2[i]) return false;
+    }
+    return true;
+  }
 useEffect(()=>{ 
 let workingArray= baseArray;
 setArray(workingArray);
@@ -135,7 +147,15 @@ if(checker[2]===lengthcheck)
 				}
 				lengthcheck--
 			}
+			console.log(workingArray)
+			console.log("Here")
+			console.log(arsort)
 			
+			if(compareArrays(workingArray,arsort)) 
+			{
+				setPlaying(false);
+			}
+
 			}handleClickRef.current=handleClick;
 
 			},[resetCount, baseArray])
@@ -149,8 +169,8 @@ reset,
 handleClick,
 barEffects,
 lives,
-
-
+playing,
+setPlaying,
 }
 }
 
@@ -193,12 +213,11 @@ let started=false;
 		barEffects,
 		handleClick,
 		lives,
-		
-
-		
+		playing,
+		setPlaying,
 	}=ToSort(baseArray);
 	const [time, setTime] = useState(0);
-	const [playing, setPlaying] = useState(false);
+	
 
 	  function startGame()
 	{
