@@ -3,10 +3,14 @@ import './App.css';
 
 
 import React, {useState, useReducer, useEffect, useRef, useCallback} from 'react';
+
+
 let w=0
 let x=0 
 let y=0 
 let z=0
+
+
 function compare(a,b){
 	if(a>b){
 	return true;
@@ -14,18 +18,16 @@ function compare(a,b){
 	else{
 		return false;
 	}
-
 }
+
 function ToSort(baseArray)
 {
 const [displayedArray, setArray]=useState([])
 const [done, setDone] =useState(true);
 const [resetCount, reset] =useReducer(0,(state)=> state+1);
 const [barEffects, setBarEffects] =useState([]) 
-const stepRef=useRef(()=>{})
 const handleClickRef=useRef(()=>{})
-const [lives, setlives] = useState(3);
-
+const [lives,setLives]=useState([3]);
 
 useEffect(()=>{ 
 let workingArray= baseArray;
@@ -37,8 +39,12 @@ let lengthcheck=baseArray.length
 let checker=[false,0,1]
 let action=[false,0,1]
 
-		function handleClick() {
+		
 
+
+function handleClick() {
+	
+	//checks what needs to be done next
 	if(checker[0]==false) {
 		const ca=workingArray[checker[1]]
 		const cb=workingArray[checker[2]]
@@ -53,11 +59,16 @@ let action=[false,0,1]
 			checker[1]++
 			checker[2]++
 		}
-	}
+							  }
 
+							  //assigns clicked values to the action
 			action[1]=x;
 			action[2]=z;
-			if(action[0]==false)
+	
+			//if action is false then it checks if it needs to swap
+		
+		
+			if(action[0]===false)
 			{
 				setBarEffects({
 					[action[1]]: 'red',
@@ -79,16 +90,18 @@ let action=[false,0,1]
 					action[0]=false;
 				}
 			}
-			else if(action[0]==true&&checker[0]==true)
+
+			//if it action is true it will then try to swap, if checker is also true
+		else if(action[0]===true&&checker[0]==true)
 			{
-				if(action[1]==checker[1])
+					//checks to see if action and checker are using the same index value, if it is the same, it will change it.
+				if(action[1]===checker[1])
 				{
 					workingArray=[...workingArray]
 					const tmp = workingArray[action[1]];
 					workingArray[action[1]] = workingArray[action[2]];
 					workingArray[action[2]] = tmp;
 					setArray(workingArray);
-
 					//make bar green to shows
 					setBarEffects({
 					[action[1]]: 'green',
@@ -99,77 +112,16 @@ let action=[false,0,1]
 					checker[1]++
 					checker[2]++
 				}
-				else if(action[1]!=checker[1])
+				//if it isnt you lose a live or something
+				else if(action[1]!==checker[1])
 				{
-
-					console.log("life is lost")
 					checker[0]=false;
-					lives--;
 				}
 			}
 else{}
-
-
-
-			/*
-			
-			 if(action[0] === false) {
-				const a = workingArray[action[1]];
-				const b = workingArray[action[2]];
-				if(a > b) {
-					
-					checker[0]=false;
-					action[0]=true;	
-					
-				} else if (a < b) {
-
-					if(checker[0] == false) {
-						checker[1]++
-						checker[2]++
-					}
-					checker[0] =true;
-				} 
-				else {
-						
-				}
+//reset the iteration to the first available swap state if we hit the end of the loop
 		
-				setBarEffects({
-					[action[1]]: 'red',
-					[action[2]]: 'red',
-                            })
-						
-}				
-else if(action[0] ==true && checker[1]==action[1]&&checker[0]==false) {
-	
-	//replaces value 1 with value 2 and vice versa
-	workingArray=[...workingArray]
-	const tmp = workingArray[action[1]];
-	workingArray[action[1]] = workingArray[action[2]];
-	workingArray[action[2]] = tmp;
-	setArray(workingArray);
-	
-	//make bar green to shows
-	setBarEffects({
-		[action[1]]: 'green',
-		[action[2]]: 'green',
-	})
-
-	checker[1]++
-	checker[2]++
-	checker[0]=false
-	action[0] = false
-}else if(checker[1]!=action[1])
-{
-console.log("lose a life")
-} 
-else
-{
-throw new Error("Error");
-}
-
-*/
-//reset the iterations
-		if(checker[2]==lengthcheck)
+if(checker[2]===lengthcheck)
 			{
 				for(let i=0; i<workingArray.length; i++)
 				{
@@ -183,23 +135,26 @@ throw new Error("Error");
 				}
 				lengthcheck--
 			}
-			console.log(checker)
+			
 			}handleClickRef.current=handleClick;
-		
-},[resetCount, baseArray])
 
-const step = useCallback(()=>{stepRef.current();},[stepRef]);
+			},[resetCount, baseArray])
+
+
 const handleClick = useCallback(()=>{handleClickRef.current();},[handleClickRef]);
-
 return{
 displayedArray,
 done,
-step,
 reset,
 handleClick,
 barEffects,
+lives,
+
+
 }
 }
+
+
 
 function makeArray(length)
 {
@@ -214,9 +169,12 @@ function makeArray(length)
 
 const BAR_WIDTH=30;
 
-const App=(mode)=>{ 
+
+
+const App=(diff)=>{ 
 let size;
-	switch(mode){
+let started=false;
+	switch(diff){
 		case 1: size=10;
 		break;
 		case 2: size=20;
@@ -226,18 +184,50 @@ let size;
 		default: size=10;
 		break;
 	}
-	const [baseArray,setArray]=useState(makeArray(0));
+	const [baseArray,setArray]=useState(makeArray(size));	
+
 	const{
 		displayedArray,
 		done,
 		reset,
 		barEffects,
 		handleClick,
+		lives,
+		
+
+		
 	}=ToSort(baseArray);
+	const [time, setTime] = useState(0);
+	const [playing, setPlaying] = useState(false);
+
+	  function startGame()
+	{
+		setTime(0)
+	setArray(makeArray(10))
+	started=true;
+	setPlaying(true);
+	}
+
+
+useEffect(()=>{
+	if(playing){
+	const timerId = setInterval(() => setTime(time+1), 10);
+			return () => clearInterval(timerId);
+	}
+})	
 	
+	const displayTime = () => {
+		let minutes = Math.floor((time/100/60)).toString().padStart(2,"0");
+		let seconds = Math.floor((time/100%60)).toString().padStart(2,"0");
+		let ms = (time).toString().padStart(2,"0").slice(-2);
+		return minutes+":"+seconds+":"+ms;
+	  }
+
+
 	return(
 		<div className="container">
 			<h1>Bubble sort</h1>  
+			<label className="timer">{displayTime()}</label>
 			<div className="array">
 				{displayedArray.map((value, index) => (
 					
@@ -257,9 +247,8 @@ let size;
 			</div>
 			<div>
 				<h2> Controls: </h2>
-				<button onClick={() => setArray(makeArray(10))}>Start Game</button>
-				
-				
+				<button onClick={() => startGame()}>Random array</button>
+				<h3>Lesson Control</h3>				
 			</div>
 		</div>
 	);
