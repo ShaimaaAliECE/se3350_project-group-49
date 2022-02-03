@@ -3,6 +3,7 @@ import { mergesort } from "./MergeSort.js";
 import { useEffect, useState } from 'react';
 import { MergeTree } from './MergeTree';
 import { waitFor } from '@testing-library/react';
+import { TransgenderTwoTone } from '@mui/icons-material';
 
 // modes: -1 = lesson
 //         0 = practice
@@ -17,10 +18,11 @@ function App({mode}) {
   const [time, setTime] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [refresh, setRefresh] = useState(false);
-
+  const [userArr, setUserArr] = useState("");
 
   useEffect(() => {
-    if (playing && step === 0) {
+    if (!playing) return;
+    if (step === 0) {
       if (sorted.length === 0) { 
         let out = [];
         if (mode < 0) out = generateArray(10, 20);
@@ -30,11 +32,11 @@ function App({mode}) {
         setSorted([...newSorted]);
       }
     }
-    if (playing && step < sorted.length-1) {
+    if (step < sorted.length-1) {
       const timerId = setInterval(() => setTime(time+1), 10);
       return () => clearInterval(timerId);
     }
-  }, [step, time, playing]);
+  }, [step, time, playing, sorted]);
 
   const generateArray = (len, range) => {
     let out = [];
@@ -42,10 +44,6 @@ function App({mode}) {
       out[out.length] = Math.floor(Math.random()*range)+1;
     }
     return out;
-  }
-
-  const uiArray = () => {
-
   }
 
   const makeTree = () => {
@@ -200,6 +198,7 @@ function App({mode}) {
     if (step === sorted.length-1) cur.open = true;
     return (
     <div className='Frame'>
+    {mode===0&&uiArray()}
     <button className='nextstep' 
         onClick={(e) => checkStep(e, cur)}>
         {playing?step+1 < sorted.length-1?"Next":step+1===sorted.length-1?"Finish":"Restart":"Start"}
@@ -219,6 +218,35 @@ function App({mode}) {
       
     </div>
     );
+  }
+
+  const uiArray = () => {
+    return (
+      <input className='uiArr' disabled={playing} type="text" placeholder='Numbers (a, b, c..)' onChange={(e) => userInput(e)} value={userArr}></input>
+    );
+  }
+
+  const userInput = (e) => {
+    e.preventDefault();
+    setUserArr(e.target.value);
+    console.log(e.target.value);
+  }
+
+  const parseUI = () => {
+    if (userArr.length === 0) {setSorted([]); return;}
+    let arr = userArr.split(',');
+    let goodArr = true;
+    console.log(arr);
+    let out = [];
+    for (let i = 0; i < arr.length; i++) {
+      let s = arr[i].trim();
+      if (isNaN(s)) {goodArr=false; break;}
+      out.push(Number(s));
+    }
+    if (goodArr)
+      setSorted(mergesort(out));
+    else setSorted([]);
+    console.log(out);
   }
 
   const printStep = (cur) => {
@@ -265,7 +293,9 @@ function App({mode}) {
   }
 
   const checkStep = (e, cur) => {
-    
+    console.log(sorted);
+    console.log(cur);
+    console.log(step);
     if (mode < 0) {
       setTime(1);
       setUserIn({l:0,r:0});
@@ -275,20 +305,25 @@ function App({mode}) {
         setStep(0);
         return;
       }
-      if (step+1 > sorted.length-1) {setStep(0);setUserIn({l:0,r:0});return;}
+      if (step+1 > sorted.length-1) {
+        setStep(0);
+        setUserIn({l:0,r:0});
+        return;
+      }
       setStep(step+1);
       return; 
     }
     if (!playing) {
+      if (mode === 0) parseUI();
       setPlaying(true); 
       setTime(0);
       setStep(0);
       setlives(3);
       return;
     }
+    if (sorted.length <= 1) {setPlaying(false);return;}
     let newStep = (step+1);
     e.preventDefault();
-    console.log(mode);
     let v = cur.val;
     if (cur.open) v = cur.val.slice(userIn.l, userIn.r+1);
     let s = sorted[newStep];

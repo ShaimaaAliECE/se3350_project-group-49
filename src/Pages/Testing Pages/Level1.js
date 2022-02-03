@@ -33,10 +33,6 @@ import App from "../../mergesort/src/App.js"
 import StarIcon from '@mui/icons-material/Star';
 export default function Level1() {
    
-
-
-
-
   return (
     
     <Box >
@@ -47,7 +43,7 @@ export default function Level1() {
         <Grid item xs={11}>
           <Box > 
             <Box sx={{ height: '40vh' }}>
-              <App mode={1}/>
+              <App mode={0}/>
             </Box>
           </Box>
         </Grid>
