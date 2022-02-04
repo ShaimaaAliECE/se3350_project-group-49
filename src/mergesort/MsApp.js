@@ -1,15 +1,13 @@
-import './App.css';
+import './MsAppStyle.css';
 import { mergesort } from "./MergeSort.js";
 import { useEffect, useState } from 'react';
 import { MergeTree } from './MergeTree';
-import { waitFor } from '@testing-library/react';
-import { TransgenderTwoTone } from '@mui/icons-material';
 
 // modes: -1 = lesson
 //         0 = practice
 //        >0 = levels
 
-function App({mode}) {
+function MsApp({mode}) {
   const [sorted, setSorted] = useState([]);
   const [step, setStep] = useState(0);
   const [userIn, setUserIn] = useState({l:0,r:0});
@@ -102,8 +100,8 @@ function App({mode}) {
     if (cur.open) {
       if (tree === cur) {
         if (i >= userIn.l && i <= userIn.r) {
-          color = "#5D8";
-        } else color = "#C38";
+          color = "#4A7";
+        } else color = "#A26";
       }
     }
     else {
@@ -206,7 +204,7 @@ function App({mode}) {
       {playing&&<div className='displaybox'>
         <div className='displayHead'>
           <label className='leftright'>left: {userIn.l} right: {userIn.r}</label>
-          <label className='timer' style={{alignSelf:"center"}}>Step: {(step+1)%(sorted.length)}/{sorted.length-1}</label>
+          <label className='timer' style={{alignSelf:"center"}}>Step: {step+1}/{sorted.length}</label>
           <label className="timer">{mode>=0 && displayTime()}</label>
         </div>
         <div className='Frame'>
@@ -214,7 +212,7 @@ function App({mode}) {
         </div>
         {mode>0&&drawLives()}
       </div>}
-      {mode<0&&<label style={{color:"white"}}>{printStep(cur)}</label>}
+      {mode<=0&&<label style={{color:"white"}}>{printStep(cur)}</label>}
       
     </div>
     );
@@ -393,4 +391,4 @@ function App({mode}) {
   );
 }
 
-export default App;
+export default MsApp;

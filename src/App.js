@@ -30,7 +30,7 @@ function App() {
                 <Redirect to="/Home" />
                 </Route>
                 <Route path='/Home' component={Home} />
-                
+
                 <Route path='/Template' component={Template}/>
 
       </Switch>

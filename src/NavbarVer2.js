@@ -174,10 +174,7 @@ const [open, setOpen] = React.useState(false);
             <Button  component={Link} to= "/Home" onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
               LESSONS
             </Button>
-    
-          
-         
-    
+
    <Button>
             <PopupState variant="popover" popupId="demo-popup-menu">
       {(popupState) => (
@@ -195,7 +192,6 @@ const [open, setOpen] = React.useState(false);
       )}
     </PopupState>
     </Button>
-
 
     <Button component={Link} to= "/Template" onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
               PRACTICE

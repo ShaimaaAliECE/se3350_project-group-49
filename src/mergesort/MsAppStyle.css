@@ -44,8 +44,8 @@
   text-decoration: none;
   display: inline-block;
   border-radius: 15%;
-  font-size: xx-small;
-
+  font-size: small;
+  width:4vh;
 }
 
 .uiArr {
@@ -97,6 +97,7 @@
   margin: 0 5% 5%;
   width:90%;
   padding:1%;
+  border-radius:2%;
 }
 
 .displayHead {
@@ -111,7 +112,7 @@
   vertical-align: top;
   font-size:xx-small;
   margin: 0.2em;
-  
+  background-color: rgba(0,0,0,0.1);
 }
 
 .Title {

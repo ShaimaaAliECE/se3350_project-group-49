@@ -29,11 +29,9 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import NavbarVer2 from './NavbarVer2';
 import Sort1 from "./Pages/Lessons/Sort1"
-import Level1 from './Pages/Testing Pages/Level1';
-import Level2 from './Pages/Testing Pages/Level2';
-import Level3 from './Pages/Testing Pages/Level3';
-import Level4 from './Pages/Testing Pages/Level4';
-
+import Sort2 from "./Pages/Lessons/Sort2"
+import Sort3 from "./Pages/Lessons/Sort3"
+import Sort4 from "./Pages/Lessons/Sort4"
 
 const drawerWidth = 170;
 
@@ -123,7 +121,7 @@ function Template() {
 
 
       <TabPanel value={value} index={0}>
-      <Level1/>
+      <Sort1/>
       </TabPanel>
 
 

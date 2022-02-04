@@ -28,7 +28,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import App from "../../mergesort/src/App.js"
+import MsApp from "../../../mergesort/MsApp.js"
 //THIS PAGE IS BUILT ON THE DESIGN INSPIRED BY THE OWL WEBSITE, SKELETON VERSION WITH 2 ACTIVE PAGE BUTTONS, COURSE CONTENT AND OVERVIEW
 import StarIcon from '@mui/icons-material/Star';
 export default function L2S1() {
@@ -41,18 +41,12 @@ export default function L2S1() {
     
     <Box >
       <Grid container spacing={1}>
-        <Grid item xs={1} >
-            <Box sx={{ bgcolor: '#ff9800', height: '100vh' }} />
-        </Grid>
         <Grid item xs={11}>
           <Box > 
             <Box sx={{ height: '40vh' }}>
-              <App mode={2}/>
+              <MsApp mode={2}/>
             </Box>
           </Box>
-        </Grid>
-        <Grid item xs={1}>
-          <Box sx={{ height: '100vh' }} />
         </Grid>
       </Grid>
     </Box>
