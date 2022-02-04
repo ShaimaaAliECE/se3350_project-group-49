@@ -11,6 +11,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 import { sizing } from '@mui/system';
 import Grow from '@mui/material/Grow';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -23,6 +24,11 @@ import {
   useRouteMatch
 } from "react-router-dom";
 
+import {insertionsort} from "../../Sorting_Algorithms/insertionsort.js";
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import IconButton from '@mui/material/IconButton';
+
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import PropTypes from 'prop-types';
@@ -31,30 +37,154 @@ import Tab from '@mui/material/Tab';
 
 //THIS PAGE IS BUILT ON THE DESIGN INSPIRED BY THE OWL WEBSITE, SKELETON VERSION WITH 2 ACTIVE PAGE BUTTONS, COURSE CONTENT AND OVERVIEW
 import StarIcon from '@mui/icons-material/Star';
+import { getElementById } from 'domutils';
 export default function Level1() {
+
+  const [playing, setPlaying] = React.useState(false);
+  const [step, setStep] = React.useState(-1);
+  const [index, setIndex] = React.useState(0);
+  const [currentElem, setCurrentElem] = React.useState(0);
+  const [sorted, setSorted] = React.useState([]);
+  const [unsorted, setUnsorted] = React.useState([]);
+  const [secondarySort, setSecondarySort] = React.useState([]);
+  const [startButton, setStartButton] = React.useState("Start");
+  
+
+  function startPlaying(){
+      setStartButton("Restart");
+      setPlaying(true);
+      let out = generateArray(10,20);
+      setUnsorted([...out]);
+      let newSorted = insertionsort(out);
+      setSorted([...newSorted]);
+      setSecondarySort([]);
+      setStep(-1);
+      setIndex(-1);
+  }
    
+  function handleClick(e, i){
+    if(i == 0){
+      if(secondarySort.length == 0 || secondarySort.length == 1){
+        let elem = unsorted.shift();
+        setCurrentElem(elem);
+        setUnsorted([...unsorted]);
+        secondarySort.push(elem);
+        setSecondarySort([...secondarySort]);
+        setStep(step+1);
+        setIndex(step+1);
+      }
+      else if(checkStep()){
+        let elem = unsorted.shift();
+        setCurrentElem(elem);
+        setUnsorted([...unsorted]);
+        secondarySort.push(elem);
+        setSecondarySort([...secondarySort]);
+        setStep(step+1);
+        setIndex(step+1);
+      }
+      else alert("ERROR");
+    }
+    else alert("ERROR");
+  }
 
+  function handleComparison(){
+      if(checkStep()){
+        alert("ERROR");
+      }
+      else{
+        console.log(step);
+        console.log(index);
+        console.log(currentElem);
+        
+        console.log(secondarySort[index]);
+        console.log(secondarySort[index-1]);
 
+        secondarySort[index] = secondarySort[index-1];
+        secondarySort[index-1] = currentElem;
+        console.log(secondarySort);
+        setSecondarySort([...secondarySort]);
+        console.log(index);
+        setIndex(index-1);
+        console.log(index);
+        console.log(secondarySort);
+        
+      }
+  }
+
+  function checkStep(){
+    const clonedSort = [...secondarySort];
+    let checkSorted = insertionsort(clonedSort);
+    console.log(secondarySort);
+    console.log(checkSorted);
+    if(checkEqualArray(secondarySort, checkSorted)){ console.log("TRUE"); return true;} 
+    else{console.log("FALSE"); return false;}
+  }
+
+  function checkEqualArray(a, b){
+    if (a === b) return true;
+    if (a == null || b == null) return false;
+    if (a.length !== b.length) return false;
+    for (var i = 0; i < a.length; ++i) {
+      if (a[i] !== b[i]) return false;
+    }
+    return true;
+  }
+
+  const generateArray = (len, range) => {
+    let out = [];
+    for (let i = 0; i < len; i++) {
+      out[out.length] = Math.floor(Math.random()*range)+1;
+    }
+    return out;
+  }
 
 
   return (
     
+
+
     <Box >
+      <Typography textAlign="left">LEVEL 1: S 1</Typography>
+      <Divider/>
+
+      
 
       <Grid container spacing={1}>
 
-
-      <Grid item xs={1} >
-                        <Box sx={{ bgcolor: '#ff9800', height: '100vh' }} />
-
-                    </Grid>
-      <Grid item xs={11}>
      
-    <Box >
-        
-    <Box sx={{ height: '40vh' }} />
+      <Grid item xs={11}>
 
-   LEVEL 1 PAGE
+      <Box sx={{ height: '5vh'}} />
+
+        <Button variant='contained' onClick={startPlaying}>
+          {startButton}
+        </Button>
+     
+        <Box>
+        <Box sx={{ height: '5vh'}} />
+
+        <ButtonGroup variant="contained" aria-label="outlined primary button group">
+            {unsorted.map((row, i) => (
+              <button id={i} onClick={(e) => handleClick(e, i)} >{unsorted[i]}</button>
+            )
+            )}
+        </ButtonGroup>
+
+        <Box sx={{ height: '5vh'}} />
+
+        <ButtonGroup variant="contained" aria-label="outlined primary button group">
+            {secondarySort.map((row, i) => (
+              <button>{secondarySort[i]}</button>
+            )
+            )}
+        </ButtonGroup>
+
+        <Box sx={{ height: '5vh'}} />
+
+        <ButtonGroup variant="contained" aria-label="outlined primary button group">
+          <Button variant="contained" onClick={handleComparison} startIcon={<ArrowBackIosIcon />}></Button>
+        </ButtonGroup>
+
         </Box>
 
 
@@ -62,7 +192,7 @@ export default function Level1() {
       </Grid>
 
       <Grid item xs={1}>
-          <Box sx={{ height: '100vh' }} />
+          <Box sx={{ height: '100vh'}} />
         </Grid>
 
       </Grid>

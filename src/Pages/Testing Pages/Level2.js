@@ -31,7 +31,7 @@ import Tab from '@mui/material/Tab';
 
 //THIS PAGE IS BUILT ON THE DESIGN INSPIRED BY THE OWL WEBSITE, SKELETON VERSION WITH 2 ACTIVE PAGE BUTTONS, COURSE CONTENT AND OVERVIEW
 import StarIcon from '@mui/icons-material/Star';
-export default function Level2() {
+export default function Level1() {
    
 
 
@@ -39,22 +39,23 @@ export default function Level2() {
 
   return (
     
+
+
     <Box >
+      <Typography textAlign="left">LEVEL 2: S 1</Typography>
+      <Divider/>
 
       <Grid container spacing={1}>
 
 
-      <Grid item xs={1} >
-                        <Box sx={{ bgcolor: '#ff9800', height: '100vh' }} />
-
-                    </Grid>
+     
       <Grid item xs={11}>
      
     <Box >
         
     <Box sx={{ height: '40vh' }} />
 
-   LEVEL 1 PAGE
+   LEVEL 2 PAGE
         </Box>
 
 

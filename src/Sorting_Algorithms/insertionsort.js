@@ -1,17 +1,18 @@
 // Insertion sort that outputs a 2D array consisting of every step required to sort te array.
-const insertionsort = (arr) => {
+export const insertionsort = (arr) => {
     //If the array only has one number or is empty, return the array as an element in an array (return type is 2D array)
     if (arr.length <= 1) return [arr];
     let out = [];
     let iLength = arr.length;
+    console.log(arr);
 
     //Iterate through the array and shift each number into the new sorted array. 
     for(let i = 0; i < iLength; i++)
     {
-        console.log(arr);
+        //console.log(arr);
         //Recieve value to be inserted into new array well removing it from the old array.
         let value = arr.shift();
-        console.log(value);
+        //console.log(value);
 
         let j = i-1;
 
@@ -23,10 +24,12 @@ const insertionsort = (arr) => {
 
         out[j+1] = value;
 
-        console.log(out);
+        //console.log(out);
                 
-        console.log("\n");
+        //console.log("\n");
     }
+    console.log(out);
+    return out;
 }
 
 //insertionsort([1,8,4,32,15]);
