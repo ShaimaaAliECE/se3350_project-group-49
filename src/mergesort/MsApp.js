@@ -44,12 +44,12 @@ function MsApp({mode}) {
     return out;
   }
 
-  const makeTree = () => {
-    let a = [...sorted];
+  const makeTree = ([...arr]) => {
+    let a = [...arr];
     if (a.length === 0) return new MergeTree([0]);
     let cur = new MergeTree(a[0]);
     if (a.length === 1) return cur;
-    let max = step < sorted.length? step : sorted.length-1;
+    let max = step < arr.length? step : arr.length-1;
     for (let i = 1; i <= max;i++) {
       if (a[i].length < cur.val.length) {
         let newNode = new MergeTree(a[i]);
@@ -70,6 +70,7 @@ function MsApp({mode}) {
 
   const handleButton = (e, tree, i) => {
     e.preventDefault();
+    console.log(sorted);
     let newRange = {...userIn};
     if (tree.open) {
       if (turn) {
@@ -127,7 +128,7 @@ function MsApp({mode}) {
     if (tree === null) return;
     let out = tree.val;
     let check = (tree.open && tree===cur) || (!cur.open && (tree===cur.left || tree===cur.right));
-    let s = sorted[sorted.length-1];
+    let s = [...sorted[sorted.length-1]];
     let num = s[s.length-1];
     let buttonList = <div className='Container' key={tree.val}>
                         {
@@ -191,7 +192,7 @@ function MsApp({mode}) {
   }
 
   const display = () => {
-    let cur = makeTree();
+    let cur = makeTree(sorted);
     let root = cur.root();
     if (step === sorted.length-1) cur.open = true;
     return (
@@ -304,6 +305,7 @@ function MsApp({mode}) {
         return;
       }
       if (step+1 > sorted.length-1) {
+        setSorted([]);
         setStep(0);
         setUserIn({l:0,r:0});
         return;
@@ -354,10 +356,13 @@ function MsApp({mode}) {
       setTime(0);
     }
     out+= "Time: " + displayTime();
+    setUserIn({l:0,r:0});
     alert(out);
+    setTime(0);
     setStep(0);
     setlives(3);
     setPlaying(false);
+    setSorted([]);
   }
 
   const startPage = () => {

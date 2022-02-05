@@ -39,7 +39,7 @@ export default function L1S1() {
         <Grid item xs={11}>
           <Box > 
             <Box sx={{ height: '40vh' }}>
-              <MsApp mode={1}/>
+              <MsApp mode={-1}/>
             </Box>
           </Box>
         </Grid>

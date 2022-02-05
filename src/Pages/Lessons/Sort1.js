@@ -40,7 +40,7 @@ export default function Sort1() {
         <Grid item xs={11}>
           <Box > 
             <Box sx={{ height: '40vh' }}>
-              <MsApp mode={0}/>
+              <MsApp mode={-1}/>
             </Box>
           </Box>
         </Grid>
