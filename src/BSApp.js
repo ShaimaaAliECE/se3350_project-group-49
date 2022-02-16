@@ -90,6 +90,8 @@ function noSwapFN(){
         setDone(true);
         setWinner(true);
         setPlaying(false);
+          
+         
       }
     
 
@@ -305,6 +307,9 @@ else if (done)
 const displayWinner=() => {
 
   if(winner){
+   
+    
+   
 return (<div><label>You Have Won......Yay!</label></div>)
   }
   else{
@@ -337,11 +342,11 @@ return(<div>
   {(playing||done)&&difficulty>0?<label className="timer">{displayTime()}</label>:null}
 <div className="array">
   {displayedArray.map((value, index)=>(
-    <button key={index}
+    <button className="button" key={index}
     style={{ left: index*30,
-             width:30,
+             width:50,
              bottom: 0,
-             height:30,
+             height:50,
              backgroundColor: barEffects[index],
           }}
           title={`Value: ${value}`}

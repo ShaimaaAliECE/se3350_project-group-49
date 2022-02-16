@@ -42,3 +42,14 @@
     height:auto;
     display:inline-block;
 }
+
+.button {
+  border-radius:30%;
+  margin-right: 5px;
+  border:none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
