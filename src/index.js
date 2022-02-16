@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <BSApp mode={0}/>
+    <BSApp mode={4}/>
   </React.StrictMode>,
   document.getElementById('root')
 );

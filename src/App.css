@@ -52,4 +52,32 @@
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
+  background-color: dimgray;
+}
+
+.choices {
+  border-radius:10%;
+  padding: 3%;
+  border:none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  background-color: royalblue;
+}
+
+.uiArr {
+  background-color: #d7e3eb; /* Green */
+  border: none;
+  color: rgb(8, 92, 187);
+  margin:10px;
+  padding:10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 5%;
+  font-size: 16px;
+  font-weight: 300;
+  font-family: 'Helvetica';
 }

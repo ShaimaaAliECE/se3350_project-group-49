@@ -172,7 +172,13 @@ switch(difficulty) {
 const splitterOfArrays=()=>{
 
   let newArr=userArray.split(',').map(Number)
-  return newArr;
+
+  if(!newArr.some(isNaN)){
+    return newArr;
+  }
+  else{
+    alert("enter in a valid number array in (a,b,c) format where the letters represent numbers")
+  }
 }
 
 
@@ -364,7 +370,7 @@ setUserArray("")
  const display=()=>{
 
 return(<div>
-  {(!playing&&!done)&&difficulty==4?<input type="text" placeholder="a,b,c but in numbers" required onChange={e=>setUserArray(e.target.value)}></input>:null}
+  {(!playing&&!done)&&difficulty==4?<input type="text" className="uiArr" placeholder="a,b,c but in numbers" required onChange={e=>setUserArray(e.target.value)}></input>:null}
   {(playing||done)&&difficulty>0?<label className="timer">{displayTime()}</label>:null}
 <div className="array">
   {displayedArray.map((value, index)=>(
@@ -384,15 +390,15 @@ return(<div>
   <br/>
   <div>
   
-  {!playing&&!done?<button onClick={() => createArray()}>Start</button>:null}
+  {!playing&&!done?<button className="choices" onClick={() => createArray()}>Start</button>:null}
   </div>
 
   <div>
-  {playing&&difficulty>=0?<button onClick={swapBTN}>Swap</button>:null}
+  {playing&&difficulty>=0?<button className="choices" onClick={swapBTN}>Swap</button>:null}
   {playing&&difficulty>=0?<div className="divider"/>:null}
-  {playing&&difficulty>=0?<button onClick={noSwapBTN}>Don't Swap</button>:null}
+  {playing&&difficulty>=0?<button className="choices" onClick={noSwapBTN}>Don't Swap</button>:null}
 
-  {playing&&difficulty==-1?<button onClick={nxtStep}>Next Step</button>:null}
+  {playing&&difficulty==-1?<button className="choices" onClick={nxtStep}>Next Step</button>:null}
   </div>
   <br/>
   {difficulty<1?displaytut():null}
@@ -410,7 +416,7 @@ return(<div>
  
   return (
     <div className="App">
-      <h1>Bubble Sort</h1>
+      <h1>Bubble Sort {difficulty==-1?'Tutorial Lesson':null} {difficulty==0?'Tutorial Level':null} {difficulty==1?'Level 1':null} {difficulty==2?'Level 2':null} {difficulty==3?'Level 3':null} {difficulty==4?'Custom Level':null}</h1>
       {display()}
     </div>
   );
