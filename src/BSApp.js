@@ -13,12 +13,13 @@ const [playing, setPlaying] = useState(false);
 const [swap, setSwap] = useState(false);
 const [baseArray, setBaseArray] = useState([])
 const [index, setIndex] = useState([0,1]);
-const [lengt, setLengt]=useState(0);
+const [lengt, setLengt]=useState([0]);
 const [time, setTime] = useState(0);
 const [done, setDone]=useState(false);
 const [lives, setlives] = useState(3);
 const [winner, setWinner] = useState(false);
 const [userArray, setUserArray] = useState("");
+
 
 //React Callbacks
 const swapFNRef=useRef(()=>{})
@@ -40,6 +41,7 @@ useEffect(() => {
 //if its not playing return else set the array and compare
   if(!playing) return;
 
+  
   let  workingArray=[...baseArray]
   setArray(workingArray)
   bubblesort(baseArray)
@@ -73,7 +75,7 @@ function noSwapFN(){
     //reduces length 
     if(index[0]==lengt){
       setIndex([index[0]=0,index[1]=1]);
-      setLengt(lengt-1);
+      setLengt([lengt[0]=lengt[0]-1]);
       console.log(lengt);
     }
    
@@ -131,22 +133,22 @@ const createArray=() =>{
 switch(difficulty) {
   case 1: setBaseArray(generateArray(10,1,20))
           setPlaying(true); 
-          setLengt(9);   
+          setLengt([9]);   
     break;
   case 2:
           setBaseArray(generateArray(20,1,50))
           setPlaying(true); 
-          setLengt(19);   
+          setLengt([19]);   
     break;
   case 3:
           setBaseArray(generateArray(50,1,100))
           setPlaying(true); 
-          setLengt(49);   
+          setLengt([49]);   
     break;
   case 4:if(userArray=="")
         {
           setBaseArray(generateArray(10,1,20))
-          setLengt(9)
+          setLengt([9])
         }
         else
         {
@@ -154,14 +156,14 @@ switch(difficulty) {
             let lento=tempo.length-1
             bubblesort(tempo)
             setBaseArray(tempo)
-            setLengt(lento)
+            setLengt([lento])
         }
         setPlaying(true);
     break;
   default:
           setBaseArray(generateArray(10,1,20))
           setPlaying(true); 
-          setLengt(9);   
+          setLengt([9]);   
     break;
 }
 }
