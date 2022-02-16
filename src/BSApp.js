@@ -351,7 +351,7 @@ setBarEffects([])
 setPlaying(false)
 setBaseArray([])
 setIndex([index[0]=0,index[1]=1]);
-setLengt(length[0]=0)
+setLengt(lengt[0]=0)
 setTime(0)
 setDone(false)
 setlives(3)
