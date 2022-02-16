@@ -4,6 +4,7 @@ import React, {useState, useEffect, useRef, useCallback} from 'react'
 
 function BSApp({mode}) {
 
+  //React States Declared
 const [difficulty, setDifficulty]=useState(mode);
 const [displayedArray, setArray]=useState([]);
 const [sortedArray,setSortedArray]=useState([1]);
@@ -18,10 +19,13 @@ const [done, setDone]=useState(false);
 const [lives, setlives] = useState(3);
 const [winner, setWinner] = useState(false);
 const [userArray, setUserArray] = useState("");
+
+//React Callbacks
 const swapFNRef=useRef(()=>{})
 const compareRef=useRef(()=>{})
 const noSwapFNRef=useRef(()=>{})
 
+//Compares two arrays return false if they are not the same, returns true if they are
 const compareArrays = (a1, a2) => {
   if (a1.length !== a2.length) return false;
   for (let i = 0; i < a1.length;i++) {
@@ -33,7 +37,7 @@ const compareArrays = (a1, a2) => {
 
 useEffect(() => {
   
-
+//if its not playing return else set the array and compare
   if(!playing) return;
 
   let  workingArray=[...baseArray]
@@ -42,7 +46,7 @@ useEffect(() => {
   compare();
 
 
-
+//swaps index 1 with index0 
   function swapFN(){
 
     workingArray=[...workingArray]
@@ -55,21 +59,25 @@ useEffect(() => {
   
   }swapFNRef.current=swapFN;
 
+  //increases the indexes
 function noSwapFN(){
   setIndex([index[0]++,index[1]++]);
   return
 }noSwapFNRef.current=noSwapFN;
 
 
+
   function compare(){
 
+
+    //reduces length 
     if(index[0]==lengt){
       setIndex([index[0]=0,index[1]=1]);
       setLengt(lengt-1);
       console.log(lengt);
     }
    
-    
+    //sets buttons to be red or green
     setBarEffects({
       [index[0]]:'green',
       [index[1]]:'red'
@@ -101,7 +109,7 @@ function noSwapFN(){
 },[baseArray ,playing])
 
 
-
+//Timer Use Effect
 useEffect(()=>{
 	if(playing){
 	const timerId = setInterval(() => setTime(time+1), 10);
@@ -110,12 +118,14 @@ useEffect(()=>{
 })
 
 
-
+//call back declaration
 
 const swapFN=useCallback(()=>{swapFNRef.current();},[swapFNRef])
 const compare=useCallback(()=>{compareRef.current();},[compareRef])
 const noSwapFN=useCallback(()=>{noSwapFNRef.current();},[noSwapFNRef])
 
+
+//creates Array based on difficulty
 
 const createArray=() =>{
 switch(difficulty) {
@@ -156,12 +166,15 @@ switch(difficulty) {
 }
 }
 
+//converts a text input to an array of numbers
 const splitterOfArrays=()=>{
 
   let newArr=userArray.split(',').map(Number)
   return newArr;
 }
 
+
+//generates an array based on some params
 const generateArray=(length,min,max) =>{
 
 const nmin=Math.ceil(min)
@@ -171,7 +184,7 @@ bubblesort(array);
 return array
 }
 
-
+//bubble sort and set a sorted array
 const bubblesort = (arr)=> {
 
   let temp=[...arr]
@@ -202,7 +215,7 @@ setSortedArray(temp);
 }
 
 
-
+//swap button handeling
 const swapBTN=()=>{
 if(swap)
 {
@@ -220,7 +233,7 @@ else
 compare()
 }
 
-
+//noswap button handeling
 const noSwapBTN=()=>{
 if(!swap){
   noSwapFN()
@@ -238,6 +251,7 @@ else
 compare()
 }
 
+//lessons mode button handeling
 const nxtStep=()=>{
 if(swap){
   swapFN() 
@@ -252,7 +266,7 @@ compare()
 
 }
 
-
+//checks the lives left
 const checklives=()=>{
   if(lives<=1)
   {
@@ -261,6 +275,8 @@ const checklives=()=>{
   }
 
 }
+
+//timerstuff
 const displayTime = () => {
   let minutes = Math.floor((time/100/60)).toString().padStart(2,"0");
   let seconds = Math.floor((time/100%60)).toString().padStart(2,"0");
@@ -268,6 +284,8 @@ const displayTime = () => {
   return minutes+":"+seconds+":"+ms;
   }
 
+
+  //lives stuff
   const drawLives = () => {
     let dispLives = [];
     for (let i = 0; i < lives; i++) {
@@ -282,13 +300,15 @@ const displayTime = () => {
     );
   }
 
+
+  //displays tutorial messages
 const displaytut = () => {
   
 if(playing){
 
   if(swap)
   {
-  return (<div><label>swap the two numbers around </label></div>)
+  return (<div><label>swap the two highlighted numbers around </label></div>)
   }
   else
   {
@@ -303,6 +323,8 @@ else if (done)
 
 }
 
+
+//winner checks
 
 const displayWinner=() => {
 
@@ -319,7 +341,7 @@ return (<div><label>You Have Won......Yay!</label></div>)
 
 
 }
-
+//restart button handeling
 const restart=()=>{
   setArray([])
 setSortedArray([1])
@@ -335,6 +357,8 @@ setWinner(false)
 setUserArray("")
 
 }
+
+//display handeling
  const display=()=>{
 
 return(<div>
