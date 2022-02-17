@@ -323,7 +323,7 @@ if(playing){
 
   if(swap)
   {
-  return (<div><label>swap the two highlighted numbers around </label></div>)
+  return (<div><label>since the number highlighted in green is larger than the number highlighted in red, swap them</label></div>)
   }
   else
   {
