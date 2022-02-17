@@ -158,6 +158,7 @@ const [open, setOpen] = React.useState(false);
               
             </Menu>
           </Box>
+          
           <Typography
             variant="h6"
             noWrap
@@ -197,9 +198,26 @@ const [open, setOpen] = React.useState(false);
     </Button>
 
 
-    <Button component={Link} to= "/Template" onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
-              PRACTICE
-            </Button>
+
+
+
+            <Button>
+            <PopupState variant="popover" popupId="demo-popup-menu">
+      {(popupState) => (
+        <React.Fragment>
+          <Button sx={{ my: 1, color: 'white' }} {...bindTrigger(popupState)}>
+            PRACTICE
+          </Button>
+          <Menu {...bindMenu(popupState)}>
+            <MenuItem onClick={popupState.close}>STANDARD</MenuItem>
+            <MenuItem onClick={popupState.close}>CUSTOM</MenuItem>
+      
+          </Menu>
+        </React.Fragment>
+      )}
+    </PopupState>
+    </Button>
+
 
 
 
