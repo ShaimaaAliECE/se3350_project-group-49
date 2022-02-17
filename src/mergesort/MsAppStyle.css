@@ -44,8 +44,8 @@
   text-decoration: none;
   display: inline-block;
   border-radius: 15%;
-  font-size: small;
-  width:4vh;
+  font-size: x-small;
+  width:min-content;
 }
 
 .uiArr {

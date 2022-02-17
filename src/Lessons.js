@@ -1,7 +1,16 @@
-import React from 'react'
-import Box from "@mui/material/Box";
+import React, { useState, useEffect } from 'react'
 
-//import Home from "./Home";
+
+import Button from '@mui/material/Button';
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Container from "@mui/material/Container";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import Divider from "@mui/material/Divider";
+import TextField from '@mui/material/TextField';
+import { BrowserRouter, Route, Switch, Redirect, Link} from 'react-router-dom';
+import Home from "./Home";
 import Drawer from '@mui/material/Drawer';
 import AppBar from '@mui/material/AppBar';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,12 +22,16 @@ import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 
-import NavbarVer2 from '../../NavbarVer2';
-import L1S1 from '../Sorting/L1Sorting/L1S1';
-import L1S2 from '../Sorting/L1Sorting/L1S2';
-import L1S3 from '../Sorting/L1Sorting/L1S3';
-import L1S4 from '../Sorting/L1Sorting/L1S4';
 
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import MailIcon from '@mui/icons-material/Mail';
+import NavbarVer2 from './NavbarVer2';
+import Sort1 from "./Pages/Lessons/Sort1"
+import Sort2 from "./Pages/Lessons/Sort2"
+import Sort3 from "./Pages/Lessons/Sort3"
+import Sort4 from "./Pages/Lessons/Sort4"
 
 const drawerWidth = 170;
 
@@ -55,7 +68,7 @@ function a11yProps(index) {
   };
 }
 
-function Level1() {
+function Lessons() {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -93,9 +106,9 @@ function Level1() {
         sx={{ borderRight: 1, borderColor: 'divider' }}
       >
         <Tab label="MergeSort" {...a11yProps(0)} />
-        <Tab label="QuickSort" {...a11yProps(1)} />
-        <Tab label="BubbleSort" {...a11yProps(2)} />
-        <Tab label="InsertionSort" {...a11yProps(3)} />
+        <Tab label="Sort Type 2" {...a11yProps(1)} />
+        <Tab label="Sort Type 3" {...a11yProps(2)} />
+        <Tab label="Sort Type 4" {...a11yProps(3)} />
   
       </Tabs>
           
@@ -103,23 +116,33 @@ function Level1() {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
+        
+    
+
 
       <TabPanel value={value} index={0}>
-      <L1S1/>
+      <Sort1/>
       </TabPanel>
+
 
       <TabPanel value={value} index={1}>
-      <L1S2/>
+        <Sort2/>
       </TabPanel>
+
+
 
       <TabPanel value={value} index={2}>
-      <L1S3/>
+        <Sort3/>
       </TabPanel>
-
-
+      
       <TabPanel value={value} index={3}>
-      <L1S4/>
+        <Sort4/>
       </TabPanel>
+
+
+
+    
+
      
       </Box>
     </Box>
@@ -128,4 +151,5 @@ function Level1() {
 
 }
 
-export default Level1
+
+export default Lessons

@@ -22,11 +22,7 @@ function MsApp({mode}) {
     if (!playing) return;
     if (step === 0) {
       if (sorted.length === 0) { 
-        let out = [];
-        if (mode < 0) out = generateArray(10, 20);
-        else if (mode === 0) out = generateArray(10, 50);
-        else out = generateArray(mode*10, mode *100);
-        let newSorted = mergesort(out);
+        let newSorted = mergesort(levelSetup(mode));
         setSorted([...newSorted]);
       }
     }
@@ -35,6 +31,25 @@ function MsApp({mode}) {
       return () => clearInterval(timerId);
     }
   }, [step, time, playing, sorted]);
+
+  const levelSetup = (mode) => {
+    let out = [];
+    switch(mode) {
+      case 2:
+        out = generateArray(15, 40);
+        break;
+      case 3:
+        out = generateArray(20, 50);
+        break;
+      case 4:
+        out = generateArray(50, 100);
+        break;
+      default:
+        out = generateArray(10,20);
+    }
+    
+    return out;
+  }
 
   const generateArray = (len, range) => {
     let out = [];
@@ -133,23 +148,24 @@ function MsApp({mode}) {
     let buttonList = <div className='Container' key={tree.val}>
                         {
                           out.map((n,i) => 
-                          <div className='Container' key={i}> 
-                          {i}
-                            <br/>
-                            <button 
-                              className='mergebutton'
-                              disabled={!check} 
+                          <button className='Container' key={i} onClick={(e) => handleButton(e,tree,i)}
+                          disabled={!check} 
                               style={{
-                                height:`calc(${(n/num+1)}*2vh)`,
+                                //height:`calc(${(n/num+1)}*2vh)`,
                                 bottom:0,
                                 backgroundColor:chooseButtonColor(tree, cur, i),
                                 border:chooseBorder(tree,cur,i)
-                              }} 
-                              onClick={(e) => handleButton(e,tree,i)}
+                              }} > 
+                          {i}
+                            <br/>
+                            <label 
+                              className='mergebutton'
+                          
+                              
                               key={i}>
                               {n}
-                            </button>
-                          </div>
+                            </label>
+                          </button>
                           )
                         }
                       </div>
@@ -243,7 +259,7 @@ function MsApp({mode}) {
       out.push(Number(s));
     }
     if (goodArr)
-      setSorted(mergesort(out));
+      setSorted(mergesort(out.slice(0, out.length>20?20:out.length)));
     else setSorted([]);
     console.log(out);
   }

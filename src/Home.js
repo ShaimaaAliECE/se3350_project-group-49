@@ -54,7 +54,7 @@ export default function Home() {
         
     <Box sx={{ height: '40vh' }} />
 
-   TESTING PAGE
+   Home
         </Box>
 
 

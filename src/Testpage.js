@@ -1,9 +1,40 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react'
+
+
+import Button from '@mui/material/Button';
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Container from "@mui/material/Container";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import Divider from "@mui/material/Divider";
+import TextField from '@mui/material/TextField';
+import { BrowserRouter, Route, Switch, Redirect, Link} from 'react-router-dom';
+//import Home from "./Home";
+import Drawer from '@mui/material/Drawer';
+import AppBar from '@mui/material/AppBar';
+import CssBaseline from '@mui/material/CssBaseline';
+import Toolbar from '@mui/material/Toolbar';
+
+import Typography from '@mui/material/Typography';
+
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+
+
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import MailIcon from '@mui/icons-material/Mail';
+import NavbarVer2 from '../../NavbarVer2';
+import L4S1 from '../Sorting/L4Sorting/L4S1';
+import L4S2 from '../Sorting/L4Sorting/L4S2';
+import L4S3 from '../Sorting/L4Sorting/L4S3';
+import L4S4 from '../Sorting/L4Sorting/L4S4';
+
+
+const drawerWidth = 170;
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -38,18 +69,36 @@ function a11yProps(index) {
   };
 }
 
-export default function TestPage() {
+function Template() {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
+  
   return (
-    <Box
-      sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: 224 }}
-    >
-      <Tabs
+
+
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
+      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+      
+      <NavbarVer2/>
+   
+      </AppBar>
+      <Drawer
+        variant="permanent"
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+        }}
+      >
+        <Toolbar />
+
+        
+        <Box sx={{ overflow: 'auto' }}>
+        <Tabs
         orientation="vertical"
         variant="scrollable"
         value={value}
@@ -57,25 +106,41 @@ export default function TestPage() {
         aria-label="Vertical tabs example"
         sx={{ borderRight: 1, borderColor: 'divider' }}
       >
-        <Tab label="Item One" {...a11yProps(0)} />
-        <Tab label="Item Two" {...a11yProps(1)} />
-        <Tab label="Item Three" {...a11yProps(2)} />
-        <Tab label="Item Four" {...a11yProps(3)} />
+        <Tab label="MergeSort" {...a11yProps(0)} />
+        <Tab label="QuickSort" {...a11yProps(1)} />
+        <Tab label="BubbleSort" {...a11yProps(2)} />
+        <Tab label="InsertionSort" {...a11yProps(3)} />
   
       </Tabs>
+          
+        </Box>
+      </Drawer>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Toolbar />
+
       <TabPanel value={value} index={0}>
-        Item One
+      <L4S1/>
       </TabPanel>
+
       <TabPanel value={value} index={1}>
-        Item Two
+      <L4S2/>
       </TabPanel>
+
       <TabPanel value={value} index={2}>
-        Item Three
+      <L4S3/>
       </TabPanel>
+
+
       <TabPanel value={value} index={3}>
-        Item Four
+      <L4S4/>
       </TabPanel>
      
+      </Box>
     </Box>
-  );
+  )
+
+
 }
+
+
+export default Template
