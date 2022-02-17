@@ -1,1 +1,0 @@
-//THIS PAGE WILL USE THE TEMPLATE.JS AS A BASELINE L3Sorting pages will be displayed in the tabs

@@ -1,5 +1,4 @@
-import logo from './kermit.jpg';
-import logo2 from './Trig.jpg';
+
 import './App.css';
 import React from 'react';
 
@@ -20,7 +19,6 @@ import Custom from './Pages/Practice/Custom'
 import Standard from './Pages/Practice/Standard'
 import LessonsHome from './Pages/Lessons/LessonsHome'
 
-import Template from "./Template"
 //Implement Control + C as a button bound.
 
 
@@ -40,8 +38,7 @@ function App() {
                 <Redirect to="/Home" />
                 </Route>
                 <Route path='/Home' component={Home} />
-                
-                <Route path='/Template' component={Template}/>
+              
 
                 <Route path='/LessonsHome' component={LessonsHome}/>
 
