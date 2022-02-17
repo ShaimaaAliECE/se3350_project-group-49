@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+
 import './App.css';
 import React, {useState, useEffect, useRef, useCallback} from 'react'
 
@@ -115,7 +115,9 @@ function noSwapFN(){
 useEffect(()=>{
 	if(playing){
 	const timerId = setInterval(() => setTime(time+1), 10);
+  console.log(time)
 			return () => clearInterval(timerId);
+      
 	}
 })
 
@@ -136,11 +138,16 @@ switch(difficulty) {
           setLengt([9]);   
     break;
   case 2:
+          setBaseArray(generateArray(15,1,40))
+          setPlaying(true); 
+          setLengt([14]);   
+    break;
+  case 3:
           setBaseArray(generateArray(20,1,50))
           setPlaying(true); 
           setLengt([19]);   
     break;
-  case 3:
+  case 5:
           setBaseArray(generateArray(50,1,100))
           setPlaying(true); 
           setLengt([49]);   
@@ -416,7 +423,7 @@ return(<div>
  
   return (
     <div className="App">
-      <h1>Bubble Sort {difficulty==-1?'Tutorial Lesson':null} {difficulty==0?'Tutorial Level':null} {difficulty==1?'Level 1':null} {difficulty==2?'Level 2':null} {difficulty==3?'Level 3':null} {difficulty==4?'Custom Level':null}</h1>
+      <h1>Bubble Sort {difficulty==-1?'Tutorial Lesson':null} {difficulty==0?'Practice Level':null} {difficulty==1?'Level 1':null} {difficulty==2?'Level 2':null} {difficulty==3?'Level 3':null}{difficulty==5?'Level 4':null} {difficulty==4?'Custom Level':null}</h1>
       {display()}
     </div>
   );
