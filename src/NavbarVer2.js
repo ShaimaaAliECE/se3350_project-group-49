@@ -31,6 +31,8 @@ import ClickAwayListener from '@mui/material/ClickAwayListener';
 import MenuList from '@mui/material/MenuList';
 
 
+
+
 const NavbarVer2 = () => {
 
   function closeTab(){
@@ -172,7 +174,7 @@ const [open, setOpen] = React.useState(false);
             <Button  component={Link} to= "/Home" onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
               HOME
             </Button>
-            <Button  component={Link} to= "/Home" onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
+            <Button  component={Link} to= "/LessonsHome" onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
               LESSONS
             </Button>
     
@@ -187,10 +189,10 @@ const [open, setOpen] = React.useState(false);
             TEST
           </Button>
           <Menu {...bindMenu(popupState)}>
-            <MenuItem onClick={popupState.close}>LEVEL 1</MenuItem>
-            <MenuItem onClick={popupState.close}>LEVEL 2</MenuItem>
-            <MenuItem onClick={popupState.close}>LEVEL 3</MenuItem>
-            <MenuItem onClick={popupState.close}>LEVEL 4</MenuItem>
+            <MenuItem component={Link} to='/L1Home' onClick={popupState.close}>LEVEL 1</MenuItem>
+            <MenuItem component={Link} to='/L2Home' onClick={popupState.close}>LEVEL 2</MenuItem>
+            <MenuItem component={Link} to='/L3Home' onClick={popupState.close}>LEVEL 3</MenuItem>
+            <MenuItem component={Link} to='/L4Home' onClick={popupState.close}>LEVEL 4</MenuItem>
           </Menu>
         </React.Fragment>
       )}
@@ -209,8 +211,8 @@ const [open, setOpen] = React.useState(false);
             PRACTICE
           </Button>
           <Menu {...bindMenu(popupState)}>
-            <MenuItem onClick={popupState.close}>STANDARD</MenuItem>
-            <MenuItem onClick={popupState.close}>CUSTOM</MenuItem>
+            <MenuItem  component={Link} to='/StandardPractice' onClick={popupState.close}>STANDARD</MenuItem>
+            <MenuItem  component={Link} to='/CustomPractice' onClick={popupState.close}>CUSTOM</MenuItem>
       
           </Menu>
         </React.Fragment>
