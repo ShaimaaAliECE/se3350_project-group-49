@@ -25,6 +25,7 @@ import Sort1 from "./Sort1";
 import Sort2 from "./Sort2";
 import Sort3 from "./Sort3";
 import Sort4 from "./Sort4";
+import ISortLesson from "../../ISORT/ISortLesson";
 
 const drawerWidth = 170;
 
@@ -118,7 +119,7 @@ function LessonsHome() {
           <Sort3 />
         </TabPanel>
         <TabPanel value={value} index={3}>
-          <Sort4 />
+          <ISortLesson />
         </TabPanel>
       </Box>
     </Box>
