@@ -16,6 +16,7 @@ import L1S1 from "./L1S1";
 import L1S2 from "./L1S2";
 import L1S3 from "./L1S3";
 import L1S4 from "./L1S4";
+import ISortL1 from "../../../ISORT/ISortL1";
 
 const drawerWidth = 170;
 
@@ -109,7 +110,7 @@ function L1Home() {
           <L1S3 />
         </TabPanel>
         <TabPanel value={value} index={3}>
-          <L1S4 />
+          <ISortL1 />
         </TabPanel>
       </Box>
     </Box>
