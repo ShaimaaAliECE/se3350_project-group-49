@@ -22,6 +22,7 @@ import Tab from "@mui/material/Tab";
 import NavbarVer2 from "../../NavbarVer2";
 import BSApp from "../../BSORT/BSApp";
 import MsApp from "../../MSORT/MsApp";
+import ISortStandard from "../../ISORT/ISortStandard";
 
 const drawerWidth = 170;
 
@@ -115,7 +116,7 @@ function Standard() {
           <BSApp mode={0} />
         </TabPanel>
         <TabPanel value={value} index={3}>
-        <Typography>PLACE THE APP HERE INSTEAD OF TYPOGRAPHY</Typography>
+          <ISortStandard />
         </TabPanel>
       </Box>
     </Box>
