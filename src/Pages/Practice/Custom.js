@@ -21,6 +21,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import NavbarVer2 from "../../NavbarVer2";
 import BSApp from "../../BSORT/BSApp";
+import MsApp from "../../MSORT/MsApp";
 
 const drawerWidth = 170;
 
@@ -105,7 +106,7 @@ function Custom() {
         <Toolbar />
 
         <TabPanel value={value} index={0}>
-        <Typography>PLACE THE APP HERE INSTEAD OF TYPOGRAPHY</Typography>
+          <MsApp mode={0}/>
         </TabPanel>
         <TabPanel value={value} index={1}>
         <Typography>PLACE THE APP HERE INSTEAD OF TYPOGRAPHY</Typography>
