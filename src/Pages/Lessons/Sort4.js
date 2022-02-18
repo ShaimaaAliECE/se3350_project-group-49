@@ -67,7 +67,7 @@ export default function Sort4() {
       setIndex(-1);
   }
    
-  function handleForwardClick(){
+  function handleClick(){
     
     if(playing){
         if(secondarySort.length == 0 || secondarySort.length == 1){
@@ -94,10 +94,6 @@ export default function Sort4() {
         }
     }
     
-  }
-
-  function handleBackwordClick(){
-    if(playing){}
   }
 
   function handleComparison(){
@@ -200,8 +196,7 @@ export default function Sort4() {
         <Box sx={{ height: '5vh'}} />
 
         <ButtonGroup variant="contained" aria-label="outlined primary button group">
-          <Button variant="contained" startIcon={<ArrowBackIosIcon />}></Button>
-          <Button variant="contained" onClick={handleForwardClick} startIcon={<ArrowForwardIosIcon />}></Button>
+          <Button variant="contained" onClick={handleClick} startIcon={<ArrowForwardIosIcon />}>NEXT STEP</Button>
         </ButtonGroup>
 
         <Box sx={{ height: '5vh'}} />
