@@ -27,7 +27,7 @@ import {
 import { insertionsort } from '../../Sorting_Algorithms/insertionsort';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import IconButton from '@mui/material/IconButton';
 
 import ListItemButton from '@mui/material/ListItemButton';
@@ -39,8 +39,7 @@ import Tab from '@mui/material/Tab';
 //THIS PAGE IS BUILT ON THE DESIGN INSPIRED BY THE OWL WEBSITE, SKELETON VERSION WITH 2 ACTIVE PAGE BUTTONS, COURSE CONTENT AND OVERVIEW
 import StarIcon from '@mui/icons-material/Star';
 import { getElementById } from 'domutils';
-
-export default function Sort4() {
+export default function ISSP() {
 
   const [playing, setPlaying] = React.useState(false);
   const [step, setStep] = React.useState(-1);
@@ -51,8 +50,11 @@ export default function Sort4() {
   const [secondarySort, setSecondarySort] = React.useState([]);
   const [startButton, setStartButton] = React.useState("Start");
 
-  const [prevUnsorted, setPrevUnsorted] = React.useState([]);
-  const [prevSecondarySort, setPrevSecondarySort] = React.useState([]);
+  const [lost, setLost] = React.useState(false);
+
+  const [heartOne, setHeartOne] = React.useState("error");
+  const [heartTwo, setHeartTwo] = React.useState("error");
+  const [heartThree, setHeartThree] = React.useState("error");
   
 
   function startPlaying(){
@@ -65,13 +67,16 @@ export default function Sort4() {
       setSecondarySort([]);
       setStep(-1);
       setIndex(-1);
+      setHeartOne("error");
+      setHeartTwo("error");
+      setHeartThree("error");
+      setLost(false);
   }
    
-  function handleForwardClick(){
-    
-    if(playing){
+  function handleClick(e, i){
+      if(!lost){
+        if(i == 0){
         if(secondarySort.length == 0 || secondarySort.length == 1){
-            
             let elem = unsorted.shift();
             setCurrentElem(elem);
             setUnsorted([...unsorted]);
@@ -80,7 +85,7 @@ export default function Sort4() {
             setStep(step+1);
             setIndex(step+1);
         }
-        else if(checkStep() && (secondarySort.length < 10)){
+        else if(checkStep()){
             let elem = unsorted.shift();
             setCurrentElem(elem);
             setUnsorted([...unsorted]);
@@ -89,35 +94,40 @@ export default function Sort4() {
             setStep(step+1);
             setIndex(step+1);
         }
-        else if(!(checkEqualArray(sorted, secondarySort))){
-            handleComparison();
+        else loseLife();
         }
+        else loseLife();
     }
-    
-  }
-
-  function handleBackwordClick(){
-    if(playing){}
   }
 
   function handleComparison(){
-      
-    console.log(step);
-    console.log(index);
-    console.log(currentElem);
-    
-    console.log(secondarySort[index]);
-    console.log(secondarySort[index-1]);
+      if(!lost){
+        if(!checkEqualArray(secondarySort, sorted)){
+            if(checkStep()){
+                loseLife();
+            }
+            else if(secondarySort.length > 1){
+                console.log(step);
+                console.log(index);
+                console.log(currentElem);
+                
+                console.log(secondarySort[index]);
+                console.log(secondarySort[index-1]);
 
-    secondarySort[index] = secondarySort[index-1];
-    secondarySort[index-1] = currentElem;
-    console.log(secondarySort);
-    setSecondarySort([...secondarySort]);
-    console.log(index);
-    setIndex(index-1);
-    console.log(index);
-    console.log(secondarySort);
-        
+                secondarySort[index] = secondarySort[index-1];
+                secondarySort[index-1] = currentElem;
+                console.log(secondarySort);
+                setSecondarySort([...secondarySort]);
+                console.log(index);
+                setIndex(index-1);
+                console.log(index);
+                console.log(secondarySort);
+                
+            }
+
+            else loseLife();
+        }
+    }
   }
 
   function checkStep(){
@@ -139,6 +149,50 @@ export default function Sort4() {
     return true;
   }
 
+  function getText(){
+    if(playing){
+      if(lost){
+          return "LOSER";
+      }
+      else if( (secondarySort.length == 0)){
+          return "Select the first element in the unsorted array";
+      }
+      else if(checkEqualArray(secondarySort, sorted)){
+        return "WINNER";
+      }
+      else if((secondarySort.length == 1) || (checkStep())){
+          return "From the unsorted list, select the first element in the array"
+      }
+      else
+        return "Shift the newest element in the sorted list";
+    }
+  }
+
+  function loseLife(){
+      if(heartThree == "error"){
+          setHeartThree("disabled");
+      }
+      else if(heartTwo == "error"){
+        setHeartTwo("disabled");
+      }
+      else if(heartOne == "error"){
+        setHeartOne("disabled");
+        setLost(true);
+      }
+  }
+
+  function getColor(hNum){
+
+    switch(hNum){
+        case "h1":
+            return heartOne;
+        case "h2":
+            return heartTwo;
+        case "h3":
+            return heartThree;        
+    }
+  }
+
   const generateArray = (len, range) => {
     let out = [];
     for (let i = 0; i < len; i++) {
@@ -147,25 +201,16 @@ export default function Sort4() {
     return out;
   }
 
-  function getText(){
-    if(playing){
-      if( (secondarySort.length == 0)){
-          return "Select the first element in the unsorted array";
-      }
-      else if(checkEqualArray(secondarySort, sorted)){
-        return "FINISHED";
-      }
-      else if((secondarySort.length >= 1) && (checkStep())){
-          return "From the unsorted list, select the first element in the array"
-      }
-      else
-        return "Shift the newest element in the sorted list";
-    }
-  }
 
   return (
     
+
     <Box >
+
+      <Typography textAlign="left">INSERTION SORT: STANDARD</Typography>
+      <Divider/>
+
+      
 
       <Grid container spacing={1}>
 
@@ -183,7 +228,7 @@ export default function Sort4() {
 
         <ButtonGroup variant="contained" aria-label="outlined primary button group">
             {unsorted.map((row, i) => (
-              <button id={i}>{unsorted[i]}</button>
+              <button id={i} onClick={(e) => handleClick(e, i)} >{unsorted[i]}</button>
             )
             )}
         </ButtonGroup>
@@ -200,15 +245,22 @@ export default function Sort4() {
         <Box sx={{ height: '5vh'}} />
 
         <ButtonGroup variant="contained" aria-label="outlined primary button group">
-          <Button variant="contained" startIcon={<ArrowBackIosIcon />}></Button>
-          <Button variant="contained" onClick={handleForwardClick} startIcon={<ArrowForwardIosIcon />}></Button>
+          <Button variant="contained" onClick={handleComparison} startIcon={<ArrowBackIosIcon />}></Button>
         </ButtonGroup>
+
+        <Button></Button>
+        
+        <FavoriteIcon color={getColor("h1")}/>
+        <FavoriteIcon color={getColor("h2")}/>
+        <FavoriteIcon color={getColor("h3")}/>
 
         <Box sx={{ height: '5vh'}} />
 
         <Typography>{getText()}</Typography>
 
         </Box>
+
+        
 
       </Grid>
 

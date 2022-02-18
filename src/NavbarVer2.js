@@ -158,6 +158,7 @@ const [open, setOpen] = React.useState(false);
               
             </Menu>
           </Box>
+          
           <Typography
             variant="h6"
             noWrap
@@ -171,7 +172,7 @@ const [open, setOpen] = React.useState(false);
             <Button  component={Link} to= "/Home" onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
               HOME
             </Button>
-            <Button  component={Link} to= "/Home" onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
+            <Button  component={Link} to= "/Lessons" onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
               LESSONS
             </Button>
     
@@ -186,10 +187,10 @@ const [open, setOpen] = React.useState(false);
             TEST
           </Button>
           <Menu {...bindMenu(popupState)}>
-            <MenuItem onClick={popupState.close}>LEVEL 1</MenuItem>
-            <MenuItem onClick={popupState.close}>LEVEL 2</MenuItem>
-            <MenuItem onClick={popupState.close}>LEVEL 3</MenuItem>
-            <MenuItem onClick={popupState.close}>LEVEL 4</MenuItem>
+            <MenuItem component={Link} to= "/LevelOne" onClick={popupState.close}>LEVEL 1</MenuItem>
+            <MenuItem component={Link} to= "/LevelTwo" onClick={popupState.close}>LEVEL 2</MenuItem>
+            <MenuItem component={Link} to= "/LevelThree" onClick={popupState.close}>LEVEL 3</MenuItem>
+            <MenuItem component={Link} to= "/LevelFour" onClick={popupState.close}>LEVEL 4</MenuItem>
           </Menu>
         </React.Fragment>
       )}
@@ -197,9 +198,26 @@ const [open, setOpen] = React.useState(false);
     </Button>
 
 
-    <Button component={Link} to= "/Template" onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
-              PRACTICE
-            </Button>
+
+
+
+            <Button>
+            <PopupState variant="popover" popupId="demo-popup-menu">
+      {(popupState) => (
+        <React.Fragment>
+          <Button sx={{ my: 1, color: 'white' }} {...bindTrigger(popupState)}>
+            PRACTICE
+          </Button>
+          <Menu {...bindMenu(popupState)}>
+            <MenuItem component={Link} to= "/Standard" onClick={popupState.close}>STANDARD</MenuItem>
+            <MenuItem component={Link} to= "/Custom" onClick={popupState.close}>CUSTOM</MenuItem>
+      
+          </Menu>
+        </React.Fragment>
+      )}
+    </PopupState>
+    </Button>
+
 
 
 

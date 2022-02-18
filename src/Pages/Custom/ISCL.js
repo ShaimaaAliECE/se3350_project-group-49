@@ -24,11 +24,13 @@ import {
   useRouteMatch
 } from "react-router-dom";
 
-import { insertionsort } from '../../../Sorting_Algorithms/insertionsort';
+import { insertionsort } from '../../Sorting_Algorithms/insertionsort';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import IconButton from '@mui/material/IconButton';
+
+import TextField from '@mui/material/TextField';
 
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -39,7 +41,7 @@ import Tab from '@mui/material/Tab';
 //THIS PAGE IS BUILT ON THE DESIGN INSPIRED BY THE OWL WEBSITE, SKELETON VERSION WITH 2 ACTIVE PAGE BUTTONS, COURSE CONTENT AND OVERVIEW
 import StarIcon from '@mui/icons-material/Star';
 import { getElementById } from 'domutils';
-export default function L2S4() {
+export default function ISCP() {
 
     const [playing, setPlaying] = React.useState(false);
     const [step, setStep] = React.useState(-1);
@@ -55,12 +57,25 @@ export default function L2S4() {
     const [heartOne, setHeartOne] = React.useState("error");
     const [heartTwo, setHeartTwo] = React.useState("error");
     const [heartThree, setHeartThree] = React.useState("error");
+
+    // const [customLength, setCustomLength] = React.useState(10);
+    // const [customRange, setCustomRange] = React.useState(20);
     
   
     function startPlaying(){
+        let customLength = document.getElementById('lengthText').value;
+        let customRange = document.getElementById('rangeText').value;
+
+        if(customLength == "" || customLength == 1){
+            customLength = 10;
+        }
+        if(customRange == ""){
+            customRange = 20;
+        }
+
         setStartButton("Restart");
         setPlaying(true);
-        let out = generateArray(15,40);
+        let out = generateArray(customLength, customRange);
         setUnsorted([...out]);
         let newSorted = insertionsort(out);
         setSorted([...newSorted]);
@@ -199,7 +214,7 @@ return (
 
   <Box >
 
-    <Typography textAlign="left">INSERTION SORT: LEVEL 1</Typography>
+    <Typography textAlign="left">INSERTION SORT: CUSTOM LEVEL</Typography>
     <Divider/>
 
     
@@ -208,6 +223,24 @@ return (
 
    
     <Grid item xs={11}>
+
+    <Box sx={{ height: '5vh'}} />
+
+      Enter custom length (greater than 1): <TextField 
+        id="lengthText"
+        variant='outlined'
+        size='small'
+        sx={{ width: '10ch' }}
+        />
+
+    <Box sx={{ height: '5vh'}} />
+
+        Enter custom range: <TextField 
+            id="rangeText"
+            variant='outlined'
+            size='small'
+            sx={{ width: '10ch' }}
+            />
 
     <Box sx={{ height: '5vh'}} />
 
