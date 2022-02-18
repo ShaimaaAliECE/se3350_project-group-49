@@ -83,7 +83,7 @@ function App() {
 
   const nextStep = () => {
     setStepNo(stepNo++);
-
+    setArray(steps[stepNo].currentArray);
   }
 
   return (
