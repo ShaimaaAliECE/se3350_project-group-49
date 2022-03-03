@@ -7,8 +7,9 @@ let currStep = {};
 
 let length = 10;
 let range = 20;
+let mode = 2;
 
-function App(mode) {
+function App() {
 
   // Modes:
   // 0: Lesson, no interaction
@@ -134,12 +135,21 @@ function App(mode) {
     updateValues();
   }
 
+  const isTestMode = () => {
+    if (mode >= 2) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   return (
 
     <Box m={2}>
       <Typography variant='h4'>
         QuickSort Algorithm
       </Typography>
+      
       <Button variant='contained' onClick={startGame}>
         Start Game
       </Button>
@@ -157,7 +167,7 @@ function App(mode) {
           </Grid>
         ))}
       </Grid>
-      <Stack direction="row" justifyContent="space-between">
+      {isTestMode?null:<Stack direction="row" justifyContent="space-between">
         <Stack direction="row" justifyContent="left">
           <Button variant='contained' onClick={incrementI}>
             Increment 'I'
@@ -185,11 +195,11 @@ function App(mode) {
         <Button variant='contained' onClick={nextStep}>
           Next Step
         </Button>
-      </Stack>
+      </Stack>}
       <Stack direction='column'>
-        <Typography variant='h6'>
+        {isTestMode?null:<Typography variant='h6'>
           {currStep.case}
-        </Typography>
+        </Typography>}
         <Typography variant='h6'>
           {stepNo}/{steps.length}
         </Typography>
