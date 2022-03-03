@@ -1,12 +1,38 @@
 import * as React from 'react'
-import { Grid, Stack, Button, Container, Typography, Box } from '@mui/material';
+import { Grid, Stack, Button, Typography, Box } from '@mui/material';
 import GenerateSteps from './GenerateSteps';
 
-function App() {
+let steps = [];
+let currStep = {};
 
-  const length = 10;
+let length = 10;
+let range = 20;
 
-  const [steps, setSteps] = React.useState([{}])
+function App(mode) {
+
+  // Modes:
+  // 0: Lesson, no interaction
+  // 1: Tutorial, user interaction, no penalties, can enter own array
+  // 2: Test level 1 - 10 numbers (1 - 20)
+  // 3: Test level 2 - 15 numbers (1 - 40)
+  // 4: Test level 3 - 20 numbers (1 - 50)
+  // 5: Test level 4 - 50 numbers (1 - 100)
+
+  if (mode === 2) {
+    length = 10;
+    range = 20;
+  } else if (mode === 3) {
+    length = 15;
+    range = 40;
+  } else if (mode === 4) {
+    length = 20;
+    range = 50;
+  } else if (mode === 5) {
+    length = 50;
+    range = 100;
+  }
+
+  // const [steps, setSteps] = React.useState([]);
   const [stepNo, setStepNo] = React.useState(0);
 
   const [sorted, setSorted] = React.useState(-1);
@@ -16,55 +42,73 @@ function App() {
   const [pivot, setPivot] = React.useState();
 
   const incrementI = () => {
-    setI(i + 1);
-    console.log(i);
+    // setI(i + 1);
+    setStepNo(stepNo + 1);
+    updateValues();
   }
-  
+
   const incrementJ = () => {
-    setJ(j + 1);
-    console.log(j);
+    // setJ(j + 1);
+    setStepNo(stepNo + 1);
+    updateValues();
   }
 
   const startGame = () => {
-    setArray(generateArray(length, 50));
-    setPivot(length-1);
-    setI(-1);
-    setJ(0);
-    setSteps(GenerateSteps(array));
+    let thisArray = generateArray(length, range);
+    setArray(thisArray);
+    steps = GenerateSteps(thisArray);
+    // setSteps(thisSteps);
+    updateValues();
   }
 
-  const generateArray = (len, range) => {
+  const updateValues = () => {
+    // console.log(steps);
+    // console.log(steps[stepNo]);
+    console.log(steps);
+    currStep = steps[stepNo];
+    console.log(currStep);
+    // console.log(currStep);
+    setI(currStep.currentI);
+    setJ(currStep.currentJ);
+    setPivot(currStep.currentPivot);
+    setArray(currStep.currentArray);
+    setSorted(currStep.sorted);
+  }
+
+  const generateArray = (len, ran) => {
     let out = [];
     for (let i = 0; i < len; i++) {
-      out[out.length] = Math.floor(Math.random()*range)+1;
+      out[out.length] = Math.floor(Math.random() * ran) + 1;
     }
     return out;
   }
 
   const partition = () => {
-    let v = [...array];
-    let temp = v[i];
-    v[i] = v[pivot];
-    v[pivot] = temp;
-    setArray(v);
-    setPivot(i - 1);
-    setI(-1);
-    setJ(0);
+    // let v = [...array];
+    // let temp = v[i];
+    // v[i] = v[pivot];
+    // v[pivot] = temp;
+    // setArray(v);
+    // setPivot(i - 1);
+    // setI(-1);
+    // setJ(0);
+    setStepNo(stepNo + 1);
+    updateValues();
   }
 
   const swap = () => {
-    let v = [...array];
-    let temp = v[i];
-    v[i] = v[j];
-    v[j] = temp;
-    setArray(v);
+    // let v = [...array];
+    // let temp = v[i];
+    // v[i] = v[j];
+    // v[j] = temp;
+    // setArray(v);
+    setStepNo(stepNo + 1);
+    updateValues();
   }
 
   const changeIndex = () => {
-    setI(pivot);
-    setJ(pivot + 1);
-    setPivot(array.length - 1);
-    setSorted(pivot);
+    setStepNo(stepNo + 1);
+    updateValues();
   }
 
   const checkColor = (n) => {
@@ -81,9 +125,13 @@ function App() {
     }
   }
 
+  // const testFunction = () => {
+  //   console.log(steps);
+  // }
+
   const nextStep = () => {
-    setStepNo(stepNo++);
-    setArray(steps[stepNo].currentArray);
+    setStepNo(stepNo + 1);
+    updateValues();
   }
 
   return (
@@ -99,11 +147,11 @@ function App() {
         Current I: {i} ; Current J: {j} ; Current Pivot: {pivot} ;
       </Typography>
       <Grid container>
-        {array.map((num, n) =>(
+        {array.map((num, n) => (
           <Grid item>
             <Button variant='contained'
-              sx={{ height: (num * 5), width: 50, borderRadius: 4, backgroundColor: checkColor(n), color: '#000000', border: 1, borderColor: '#000000' }}
-              >
+              sx={{ height: (num * 8), width: 50, borderRadius: 4, backgroundColor: checkColor(n), color: '#000000', border: 1, borderColor: '#000000' }}
+            >
               {num}
             </Button>
           </Grid>
@@ -126,10 +174,25 @@ function App() {
           <Button variant='contained' onClick={changeIndex}>
             Change Indices
           </Button>
+
+
+
+          {/* <Button variant='contained' onClick={testFunction}>
+            Test
+          </Button> */}
+
         </Stack>
         <Button variant='contained' onClick={nextStep}>
           Next Step
         </Button>
+      </Stack>
+      <Stack direction='column'>
+        <Typography variant='h6'>
+          {currStep.case}
+        </Typography>
+        <Typography variant='h6'>
+          {stepNo}/{steps.length}
+        </Typography>
       </Stack>
     </Box>
   )
