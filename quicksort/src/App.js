@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Grid, Stack, Button, Typography, Box } from '@mui/material';
 import GenerateSteps from './GenerateSteps';
 
@@ -7,7 +7,7 @@ let currStep = {};
 
 let length = 10;
 let range = 20;
-let mode = 2;
+let mode = 1;
 
 function App() {
 
@@ -38,26 +38,76 @@ function App() {
 
   const [sorted, setSorted] = React.useState(-1);
   const [array, setArray] = React.useState([]);
+  const [userArray, setUserArray] = React.useState("");
   const [i, setI] = React.useState(0);
   const [j, setJ] = React.useState(1);
   const [pivot, setPivot] = React.useState();
+  const [playing, setPlaying] = React.useState(false);
+  const [lives, setLives] = React.useState(3);
+  const [time, setTime] = useState(0);
+
+  useEffect(() => {
+    if (playing) {
+      const timerId = setInterval(() => setTime(time + 1), 10);
+      // console.log(time)
+      return () => clearInterval(timerId);
+    }
+  })
+
+  const splitterOfArrays = () => {
+
+    let newArr = userArray.split(',').map(Number)
+
+    if (!newArr.some(isNaN)) {
+      console.log(newArr);
+      return newArr;
+    }
+    else {
+      alert("enter in a valid number array in (a,b,c) format where the letters represent numbers")
+    }
+  }
 
   const incrementI = () => {
     // setI(i + 1);
     setStepNo(stepNo + 1);
     updateValues();
+    if (currStep.case === "increment i") {
+      setStepNo(stepNo + 1);
+      updateValues(); 
+    } else if (isTestMode()) {
+      alert("Incorrect! Try again!");
+      setLives(lives - 1);
+    } else {
+      alert("Incorrect! Try again!");
+    }
   }
 
   const incrementJ = () => {
     // setJ(j + 1);
     setStepNo(stepNo + 1);
     updateValues();
+    if (currStep.case === "increment j") {
+      setStepNo(stepNo + 1);
+      updateValues(); 
+    } else if (isTestMode()) {
+      alert("Incorrect! Try again!");
+      setLives(lives - 1);
+    } else {
+      alert("Incorrect! Try again!");
+    }
   }
 
   const startGame = () => {
-    let thisArray = generateArray(length, range);
-    setArray(thisArray);
+    let thisArray = [];
+    if (isTestMode() || userArray === "") {
+      thisArray = generateArray(length, range);
+      setArray(thisArray);
+    } else {
+      thisArray = splitterOfArrays();
+      setArray(thisArray);
+    }
     steps = GenerateSteps(thisArray);
+    setPlaying(true);
     // setSteps(thisSteps);
     updateValues();
   }
@@ -93,8 +143,15 @@ function App() {
     // setPivot(i - 1);
     // setI(-1);
     // setJ(0);
-    setStepNo(stepNo + 1);
-    updateValues();
+    if (currStep.case === "partition") {
+      setStepNo(stepNo + 1);
+      updateValues(); 
+    } else if (isTestMode()) {
+      alert("Incorrect! Try again!");
+      setLives(lives - 1);
+    } else {
+      alert("Incorrect! Try again!");
+    }
   }
 
   const swap = () => {
@@ -105,11 +162,29 @@ function App() {
     // setArray(v);
     setStepNo(stepNo + 1);
     updateValues();
+    if (currStep.case === "swap") {
+      setStepNo(stepNo + 1);
+      updateValues(); 
+    } else if (isTestMode()) {
+      alert("Incorrect! Try again!");
+      setLives(lives - 1);
+    } else {
+      alert("Incorrect! Try again!");
+    }
   }
 
   const changeIndex = () => {
     setStepNo(stepNo + 1);
     updateValues();
+    if (currStep.case === "change index") {
+      setStepNo(stepNo + 1);
+      updateValues(); 
+    } else if (isTestMode()) {
+      alert("Incorrect! Try again!");
+      setLives(lives - 1);
+    } else {
+      alert("Incorrect! Try again!");
+    }
   }
 
   const checkColor = (n) => {
@@ -133,14 +208,52 @@ function App() {
   const nextStep = () => {
     setStepNo(stepNo + 1);
     updateValues();
+    if (currStep.case === "compare") {
+      setStepNo(stepNo + 1);
+      updateValues(); 
+    } else if (isTestMode()) {
+      alert("Incorrect! Try again!");
+      setLives(lives - 1);
+    } else {
+      alert("Incorrect! Try again!");
+    }
   }
 
   const isTestMode = () => {
-    if (mode >= 2) {
+    if (mode > 1) {
       return true;
     } else {
       return false;
     }
+  }
+
+  const isPracticeMode = () => {
+    if (mode === 1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  const displayTime = () => {
+    let minutes = Math.floor((time / 100 / 60)).toString().padStart(2, "0");
+    let seconds = Math.floor((time / 100 % 60)).toString().padStart(2, "0");
+    let ms = (time).toString().padStart(2, "0").slice(-2);
+    return minutes + ":" + seconds + ":" + ms;
+  }
+
+  const drawLives = () => {
+    let dispLives = [];
+    for (let i = 0; i < lives; i++) {
+      dispLives.push(<label key={i} style={{ border: "solid 1px black" }}>{"<3"}</label>);
+    }
+    return (
+      <div>
+        {
+          dispLives
+        }
+      </div>
+    );
   }
 
   return (
@@ -149,7 +262,9 @@ function App() {
       <Typography variant='h4'>
         QuickSort Algorithm
       </Typography>
-      
+      {isTestMode() ? null : <input type="text" placeholder="a,b,c but in numbers" required onChange={e => setUserArray(e.target.value)}>
+
+      </input>}
       <Button variant='contained' onClick={startGame}>
         Start Game
       </Button>
@@ -167,8 +282,8 @@ function App() {
           </Grid>
         ))}
       </Grid>
-      {isTestMode?null:<Stack direction="row" justifyContent="space-between">
-        <Stack direction="row" justifyContent="left">
+      <Stack direction="row" justifyContent="space-between">
+        {(isTestMode() || isPracticeMode()) ? <Stack direction="row" justifyContent="left">
           <Button variant='contained' onClick={incrementI}>
             Increment 'I'
           </Button>
@@ -191,13 +306,13 @@ function App() {
             Test
           </Button> */}
 
-        </Stack>
+        </Stack> : null}
         <Button variant='contained' onClick={nextStep}>
           Next Step
         </Button>
-      </Stack>}
+      </Stack>
       <Stack direction='column'>
-        {isTestMode?null:<Typography variant='h6'>
+        {isTestMode ? null : <Typography variant='h6'>
           {currStep.case}
         </Typography>}
         <Typography variant='h6'>
