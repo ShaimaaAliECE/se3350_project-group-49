@@ -60,6 +60,8 @@ export default function ISortCustom() {
 
     // const [customLength, setCustomLength] = React.useState(10);
     // const [customRange, setCustomRange] = React.useState(20);
+
+    const [time, setTime] = React.useState(0);
     
   
     function startPlaying(){
@@ -86,6 +88,25 @@ export default function ISortCustom() {
         setHeartTwo("error");
         setHeartThree("error");
         setLost(false);
+        setTime(0);
+    }
+
+    React.useEffect(()=>{
+      if(playing){
+        if(!(getText() == "WINNER" || getText() == "LOSER")){
+        const timerId = setInterval(() => setTime(time+1), 10);
+        console.log(time)
+            return () => clearInterval(timerId);
+            
+        }
+      }
+    })
+
+    function displayTime(){
+      let minutes = Math.floor((time/100/60)).toString().padStart(2,"0");
+      let seconds = Math.floor((time/100%60)).toString().padStart(2,"0");
+      let ms = (time).toString().padStart(2,"0").slice(-2);
+      return minutes+":"+seconds+":"+ms;
     }
      
     function handleClick(e, i){
@@ -170,6 +191,7 @@ export default function ISortCustom() {
             return "LOSER";
         }
         else if(checkEqualArray(secondarySort, sorted)){
+            setPlaying(false);
             return "WINNER";
         }
     }
@@ -214,11 +236,6 @@ return (
 
   <Box >
 
-    <Typography textAlign="left">INSERTION SORT: CUSTOM LEVEL</Typography>
-    <Divider/>
-
-    
-
     <Grid container spacing={1}>
 
    
@@ -249,7 +266,11 @@ return (
       </Button>
    
       <Box>
-      <Box sx={{ height: '5vh'}} />
+      <Box sx={{ height: '2vh'}} />
+
+      <Typography variant='overline'>{displayTime()}</Typography>
+
+      <Box sx={{ height: '1vh'}} />
 
       <ButtonGroup variant="contained" aria-label="outlined primary button group">
           {unsorted.map((row, i) => (

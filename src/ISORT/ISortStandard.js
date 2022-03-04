@@ -51,10 +51,6 @@ export default function ISortStandard() {
   const [startButton, setStartButton] = React.useState("Start");
 
   const [lost, setLost] = React.useState(false);
-
-  const [heartOne, setHeartOne] = React.useState("error");
-  const [heartTwo, setHeartTwo] = React.useState("error");
-  const [heartThree, setHeartThree] = React.useState("error");
   
 
   function startPlaying(){
@@ -69,10 +65,6 @@ export default function ISortStandard() {
       setSecondarySort([]);
       setStep(-1);
       setIndex(-1);
-      setHeartOne("error");
-      setHeartTwo("error");
-      setHeartThree("error");
-      setLost(false);
 
   }
    
@@ -97,9 +89,7 @@ export default function ISortStandard() {
             setStep(step+1);
             setIndex(step+1);
         }
-        else loseLife();
-        }
-        else loseLife();
+      }
     }
   }
 
@@ -107,7 +97,7 @@ export default function ISortStandard() {
       if(!lost){
         if(!checkEqualArray(secondarySort, sorted)){
             if(checkStep()){
-                loseLife();
+                ;
             }
             else if(secondarySort.length > 1){
                 console.log(step);
@@ -128,7 +118,7 @@ export default function ISortStandard() {
                 
             }
 
-            else loseLife();
+            
         }
     }
   }
@@ -171,30 +161,6 @@ export default function ISortStandard() {
     }
   }
 
-  function loseLife(){
-      if(heartThree == "error"){
-          setHeartThree("disabled");
-      }
-      else if(heartTwo == "error"){
-        setHeartTwo("disabled");
-      }
-      else if(heartOne == "error"){
-        setHeartOne("disabled");
-        setLost(true);
-      }
-  }
-
-  function getColor(hNum){
-
-    switch(hNum){
-        case "h1":
-            return heartOne;
-        case "h2":
-            return heartTwo;
-        case "h3":
-            return heartThree;        
-    }
-  }
 
   const generateArray = (len, range) => {
     let out = [];
@@ -250,12 +216,7 @@ export default function ISortStandard() {
         <ButtonGroup variant="contained" aria-label="outlined primary button group">
           <Button variant="contained" onClick={handleComparison} startIcon={<ArrowBackIosIcon />}></Button>
         </ButtonGroup>
-
-        <Button></Button>
-        
-        <FavoriteIcon color={getColor("h1")}/>
-        <FavoriteIcon color={getColor("h2")}/>
-        <FavoriteIcon color={getColor("h3")}/>
+      
 
         <Box sx={{ height: '5vh'}} />
 
