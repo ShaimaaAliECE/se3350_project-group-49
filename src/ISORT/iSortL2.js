@@ -39,7 +39,7 @@ import Tab from '@mui/material/Tab';
 //THIS PAGE IS BUILT ON THE DESIGN INSPIRED BY THE OWL WEBSITE, SKELETON VERSION WITH 2 ACTIVE PAGE BUTTONS, COURSE CONTENT AND OVERVIEW
 import StarIcon from '@mui/icons-material/Star';
 import { getElementById } from 'domutils';
-export default function ISortL1() {
+export default function ISortL2() {
 
     const [playing, setPlaying] = React.useState(false);
     const [step, setStep] = React.useState(-1);
@@ -61,7 +61,7 @@ export default function ISortL1() {
     function startPlaying(){
         setStartButton("Restart");
         setPlaying(true);
-        let out = generateArray(10,20);
+        let out = generateArray(15,40);
         setUnsorted([...out]);
         let newSorted = insertionsort(out);
         setSorted([...newSorted]);
