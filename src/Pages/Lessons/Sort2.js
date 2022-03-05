@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Box, Grid, Typography } from "@mui/material/";
+import QSApp from "../../QSORT/QSApp";
 
 //THIS PAGE IS BUILT ON THE DESIGN INSPIRED BY THE OWL WEBSITE, SKELETON VERSION WITH 2 ACTIVE PAGE BUTTONS, COURSE CONTENT AND OVERVIEW
 
@@ -9,7 +10,7 @@ export default function Level1() {
       <Grid container spacing={1}>
         <Grid item xs={1}></Grid>
         <Grid item xs={11}>
-          <Typography>PLACE THE APP HERE INSTEAD OF TYPOGRAPHY</Typography>
+          <QSApp mode={0}/>
         </Grid>
 
         <Grid item xs={1}>

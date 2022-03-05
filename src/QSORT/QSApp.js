@@ -9,7 +9,7 @@ let length = 10;
 let range = 20;
 let mode = 1;
 
-function QuickSortMain(mode) {
+function QSApp({mode}) {
 
   // Modes:
   // 0: Lesson, no interaction
@@ -69,8 +69,6 @@ function QuickSortMain(mode) {
 
   const incrementI = () => {
     // setI(i + 1);
-    setStepNo(stepNo + 1);
-    updateValues();
     if (currStep.case === "increment i") {
       setStepNo(stepNo + 1);
       updateValues(); 
@@ -84,8 +82,6 @@ function QuickSortMain(mode) {
 
   const incrementJ = () => {
     // setJ(j + 1);
-    setStepNo(stepNo + 1);
-    updateValues();
     if (currStep.case === "increment j") {
       setStepNo(stepNo + 1);
       updateValues(); 
@@ -160,8 +156,6 @@ function QuickSortMain(mode) {
     // v[i] = v[j];
     // v[j] = temp;
     // setArray(v);
-    setStepNo(stepNo + 1);
-    updateValues();
     if (currStep.case === "swap") {
       setStepNo(stepNo + 1);
       updateValues(); 
@@ -174,8 +168,6 @@ function QuickSortMain(mode) {
   }
 
   const changeIndex = () => {
-    setStepNo(stepNo + 1);
-    updateValues();
     if (currStep.case === "change index") {
       setStepNo(stepNo + 1);
       updateValues(); 
@@ -206,9 +198,7 @@ function QuickSortMain(mode) {
   // }
 
   const nextStep = () => {
-    setStepNo(stepNo + 1);
-    updateValues();
-    if (currStep.case === "compare") {
+    if (currStep.case === "compare" || isTestMode() === false) {
       setStepNo(stepNo + 1);
       updateValues(); 
     } else if (isTestMode()) {
@@ -256,6 +246,21 @@ function QuickSortMain(mode) {
     );
   }
 
+  const setLessonText = () => {
+    switch(currStep.case) {
+      case "increment j":
+        return "Compare the value at index J to the value at the pivot. It's larger, so increment it";
+      case "increment i":
+        return "Since the value at index J is larger than the pivot, increment I";
+      case "partition":
+        return "Now that J has reached the pivot, partition the array, placing the pivot in it's final location";
+      case "swap":
+        return "Now swap the values at I and J";
+      case "compare":
+        return "This section is now sorted, so change the indices";
+    }
+  }
+
   return (
 
     <Box m={2}>
@@ -271,11 +276,11 @@ function QuickSortMain(mode) {
       <Typography>
         Current I: {i} ; Current J: {j} ; Current Pivot: {pivot} ;
       </Typography>
-      <Grid container>
+      <Grid container alignItems='center' justifyContent='center' spacing={2}>
         {array.map((num, n) => (
           <Grid item>
             <Button variant='contained'
-              sx={{ height: (num * 8), width: 50, borderRadius: 4, backgroundColor: checkColor(n), color: '#000000', border: 1, borderColor: '#000000' }}
+              sx={{ height: 50, width: 50, borderRadius: 4, backgroundColor: checkColor(n), color: '#000000', border: 1, borderColor: '#000000' }}
             >
               {num}
             </Button>
@@ -312,9 +317,9 @@ function QuickSortMain(mode) {
         </Button>
       </Stack>
       <Stack direction='column'>
-        {isTestMode ? null : <Typography variant='h6'>
-          {currStep.case}
-        </Typography>}
+        <Typography variant='h6'>
+          {setLessonText()}
+        </Typography>
         <Typography variant='h6'>
           {stepNo}/{steps.length}
         </Typography>
@@ -323,4 +328,4 @@ function QuickSortMain(mode) {
   )
 }
 
-export default App;
+export default QSApp;
