@@ -16,7 +16,7 @@ import L4S1 from "./L4S1";
 import L4S2 from "./L4S2";
 import L4S3 from "./L4S3";
 import L4S4 from "./L4S4";
-import ISortL4 from "../../../ISORT/ISortL4";
+import ISortL4 from "../../../ISORT/iSortL4";
 
 const drawerWidth = 170;
 
