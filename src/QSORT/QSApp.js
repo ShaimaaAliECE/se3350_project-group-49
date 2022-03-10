@@ -256,8 +256,8 @@ function QSApp({mode}) {
         return "Now that J has reached the pivot, partition the array, placing the pivot in it's final location";
       case "swap":
         return "Now swap the values at I and J";
-      case "compare":
-        return "This section is now sorted, so change the indices";
+      default:
+        return "Left-most item is now sorted, so change the indices";
     }
   }
 

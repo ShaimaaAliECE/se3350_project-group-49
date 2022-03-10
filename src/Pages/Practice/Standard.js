@@ -23,6 +23,7 @@ import NavbarVer2 from "../../NavbarVer2";
 import BSApp from "../../BSORT/BSApp";
 import MsApp from "../../MSORT/MsApp";
 import ISortStandard from "../../ISORT/ISortStandard";
+import QSApp from "../../QSORT/QSApp";
 
 const drawerWidth = 170;
 
@@ -110,7 +111,7 @@ function Standard() {
           <MsApp mode={-1}/>
         </TabPanel>
         <TabPanel value={value} index={1}>
-        <Typography>PLACE THE APP HERE INSTEAD OF TYPOGRAPHY</Typography>
+          <QSApp mode={1} />
         </TabPanel>
         <TabPanel value={value} index={2}>
           <BSApp mode={0} />
