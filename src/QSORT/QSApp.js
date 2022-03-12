@@ -48,11 +48,11 @@ function QSApp({mode}) {
 
   useEffect(() => {
     if (playing) {
-      const timerId = setInterval(() => setTime(time + 1), 10);
+      const timerId = setInterval(() => setTime(time + 2), 10);
       // console.log(time)
       return () => clearInterval(timerId);
     }
-  })
+  }, [time, playing]);
 
   const splitterOfArrays = () => {
 
@@ -229,6 +229,7 @@ function QSApp({mode}) {
     let minutes = Math.floor((time / 100 / 60)).toString().padStart(2, "0");
     let seconds = Math.floor((time / 100 % 60)).toString().padStart(2, "0");
     let ms = (time).toString().padStart(2, "0").slice(-2);
+    // console.log(minutes + ":" + seconds + ":" + ms);
     return minutes + ":" + seconds + ":" + ms;
   }
 
@@ -244,6 +245,43 @@ function QSApp({mode}) {
         }
       </div>
     );
+  }
+
+  const endGame = () => {
+    if (stepNo === steps.length && steps.length > 0) {
+      alert("You win!");
+      resetGame();
+    } else if (lives <= 0) {
+      alert("You lose! Better luck next time, chump.");
+      resetGame();
+    }
+  }
+
+  const resetGame = () => {
+    // const [stepNo, setStepNo] = React.useState(0);
+
+    // const [sorted, setSorted] = React.useState(-1);
+    // const [array, setArray] = React.useState([]);
+    // const [userArray, setUserArray] = React.useState("");
+    // const [i, setI] = React.useState(0);
+    // const [j, setJ] = React.useState(1);
+    // const [pivot, setPivot] = React.useState();
+    // const [playing, setPlaying] = React.useState(false);
+    // const [lives, setLives] = React.useState(3);
+    // const [time, setTime] = useState(0);
+
+    setPlaying(false);
+    setStepNo(0);
+    setSorted(-1);
+    setArray([])
+    setUserArray("");
+    setI(0);
+    setJ(1);
+    setPivot();
+    setLives(3);
+    setTime(0);
+    steps = [];
+    currStep = {};
   }
 
   const setLessonText = () => {
@@ -274,7 +312,7 @@ function QSApp({mode}) {
         Start Game
       </Button>
       <Typography>
-        Current I: {i} ; Current J: {j} ; Current Pivot: {pivot} ;
+        Current I: {i} ; Current J: {j} ; Current Pivot: {pivot} ; Timer: {displayTime()}
       </Typography>
       <Grid container alignItems='center' justifyContent='center' spacing={2}>
         {array.map((num, n) => (
@@ -318,12 +356,14 @@ function QSApp({mode}) {
       </Stack>
       <Stack direction='column'>
         <Typography variant='h6'>
-          {setLessonText()}
+          {isTestMode() ? null : setLessonText()}
         </Typography>
         <Typography variant='h6'>
           {stepNo}/{steps.length}
         </Typography>
       </Stack>
+      {drawLives()}
+      {endGame()}
     </Box>
   )
 }
