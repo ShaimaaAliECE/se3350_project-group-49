@@ -29,7 +29,7 @@ import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import MenuList from '@mui/material/MenuList';
-
+import IdleTimerComponent from './components/IdleTimerComponent'
 
 
 
@@ -116,6 +116,7 @@ const [open, setOpen] = React.useState(false);
           </Typography> 
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+            <IdleTimerComponent></IdleTimerComponent>
             <IconButton
               size="large"
               aria-label="account of current user"

@@ -17,6 +17,7 @@ import L1S2 from "./L1S2";
 import L1S3 from "./L1S3";
 import L1S4 from "./L1S4";
 import ISortL1 from "../../../ISORT/ISortL1";
+import IdleTimerComponent from "../../../components/IdleTimerComponent";
 
 const drawerWidth = 170;
 
@@ -61,6 +62,7 @@ function L1Home() {
 
   return (
     <Box sx={{ display: "flex" }}>
+      <IdleTimerComponent></IdleTimerComponent>
       <CssBaseline />
       <AppBar
         position="fixed"
