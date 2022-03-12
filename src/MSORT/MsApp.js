@@ -229,7 +229,7 @@ function MsApp({mode}) {
         </div>
         {mode>0&&drawLives()}
       </div>}
-      {mode<=0&&<label style={{color:"white"}}>{printStep(cur)}</label>}
+      {mode<=0&&<label style={{color:"black"}}>{printStep(cur)}</label>}
       
     </div>
     );
