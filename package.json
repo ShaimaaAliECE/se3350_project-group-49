@@ -1,8 +1,8 @@
 {
-  "author": "Mete Isiksalan",
-  "Owner": "Mete Isiksalan",
-  "Copyright privileges": "This is a private work completed by Mete Isikalan, cannot be distributed for personal use",
-  "name": "meteisite1",
+  "author": "Group 49",
+  "Owner": "Group 49",
+  "Copyright privileges": "This is a private work completed by Group 49, cannot be distributed for personal use",
+  "name": "AlgoSort",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
