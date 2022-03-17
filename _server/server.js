@@ -29,7 +29,7 @@ app.get('/', auth, (req, res, err) => {
     res.send("Welcome to ASbackend");
 })
 
-app.post('/newScore', auth, async (req, res, err) => {
+app.post('/newStat', auth, async (req, res, err) => {
     if (!req.user) return res.send('Access Denied');
     console.log(req.user);
     const newStat = new Stats({
@@ -38,7 +38,8 @@ app.post('/newScore', auth, async (req, res, err) => {
         algorithm: req.body.algorithm,
         time: req.body.time,
         lives: req.body.lives,
-        success: req.body.success
+        success: req.body.success,
+        timestamp: new Date().getTime()
     })
     let stat = await newStat.save();
     console.log(stat);
@@ -48,7 +49,7 @@ app.post('/newScore', auth, async (req, res, err) => {
 
 app.get('/stats', auth, async (req, res, err) => {
     if (!req.user) return res.send('Access Denied');
-    let statList = await Stats.find({username:req.user.username}).sort({timestamp:-1})
+    let statList = await (Stats.find({username:req.user.username}).sort({timestamp:-1}));
     res.json(statList);
 })
 

@@ -5,31 +5,32 @@ const Schema = mongoose.Schema;
 const statSchema = new Schema({
     username: {
         type: String,
-        required:true,
+        require:true,
+        unique:false
     },
     level: {
         type: Number,
-        required:true
+        require:true
     },
     algorithm: {
         type: String,
-        required:true,
+        require:true,
     },
     time: {
         type: Number,
-        reqiured:true,
+        reqiure:true,
     },
     lives: {
         type: Number,
-        required: true,
+        require: true,
     },
     success: {
         type: Boolean,
-        required: true,
+        require: true,
     },
     timestamp: {
-        type: Date,
-        default: Date.now(),
+        type: Number,
+        require: true
     }
 });
 
