@@ -13,7 +13,7 @@ function auth(req, res, next) {
         console.log(decoded.id);
         const user = await User.findOne({id: decoded.id})
         if (!user) return res.sendStatus(403);
-        req.user = {user};
+        req.user = user;
         next();
     })
 }

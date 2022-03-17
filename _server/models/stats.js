@@ -6,16 +6,10 @@ const statSchema = new Schema({
     username: {
         type: String,
         required:true,
-        unique:true,
-        minlength:3
     },
     level: {
         type: Number,
         required:true
-    },
-    algorithm: {
-        type: String,
-        required:true,
     },
     algorithm: {
         type: String,
@@ -34,8 +28,8 @@ const statSchema = new Schema({
         required: true,
     },
     timestamp: {
-        type: timestamp,
-        required: true,
+        type: Date,
+        default: Date.now(),
     }
 });
 
