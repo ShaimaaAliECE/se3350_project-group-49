@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
+const auth = require('./middleware/auth');
 const authRouter = require('./routes/authServer');
 
 require('dotenv').config();
@@ -22,7 +23,8 @@ connection.once('open', () => {console.log("MongoDB databse connection establish
 
 app.use('/auth', authRouter);
 
-app.get('/', (req, res, err) => {
+app.get('/', auth, (req, res, err) => {
+    if (!req.user) return res.send('Access Denied');
     res.send("Welcome to ASbackend");
 })
 
