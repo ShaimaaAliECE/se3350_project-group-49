@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
+const authRouter = require('./routes/authServer');
 
 require('dotenv').config();
 
@@ -18,6 +19,8 @@ const uri = process.env.DB_URI;
 mongoose.connect(uri);
 const connection = mongoose.connection;
 connection.once('open', () => {console.log("MongoDB databse connection established successfully")});
+
+app.use('/auth', authRouter);
 
 app.get('/', (req, res, err) => {
     res.send("Welcome to ASbackend");
