@@ -46,4 +46,10 @@ app.post('/newScore', auth, async (req, res, err) => {
     res.sendStatus(200);
 })
 
+app.get('/stats', auth, async (req, res, err) => {
+    if (!req.user) return res.send('Access Denied');
+    let statList = await Stats.find({username:req.user.username}).sort({timestamp:-1})
+    res.json(statList);
+})
+
 app.listen(port, () => {console.log(`Server is running on port ${port}`)})
