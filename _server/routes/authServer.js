@@ -39,7 +39,7 @@ router.post('/login', async (req, res) => {
 
     let user = await User.findOne({ username });
     if(!user) return res.status(404).json({ msg:"User does not exist"});
-
+    console.log(user);
     bcrypt.compare(password, user.password)
         .then(async isMatch => {
             if (!isMatch) return res.status(400).json({ msg: 'Incorrect Password'});

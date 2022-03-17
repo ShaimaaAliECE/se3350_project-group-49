@@ -53,4 +53,11 @@ app.get('/stats', auth, async (req, res, err) => {
     res.json(statList);
 })
 
+app.get('/allStats', auth, async (req, res, err) => {
+    console.log(req.user)
+    if (!req.user.admin) return res.send('Access Denied');
+    let statList = await (Stats.find().sort({timestamp:-1}));
+    res.json(statList);
+})
+
 app.listen(port, () => {console.log(`Server is running on port ${port}`)})
