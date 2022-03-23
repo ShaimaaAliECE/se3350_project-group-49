@@ -10,6 +10,9 @@ import { insertionsort } from '../Sorting_Algorithms/insertionsort';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
+import errorAudio from '../Sounds/Ooof.mp3';
+import correctAudio from '../Sounds/Yay.mp3';
+
 export default function ISortL1() {
 
     const [playing, setPlaying] = React.useState(false);
@@ -30,7 +33,7 @@ export default function ISortL1() {
     const [lostALife, setLostALife] = React.useState(false);
 
     const [time, setTime] = React.useState(0);
-  
+    
     //starts game. Resets all useStates to game starting position.
     function startPlaying(){
         setStartButton("Restart");
@@ -82,6 +85,7 @@ export default function ISortL1() {
               setStep(step+1);
               setIndex(step+1);
               setLostALife(false);
+              new Audio(correctAudio).play();
           }
           else if(checkStep()){
               let elem = unsorted.shift();
@@ -93,6 +97,7 @@ export default function ISortL1() {
               setStep(step+1);
               setIndex(step+1);
               setLostALife(false);
+              new Audio(correctAudio).play();
           }
           else loseLife();
           }
@@ -124,6 +129,7 @@ export default function ISortL1() {
                   console.log(index);
                   console.log(secondarySort);
                   setLostALife(false);
+                  new Audio(correctAudio).play();
                   
               }
   
@@ -168,6 +174,7 @@ export default function ISortL1() {
 
   //removes a heart from screen when user takes a wrongful action
   function loseLife(){
+    new Audio(errorAudio).play();
     if(heartThree == "error"){
         setHeartThree("disabled");
         setLostALife(true);

@@ -38,6 +38,9 @@ import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 
+import errorAudio from '../Sounds/Ooof.mp3';
+import correctAudio from '../Sounds/Yay.mp3';
+
 //THIS PAGE IS BUILT ON THE DESIGN INSPIRED BY THE OWL WEBSITE, SKELETON VERSION WITH 2 ACTIVE PAGE BUTTONS, COURSE CONTENT AND OVERVIEW
 import StarIcon from '@mui/icons-material/Star';
 import { getElementById } from 'domutils';
@@ -126,6 +129,8 @@ export default function ISortCustom() {
               setStep(step+1);
               setIndex(step+1);
               setLostALife(false);
+              new Audio(correctAudio).play();
+
 
           }
           else if(checkStep()){
@@ -137,6 +142,8 @@ export default function ISortCustom() {
               setStep(step+1);
               setIndex(step+1);
               setLostALife(false);
+              new Audio(correctAudio).play();
+
 
           }
           else loseLife();
@@ -168,6 +175,8 @@ export default function ISortCustom() {
                   console.log(index);
                   console.log(secondarySort);
                   setLostALife(false);
+                  new Audio(correctAudio).play();
+
 
               }
   
@@ -208,6 +217,7 @@ export default function ISortCustom() {
   }
 
   function loseLife(){
+    new Audio(errorAudio).play();
     if(heartThree == "error"){
       setHeartThree("disabled");
       setLostALife(true);
