@@ -1,63 +1,37 @@
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import React, { useState, useEffect } from "react";
+
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import CssBaseline from '@mui/material/CssBaseline';
-import Container from '@mui/material/Container'
 import { Typography } from '@mui/material';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import { sizing } from '@mui/system';
-import Grow from '@mui/material/Grow';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  useRouteMatch
-} from "react-router-dom";
 
 import { insertionsort } from '../Sorting_Algorithms/insertionsort';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import IconButton from '@mui/material/IconButton';
 
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-
-//THIS PAGE IS BUILT ON THE DESIGN INSPIRED BY THE OWL WEBSITE, SKELETON VERSION WITH 2 ACTIVE PAGE BUTTONS, COURSE CONTENT AND OVERVIEW
-import StarIcon from '@mui/icons-material/Star';
-import { getElementById } from 'domutils';
 export default function ISortL2() {
 
     const [playing, setPlaying] = React.useState(false);
+    const [lost, setLost] = React.useState(false);
+
     const [step, setStep] = React.useState(-1);
     const [index, setIndex] = React.useState(0);
     const [currentElem, setCurrentElem] = React.useState(0);
     const [sorted, setSorted] = React.useState([]);
     const [unsorted, setUnsorted] = React.useState([]);
     const [secondarySort, setSecondarySort] = React.useState([]);
+
     const [startButton, setStartButton] = React.useState("Start");
-  
-    const [lost, setLost] = React.useState(false);
-  
+    
     const [heartOne, setHeartOne] = React.useState("error");
     const [heartTwo, setHeartTwo] = React.useState("error");
     const [heartThree, setHeartThree] = React.useState("error");
+    const [lostALife, setLostALife] = React.useState(false);
 
     const [time, setTime] = React.useState(0);
   
+    //starts game. Resets all useStates to game starting position.
     function startPlaying(){
         setStartButton("Restart");
         setPlaying(true);
@@ -73,19 +47,21 @@ export default function ISortL2() {
         setHeartThree("error");
         setLost(false);
         setTime(0);
+        setLostALife(false);
     }
 
+    //starts timer when game playing
     React.useEffect(()=>{
       if(playing){
         if(!(getText() == "WINNER" || getText() == "LOSER")){
         const timerId = setInterval(() => setTime(time+1), 10);
-        console.log(time)
             return () => clearInterval(timerId);
             
         }
       }
     })
 
+    //returns time formatted in mm:ss::msms
     function displayTime(){
       let minutes = Math.floor((time/100/60)).toString().padStart(2,"0");
       let seconds = Math.floor((time/100%60)).toString().padStart(2,"0");
@@ -93,6 +69,7 @@ export default function ISortL2() {
       return minutes+":"+seconds+":"+ms;
     }
      
+    //handles click on any button in unsorted array
     function handleClick(e, i){
         if(!lost){
           if(i == 0){
@@ -104,15 +81,18 @@ export default function ISortL2() {
               setSecondarySort([...secondarySort]);
               setStep(step+1);
               setIndex(step+1);
+              setLostALife(false);
           }
           else if(checkStep()){
               let elem = unsorted.shift();
+              console.log(elem);
               setCurrentElem(elem);
               setUnsorted([...unsorted]);
               secondarySort.push(elem);
               setSecondarySort([...secondarySort]);
               setStep(step+1);
               setIndex(step+1);
+              setLostALife(false);
           }
           else loseLife();
           }
@@ -120,6 +100,7 @@ export default function ISortL2() {
       }
     }
   
+    //handles comparison button when sorting secondary array
     function handleComparison(){
         if(!lost){
           if(!checkEqualArray(secondarySort, sorted)){
@@ -142,6 +123,7 @@ export default function ISortL2() {
                   setIndex(index-1);
                   console.log(index);
                   console.log(secondarySort);
+                  setLostALife(false);
                   
               }
   
@@ -150,15 +132,15 @@ export default function ISortL2() {
       }
     }
 
+  //ensures the action taken by user is correct. Returns true if step right
   function checkStep(){
     const clonedSort = [...secondarySort];
     let checkSorted = insertionsort(clonedSort);
-    console.log(secondarySort);
-    console.log(checkSorted);
     if(checkEqualArray(secondarySort, checkSorted)){ console.log("TRUE"); return true;} 
     else{console.log("FALSE"); return false;}
   }
 
+  //checks to see if two arrays are equal. Used for ending game.
   function checkEqualArray(a, b){
     if (a === b) return true;
     if (a == null || b == null) return false;
@@ -169,6 +151,7 @@ export default function ISortL2() {
     return true;
   }
 
+  //displays winner / loser text when game over.
   function getText(){
     if(playing){
         if(lost){
@@ -176,17 +159,22 @@ export default function ISortL2() {
         }
         else if(checkEqualArray(secondarySort, sorted)){
             setPlaying(false);
-            return "WINNER";
         }
+    }
+    else if(checkEqualArray(secondarySort, sorted) && secondarySort.length > 0){
+      return "WINNER";
     }
   }
 
+  //removes a heart from screen when user takes a wrongful action
   function loseLife(){
     if(heartThree == "error"){
         setHeartThree("disabled");
+        setLostALife(true);
     }
     else if(heartTwo == "error"){
       setHeartTwo("disabled");
+      setLostALife(true);
     }
     else if(heartOne == "error"){
       setHeartOne("disabled");
@@ -194,6 +182,7 @@ export default function ISortL2() {
     }
 }
 
+//gets color of heart. Red if still alive and grey if heart lost.
 function getColor(hNum){
 
   switch(hNum){
@@ -206,6 +195,28 @@ function getColor(hNum){
   }
 }
 
+//gets button color. If mistake was made on last step, the button of current step will become red. If last step was correct, the button of current step will be green.
+function getButtonColor(ind){
+  if(heartOne == "disabled"){
+    return "error";
+  }
+  if(ind == "p0" && (checkStep() || secondarySort.length == 0 || secondarySort.length == 1) && lostALife){
+    return "error";
+  }
+  if(ind == "p0" && (checkStep() || secondarySort.length == 0 || secondarySort.length == 1)){
+    return "success";
+  }
+  let currentElemInd = secondarySort.lastIndexOf(currentElem);
+  if(ind == currentElemInd && !(checkStep() || secondarySort.length == 0 || secondarySort.length == 1) && lostALife){
+    return "error";
+  }
+  if(ind == currentElemInd && !(checkStep() || secondarySort.length == 0 || secondarySort.length == 1)){
+    return "success";
+  }
+  return "info";
+}
+
+//generates an array of any size or range
 const generateArray = (len, range) => {
   let out = [];
   for (let i = 0; i < len; i++) {
@@ -214,7 +225,7 @@ const generateArray = (len, range) => {
   return out;
 }
 
-
+//html code
 return (
   
 
@@ -239,7 +250,7 @@ return (
 
       <ButtonGroup variant="contained" aria-label="outlined primary button group">
           {unsorted.map((row, i) => (
-            <button id={i} onClick={(e) => handleClick(e, i)} >{unsorted[i]}</button>
+            <Button color={getButtonColor("p"+i)} onClick={(e) => handleClick(e, i)} >{unsorted[i]}</Button>
           )
           )}
       </ButtonGroup>
@@ -248,7 +259,7 @@ return (
 
       <ButtonGroup variant="contained" aria-label="outlined primary button group">
           {secondarySort.map((row, i) => (
-            <button>{secondarySort[i]}</button>
+            <Button id={i} color={getButtonColor(i)}>{secondarySort[i]}</Button>
           )
           )}
       </ButtonGroup>

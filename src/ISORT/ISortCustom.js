@@ -51,6 +51,9 @@ export default function ISortCustom() {
     const [unsorted, setUnsorted] = React.useState([]);
     const [secondarySort, setSecondarySort] = React.useState([]);
     const [startButton, setStartButton] = React.useState("Start");
+
+    const [lostALife, setLostALife] = React.useState(false);
+
   
     const [lost, setLost] = React.useState(false);
   
@@ -89,6 +92,8 @@ export default function ISortCustom() {
         setHeartThree("error");
         setLost(false);
         setTime(0);
+        setLostALife(false);
+
     }
 
     React.useEffect(()=>{
@@ -120,6 +125,8 @@ export default function ISortCustom() {
               setSecondarySort([...secondarySort]);
               setStep(step+1);
               setIndex(step+1);
+              setLostALife(false);
+
           }
           else if(checkStep()){
               let elem = unsorted.shift();
@@ -129,6 +136,8 @@ export default function ISortCustom() {
               setSecondarySort([...secondarySort]);
               setStep(step+1);
               setIndex(step+1);
+              setLostALife(false);
+
           }
           else loseLife();
           }
@@ -158,7 +167,8 @@ export default function ISortCustom() {
                   setIndex(index-1);
                   console.log(index);
                   console.log(secondarySort);
-                  
+                  setLostALife(false);
+
               }
   
               else loseLife();
@@ -199,11 +209,13 @@ export default function ISortCustom() {
 
   function loseLife(){
     if(heartThree == "error"){
-        setHeartThree("disabled");
-    }
-    else if(heartTwo == "error"){
-      setHeartTwo("disabled");
-    }
+      setHeartThree("disabled");
+      setLostALife(true);
+  }
+  else if(heartTwo == "error"){
+    setHeartTwo("disabled");
+    setLostALife(true);
+  }
     else if(heartOne == "error"){
       setHeartOne("disabled");
       setLost(true);
@@ -221,6 +233,27 @@ function getColor(hNum){
           return heartThree;        
   }
 }
+
+function getButtonColor(ind){
+  if(heartOne == "disabled"){
+    return "error";
+  }
+  if(ind == "p0" && (checkStep() || secondarySort.length == 0 || secondarySort.length == 1) && lostALife){
+    return "error";
+  }
+  if(ind == "p0" && (checkStep() || secondarySort.length == 0 || secondarySort.length == 1)){
+    return "success";
+  }
+  let currentElemInd = secondarySort.lastIndexOf(currentElem);
+  if(ind == currentElemInd && !(checkStep() || secondarySort.length == 0 || secondarySort.length == 1) && lostALife){
+    return "error";
+  }
+  if(ind == currentElemInd && !(checkStep() || secondarySort.length == 0 || secondarySort.length == 1)){
+    return "success";
+  }
+  return "info";
+}
+
 
 const generateArray = (len, range) => {
   let out = [];
@@ -274,7 +307,7 @@ return (
 
       <ButtonGroup variant="contained" aria-label="outlined primary button group">
           {unsorted.map((row, i) => (
-            <button id={i} onClick={(e) => handleClick(e, i)} >{unsorted[i]}</button>
+            <Button color={getButtonColor("p"+i)} onClick={(e) => handleClick(e, i)} >{unsorted[i]}</Button>
           )
           )}
       </ButtonGroup>
@@ -283,7 +316,7 @@ return (
 
       <ButtonGroup variant="contained" aria-label="outlined primary button group">
           {secondarySort.map((row, i) => (
-            <button>{secondarySort[i]}</button>
+            <Button id={i} color={getButtonColor(i)}>{secondarySort[i]}</Button>
           )
           )}
       </ButtonGroup>
