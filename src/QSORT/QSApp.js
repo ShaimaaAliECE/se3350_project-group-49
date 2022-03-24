@@ -3,6 +3,8 @@ import { Grid, Stack, Button, Typography, Box } from '@mui/material';
 import GenerateSteps from './GenerateSteps';
 import errorAudio from '../Sounds/Ooof.mp3';
 import correctAudio from '../Sounds/Yay.mp3';
+import Gameover from "../Music/Gameover.mp3";
+import WinnerSound from "../Music/Winner.mp3";
 
 let steps = [];
 let currStep = {};
@@ -269,9 +271,11 @@ function QSApp({mode}) {
 
   const endGame = () => {
     if (stepNo === steps.length && steps.length > 0) {
+      new Audio(WinnerSound).play();
       alert("You win!");
       resetGame();
     } else if (lives <= 0) {
+      new Audio(Gameover).play();
       alert("You lose! Better luck next time, chump.");
       resetGame();
     }
