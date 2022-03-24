@@ -29,7 +29,8 @@ function MsApp({mode}) {
     if (!playing) return;
     if (step === 0) {
       if (sorted.length === 0) { 
-        let newSorted = mergesort(levelSetup(mode));
+        let newSorted = parseUI();
+        if (newSorted.length === 0) newSorted = mergesort(levelSetup(mode));
         setSorted([...newSorted]);
       }
     }
@@ -54,7 +55,6 @@ function MsApp({mode}) {
       default:
         out = generateArray(10,20);
     }
-    
     return out;
   }
 
@@ -262,7 +262,7 @@ function MsApp({mode}) {
   }
 
   const parseUI = () => {
-    if (userArr.length === 0) {setSorted([]); return;}
+    if (userArr.length === 0)  return [];
     let arr = userArr.split(',');
     let goodArr = true;
     console.log(arr);
@@ -273,9 +273,8 @@ function MsApp({mode}) {
       out.push(Number(s));
     }
     if (goodArr)
-      setSorted(mergesort(out.slice(0, out.length>20?20:out.length)));
-    else setSorted([]);
-    console.log(out);
+      return mergesort(out.slice(0, out.length>20?20:out.length));
+    else return [];
   }
 
   const printStep = (cur) => {
