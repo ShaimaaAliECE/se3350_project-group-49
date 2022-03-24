@@ -392,6 +392,8 @@ return (<div><label>You Have Won......Yay!</label></div>)
 }
 //restart button handeling
 const restart=()=>{
+  const toDB=[time,lives,difficulty]
+
   setArray([])
 setSortedArray([1])
 setBarEffects([])
