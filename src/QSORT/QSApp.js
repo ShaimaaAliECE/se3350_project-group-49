@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Grid, Stack, Button, Typography, Box } from '@mui/material';
 import GenerateSteps from './GenerateSteps';
+import errorAudio from '../Sounds/Ooof.mp3';
+import correctAudio from '../Sounds/Yay.mp3';
 
 let steps = [];
 let currStep = {};
@@ -70,12 +72,15 @@ function QSApp({mode}) {
   const incrementI = () => {
     // setI(i + 1);
     if (currStep.case === "increment i") {
+      new Audio(correctAudio).play();
       setStepNo(stepNo + 1);
       updateValues(); 
     } else if (isTestMode()) {
+      new Audio(errorAudio).play();
       alert("Incorrect! Try again!");
       setLives(lives - 1);
     } else {
+      new Audio(errorAudio).play();
       alert("Incorrect! Try again!");
     }
   }
@@ -83,12 +88,15 @@ function QSApp({mode}) {
   const incrementJ = () => {
     // setJ(j + 1);
     if (currStep.case === "increment j") {
+      new Audio(correctAudio).play();
       setStepNo(stepNo + 1);
       updateValues(); 
     } else if (isTestMode()) {
+      new Audio(errorAudio).play();
       alert("Incorrect! Try again!");
       setLives(lives - 1);
     } else {
+      new Audio(errorAudio).play();
       alert("Incorrect! Try again!");
     }
   }
@@ -140,12 +148,15 @@ function QSApp({mode}) {
     // setI(-1);
     // setJ(0);
     if (currStep.case === "partition") {
+      new Audio(correctAudio).play();
       setStepNo(stepNo + 1);
       updateValues(); 
     } else if (isTestMode()) {
+      new Audio(errorAudio).play();
       alert("Incorrect! Try again!");
       setLives(lives - 1);
     } else {
+      new Audio(errorAudio).play();
       alert("Incorrect! Try again!");
     }
   }
@@ -157,24 +168,30 @@ function QSApp({mode}) {
     // v[j] = temp;
     // setArray(v);
     if (currStep.case === "swap") {
+      new Audio(correctAudio).play();
       setStepNo(stepNo + 1);
       updateValues(); 
     } else if (isTestMode()) {
+      new Audio(errorAudio).play();
       alert("Incorrect! Try again!");
       setLives(lives - 1);
     } else {
+      new Audio(errorAudio).play();
       alert("Incorrect! Try again!");
     }
   }
 
   const changeIndex = () => {
     if (currStep.case === "change index") {
+      new Audio(correctAudio).play();
       setStepNo(stepNo + 1);
       updateValues(); 
     } else if (isTestMode()) {
+      new Audio(errorAudio).play();
       alert("Incorrect! Try again!");
       setLives(lives - 1);
     } else {
+      new Audio(errorAudio).play();
       alert("Incorrect! Try again!");
     }
   }
@@ -199,12 +216,15 @@ function QSApp({mode}) {
 
   const nextStep = () => {
     if (currStep.case === "compare" || isTestMode() === false) {
+      new Audio(correctAudio).play();
       setStepNo(stepNo + 1);
       updateValues(); 
     } else if (isTestMode()) {
+      new Audio(errorAudio).play();
       alert("Incorrect! Try again!");
       setLives(lives - 1);
     } else {
+      new Audio(errorAudio).play();
       alert("Incorrect! Try again!");
     }
   }

@@ -15,6 +15,7 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "dependencies": "^0.0.1",
+    "howler": "^2.2.3",
     "material-ui-popup-state": "^2.0.0",
     "nodemon": "^2.0.15",
     "react": "^17.0.2",
@@ -30,7 +31,6 @@
     "styled-components": "^5.3.5",
     "use-sound": "^4.0.1",
     "web-vitals": "^1.0.1",
-    "yarn": "^1.22.18"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -1,6 +1,11 @@
 
 import './App.css';
 import React, {useState, useEffect, useRef, useCallback} from 'react'
+import {Howl, Howler} from 'howler'
+import Gameover from "../Music/Gameover.mp3";
+import WinnerSound from "../Music/Winner.mp3";
+import dmgau from "../Music/dmg.mp3";
+import corau from "../Music/cor.mp3";
 
 function BSApp({mode}) {
 
@@ -25,6 +30,21 @@ const [userArray, setUserArray] = useState("");
 const swapFNRef=useRef(()=>{})
 const compareRef=useRef(()=>{})
 const noSwapFNRef=useRef(()=>{})
+
+const audioClips=[
+   Gameover,
+  WinnerSound,
+  dmgau,
+  corau
+]
+
+const SoundPlay=(src)=>{
+  const sound =new Howl({
+    src
+  })
+  sound.play()
+}
+Howler.volume(0.5)
 
 //Compares two arrays return false if they are not the same, returns true if they are
 const compareArrays = (a1, a2) => {
@@ -232,14 +252,18 @@ setSortedArray(temp);
 
 //swap button handeling
 const swapBTN=()=>{
+  
 if(swap)
 {
+ SoundPlay(audioClips[3])
   swapFN()
 }
 else
 {
+  SoundPlay(audioClips[2])
   if(difficulty>0&&difficulty!=4)
   {
+    
     setlives(lives-1)
     checklives()
   }
@@ -250,13 +274,17 @@ compare()
 
 //noswap button handeling
 const noSwapBTN=()=>{
+  
 if(!swap){
+  SoundPlay(audioClips[3])
   noSwapFN()
 }
 else
 {
+  SoundPlay(audioClips[2])
  if(difficulty>0&&difficulty!=4)
  {
+  
    setlives(lives-1)
    checklives()
  }
@@ -333,6 +361,7 @@ if(playing){
 }
 else if (done)
 {
+  SoundPlay([audioClips[1]])
   return (<div><label>Array is Sorted tutorial complete </label></div>)
 }
 
@@ -345,11 +374,12 @@ const displayWinner=() => {
 
   if(winner){
    
-    
-   
+  
+    SoundPlay(audioClips[1])
 return (<div><label>You Have Won......Yay!</label></div>)
   }
   else{
+    SoundPlay(audioClips[0])
     return (<div><label>You Have Lost, take a break and watch Shrek 2 </label></div>)
   }
 

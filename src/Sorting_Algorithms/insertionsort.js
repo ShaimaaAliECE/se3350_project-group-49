@@ -4,7 +4,6 @@ export const insertionsort = (arr) => {
     if (arr.length <= 1) return [arr];
     let out = [];
     let iLength = arr.length;
-    console.log(arr);
 
     //Iterate through the array and shift each number into the new sorted array. 
     for(let i = 0; i < iLength; i++)
@@ -28,7 +27,6 @@ export const insertionsort = (arr) => {
                 
         //console.log("\n");
     }
-    console.log(out);
     return out;
 }
 
