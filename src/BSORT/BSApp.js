@@ -24,7 +24,7 @@ const [done, setDone]=useState(false);
 const [lives, setlives] = useState(3);
 const [winner, setWinner] = useState(false);
 const [userArray, setUserArray] = useState("");
-
+const [isCorrect, setIsCorrect] = useState(0);
 
 //React Callbacks
 const swapFNRef=useRef(()=>{})
@@ -255,11 +255,13 @@ const swapBTN=()=>{
   
 if(swap)
 {
+  setIsCorrect(1)
  SoundPlay(audioClips[3])
   swapFN()
 }
 else
 {
+  setIsCorrect(2)
   SoundPlay(audioClips[2])
   if(difficulty>0&&difficulty!=4)
   {
@@ -276,11 +278,13 @@ compare()
 const noSwapBTN=()=>{
   
 if(!swap){
+  setIsCorrect(1)
   SoundPlay(audioClips[3])
   noSwapFN()
 }
 else
 {
+  setIsCorrect(2)
   SoundPlay(audioClips[2])
  if(difficulty>0&&difficulty!=4)
  {
@@ -400,7 +404,7 @@ setDone(false)
 setlives(3)
 setWinner(false)
 setUserArray("")
-
+setIsCorrect(0)
 }
 
 //display handeling
@@ -443,6 +447,8 @@ return(<div>
   {difficulty>0&&playing&&difficulty!=4?drawLives():null}
 
   <br/>
+  {playing&&isCorrect==1?<label>Correct</label>:null}
+  {playing&&isCorrect==2?<label>Incorrect</label>:null}
   {done?<button onClick={restart}>Restart?</button>:null}
   </div>)
 
