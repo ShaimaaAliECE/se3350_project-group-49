@@ -46,8 +46,8 @@ export default function Home() {
 
 
   return (
-
     <Box >
+      <NavbarVer2/>
     <Grid container spacing={1}>
       <Grid item xs={2}>
       

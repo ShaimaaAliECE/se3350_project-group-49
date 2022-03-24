@@ -20,7 +20,8 @@ import {
   BrowserRouter as Router,
   Route,
   Link,
-  useRouteMatch
+  useRouteMatch,
+  Redirect 
 } from "react-router-dom";
 
 import ListItemButton from '@mui/material/ListItemButton';
@@ -32,24 +33,17 @@ import { AppBar } from '@mui/material';
 import NavbarVer2 from './NavbarVer2';
 //THIS PAGE IS BUILT ON THE DESIGN INSPIRED BY THE OWL WEBSITE, SKELETON VERSION WITH 2 ACTIVE PAGE BUTTONS, COURSE CONTENT AND OVERVIEW
 import StarIcon from '@mui/icons-material/Star';
+import {useHistory} from 'react-router-dom'
 import ReactDOM from 'react-dom';
 import App from './App';
 import Analysis from './Analysis';
-
-
-
-
-
-
+import Home from "./Home.js";
+import auth from "./auth";
 
 export default function Login() {
-   
-
-
-
-
+  const history = useHistory()
   return (
-
+    
     <Box >
     <Grid container spacing={1}>
       <Grid item xs={2}>
@@ -79,24 +73,18 @@ export default function Login() {
       <Grid>
 
       <ListItem align = "center">
-      <Button variant="contained" size="large" onClick ={() => 
-      ReactDOM.render(
-        <React.StrictMode>
-          <App />
-        </React.StrictMode>,
-        document.getElementById('root')
-      )}>
+      <Button variant="contained" size="large" onClick = {() =>{
+        auth.Login(() => {
+          history.push('/Home')}
+        );}}>
         User
       </Button>
       </ListItem>
       <ListItem>
-      <Button variant="contained"  size="large" onClick ={() => 
-      ReactDOM.render(
-        <React.StrictMode>
-          <Analysis />
-        </React.StrictMode>,
-        document.getElementById('root')
-      )}>
+      <Button variant="contained"  size="large" onClick = {() =>{
+        auth.Login(() => {
+          history.push('/Analysis')}
+        );}}>
         Admin
       </Button>
       </ListItem>
