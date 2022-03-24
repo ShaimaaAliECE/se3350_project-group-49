@@ -365,7 +365,7 @@ if(playing){
 }
 else if (done)
 {
-  SoundPlay([audioClips[1]])
+  SoundPlay(audioClips[1])
   return (<div><label>Array is Sorted tutorial complete </label></div>)
 }
 
