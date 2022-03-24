@@ -3,6 +3,11 @@ import { mergesort } from "./MergeSort.js";
 import { useEffect, useState } from 'react';
 import { MergeTree } from './MergeTree';
 
+import rightSound from '../Sounds/anime-wow-sound-effect.mp3';
+import wrongSound from '../Sounds/they-ask-you-how-you-are-and-you-just-have-to-say-that-youre-fine-sound-effect_IgYM1CV.mp3'
+import winSound from '../Sounds/original-sheesh.mp3';
+import loseSound from '../Sounds/bruh_look_at_this_dude1.mp3';
+
 // modes: -1 = lesson
 //         0 = practice
 //        >0 = levels
@@ -17,6 +22,8 @@ function MsApp({mode}) {
   const [playing, setPlaying] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [userArr, setUserArr] = useState("");
+  const [gameOver, setGameOver] = useState(null);
+  let sounds = [];
 
   useEffect(() => {
     if (!playing) return;
@@ -30,7 +37,7 @@ function MsApp({mode}) {
       const timerId = setInterval(() => setTime(time+1), 10);
       return () => clearInterval(timerId);
     }
-  }, [step, time, playing, sorted]);
+  }, [step, time, playing, sorted, gameOver]);
 
   const levelSetup = (mode) => {
     let out = [];
@@ -216,7 +223,7 @@ function MsApp({mode}) {
     {mode===0&&uiArray()}
     <button className='nextstep' 
         onClick={(e) => checkStep(e, cur)}>
-        {playing?step+1 < sorted.length-1?"Next":step+1===sorted.length-1?"Finish":"Restart":"Start"}
+        {!gameOver?playing?step+1 < sorted.length-1?"Next":step+1===sorted.length-1?"Finish":"Restart":"Start":"Restart"}
     </button>
       {playing&&<div className='displaybox'>
         <div className='displayHead'>
@@ -308,6 +315,13 @@ function MsApp({mode}) {
   }
 
   const checkStep = (e, cur) => {
+    if (gameOver) {
+      setGameOver(null);
+      setSorted([]);
+      setPlaying(false);
+      window.location.reload(false);
+      return;
+    } 
     console.log(sorted);
     console.log(cur);
     console.log(step);
@@ -316,6 +330,7 @@ function MsApp({mode}) {
       setUserIn({l:0,r:0});
       setRefresh(true);
       if (!playing) {
+        setlives(3);
         setPlaying(true); 
         setStep(0);
         return;
@@ -335,6 +350,7 @@ function MsApp({mode}) {
       setTime(0);
       setStep(0);
       setlives(3);
+      setSorted([]);
       return;
     }
     if (sorted.length <= 1) {setPlaying(false);return;}
@@ -345,17 +361,22 @@ function MsApp({mode}) {
     let s = sorted[newStep];
     if (compareArrays(v,s)) {
       if (newStep === sorted.length-1) {
+        sounds.push(new Audio(winSound).play());
         setUserIn({l:0,r:0});
         setStep(step+1);
         endGame(true);
         return;
       }
+      sounds.push(new Audio(rightSound).play());
       setStep(newStep);
     } else if (mode > 0) {
       setlives(lives-1);
       if (lives <= 1) {
+        sounds.push(new Audio(loseSound).play());
         endGame(false);
+        return
       }
+      sounds.push(new Audio(wrongSound).play());
     }
     setUserIn({l:0,r:0});
   }
@@ -364,21 +385,16 @@ function MsApp({mode}) {
     let out = "";
     if (win) {
       if (mode > 0) {
-        out+= "WINNER!\n\n"
+        out+= "WINNER!\n"
         out+= "Lives: " + lives + "/3\n";
-      } else out += "Complete!\n\n";
+      } else out += "Complete!\n";
     } else {
-      out+= "FAILURE!\n\n"
-      setTime(0);
+      out+= "FAILURE!\n"
     }
     out+= "Time: " + displayTime();
-    setUserIn({l:0,r:0});
-    alert(out);
-    setTime(0);
-    setStep(0);
-    setlives(3);
     setPlaying(false);
-    setSorted([]);
+    setGameOver(out);
+    console.log(gameOver);
   }
 
   const startPage = () => {
@@ -392,7 +408,11 @@ function MsApp({mode}) {
       out += "Level " + mode;
     }
     return (
+      <>
       <label className='Title'>{out}</label>
+      <br/>
+      {gameOver?<label style={{whiteSpace: "pre-line"}} className='Title'>{gameOver}</label>:''}
+      </>
     );
   }
 
