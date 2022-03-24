@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react';
 import { MergeTree } from './MergeTree';
 
 import rightSound from '../Sounds/anime-wow-sound-effect.mp3';
-import wrongSound from '../Sounds/they-ask-you-how-you-are-and-you-just-have-to-say-that-youre-fine-sound-effect_IgYM1CV.mp3'
+import wrongSound from '../Sounds/movie_1_C2K5NH0.mp3'
 import winSound from '../Sounds/original-sheesh.mp3';
-import loseSound from '../Sounds/bruh_look_at_this_dude1.mp3';
+import loseSound from '../Sounds/bruh_look_at_this_dude1-[AudioTrimmer.com].mp3';
 
 // modes: -1 = lesson
 //         0 = practice
@@ -131,8 +131,15 @@ function MsApp({mode}) {
       if (tree === cur) {
         if (i === userIn.l+userIn.r) color = "#AA4"
       }
-      if (tree === cur.left) color = "#3D5";
-      else if (tree === cur.right) color = "#D35";
+      if (tree === cur.left) {
+        color = "#3D5";
+        console.log(i, userIn.l)
+        if (i < userIn.l) color = "#172";
+      }
+      else if (tree === cur.right) {
+        color = "#D35";
+        if (i < userIn.r) color = "#712";
+      }
     }
     return color;
   }
@@ -140,7 +147,7 @@ function MsApp({mode}) {
   const chooseBorder = (tree, cur, i) => {
     let border = "";
     if (!cur.open && ((tree === cur.left && i === userIn.l) || (tree === cur.right &&  i === userIn.r))) {
-      return "solid gold 2px";
+      return "solid gold 5px";
     }
     return border;
   }
@@ -285,16 +292,14 @@ function MsApp({mode}) {
           setUserIn({l:0, r:cur.val.length})
         }
         setRefresh(false);
-      } else if (time%25===0) {
+      } else if (time%50===0) {
         if (userIn.l + userIn.r < cur.val.length) {
-          cur.val[userIn.l+userIn.r] = cur.right.val[userIn.r];
-          if (userIn.l >= cur.left.val.length) setUserIn({l:userIn.l, r:userIn.r+1});
-          else if (cur.right.val[userIn.r] <= cur.left.val[userIn.l]) setUserIn({l:userIn.l, r:userIn.r+1});
-          else {
-            cur.val[userIn.l+userIn.r] = cur.left.val[userIn.l];
-            if (userIn.r >= cur.right.val.length) setUserIn({l:userIn.l+1, r:userIn.r});
-            else if (cur.left.val[userIn.l] <= cur.right.val[userIn.r]) setUserIn({l:userIn.l+1, r:userIn.r});
+          cur.val[userIn.l+userIn.r] = cur.left.val[userIn.l];
+          if (userIn.l >= cur.left.val.length || cur.left.val[userIn.l] > cur.right.val[userIn.r]) {
+            cur.val[userIn.l+userIn.r] = cur.right.val[userIn.r];
+            setUserIn({l:userIn.l, r:userIn.r+1});
           }
+          else setUserIn({l:userIn.l+1, r:userIn.r});
           setTime(time+1);
         } else {
           setRefresh(false);
