@@ -38,6 +38,9 @@ import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 
+import errorAudio from '../Sounds/Ooof.mp3';
+import correctAudio from '../Sounds/Yay.mp3';
+
 //THIS PAGE IS BUILT ON THE DESIGN INSPIRED BY THE OWL WEBSITE, SKELETON VERSION WITH 2 ACTIVE PAGE BUTTONS, COURSE CONTENT AND OVERVIEW
 import StarIcon from '@mui/icons-material/Star';
 import { getElementById } from 'domutils';
@@ -51,6 +54,9 @@ export default function ISortCustom() {
     const [unsorted, setUnsorted] = React.useState([]);
     const [secondarySort, setSecondarySort] = React.useState([]);
     const [startButton, setStartButton] = React.useState("Start");
+
+    const [lostALife, setLostALife] = React.useState(false);
+
   
     const [lost, setLost] = React.useState(false);
   
@@ -89,6 +95,8 @@ export default function ISortCustom() {
         setHeartThree("error");
         setLost(false);
         setTime(0);
+        setLostALife(false);
+
     }
 
     React.useEffect(()=>{
@@ -120,6 +128,10 @@ export default function ISortCustom() {
               setSecondarySort([...secondarySort]);
               setStep(step+1);
               setIndex(step+1);
+              setLostALife(false);
+              new Audio(correctAudio).play();
+
+
           }
           else if(checkStep()){
               let elem = unsorted.shift();
@@ -129,6 +141,10 @@ export default function ISortCustom() {
               setSecondarySort([...secondarySort]);
               setStep(step+1);
               setIndex(step+1);
+              setLostALife(false);
+              new Audio(correctAudio).play();
+
+
           }
           else loseLife();
           }
@@ -158,7 +174,10 @@ export default function ISortCustom() {
                   setIndex(index-1);
                   console.log(index);
                   console.log(secondarySort);
-                  
+                  setLostALife(false);
+                  new Audio(correctAudio).play();
+
+
               }
   
               else loseLife();
@@ -198,12 +217,15 @@ export default function ISortCustom() {
   }
 
   function loseLife(){
+    new Audio(errorAudio).play();
     if(heartThree == "error"){
-        setHeartThree("disabled");
-    }
-    else if(heartTwo == "error"){
-      setHeartTwo("disabled");
-    }
+      setHeartThree("disabled");
+      setLostALife(true);
+  }
+  else if(heartTwo == "error"){
+    setHeartTwo("disabled");
+    setLostALife(true);
+  }
     else if(heartOne == "error"){
       setHeartOne("disabled");
       setLost(true);
@@ -221,6 +243,27 @@ function getColor(hNum){
           return heartThree;        
   }
 }
+
+function getButtonColor(ind){
+  if(heartOne == "disabled"){
+    return "error";
+  }
+  if(ind == "p0" && (checkStep() || secondarySort.length == 0 || secondarySort.length == 1) && lostALife){
+    return "error";
+  }
+  if(ind == "p0" && (checkStep() || secondarySort.length == 0 || secondarySort.length == 1)){
+    return "success";
+  }
+  let currentElemInd = secondarySort.lastIndexOf(currentElem);
+  if(ind == currentElemInd && !(checkStep() || secondarySort.length == 0 || secondarySort.length == 1) && lostALife){
+    return "error";
+  }
+  if(ind == currentElemInd && !(checkStep() || secondarySort.length == 0 || secondarySort.length == 1)){
+    return "success";
+  }
+  return "info";
+}
+
 
 const generateArray = (len, range) => {
   let out = [];
@@ -274,7 +317,7 @@ return (
 
       <ButtonGroup variant="contained" aria-label="outlined primary button group">
           {unsorted.map((row, i) => (
-            <button id={i} onClick={(e) => handleClick(e, i)} >{unsorted[i]}</button>
+            <Button color={getButtonColor("p"+i)} onClick={(e) => handleClick(e, i)} >{unsorted[i]}</Button>
           )
           )}
       </ButtonGroup>
@@ -283,7 +326,7 @@ return (
 
       <ButtonGroup variant="contained" aria-label="outlined primary button group">
           {secondarySort.map((row, i) => (
-            <button>{secondarySort[i]}</button>
+            <Button id={i} color={getButtonColor(i)}>{secondarySort[i]}</Button>
           )
           )}
       </ButtonGroup>

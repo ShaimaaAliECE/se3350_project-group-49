@@ -176,7 +176,7 @@ export default function ISortLesson() {
 
         <ButtonGroup variant="contained" aria-label="outlined primary button group">
             {unsorted.map((row, i) => (
-              <button id={i}>{unsorted[i]}</button>
+              <Button id={i} color="info">{unsorted[i]}</Button>
             )
             )}
         </ButtonGroup>
@@ -185,7 +185,7 @@ export default function ISortLesson() {
 
         <ButtonGroup variant="contained" aria-label="outlined primary button group">
             {secondarySort.map((row, i) => (
-              <button>{secondarySort[i]}</button>
+              <Button color="info">{secondarySort[i]}</Button>
             )
             )}
         </ButtonGroup>
