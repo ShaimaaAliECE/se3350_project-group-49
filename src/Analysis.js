@@ -29,25 +29,15 @@ import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { AppBar } from '@mui/material';
-import NavbarVer2 from './NavbarVer2';
+
 //THIS PAGE IS BUILT ON THE DESIGN INSPIRED BY THE OWL WEBSITE, SKELETON VERSION WITH 2 ACTIVE PAGE BUTTONS, COURSE CONTENT AND OVERVIEW
 import StarIcon from '@mui/icons-material/Star';
 
-
-
-
-
-
-
-export default function Home() {
+export default function Analysis() {
    
-
-
-
-
   return (
+
     <Box >
-      <NavbarVer2/>
     <Grid container spacing={1}>
       <Grid item xs={2}>
       
@@ -63,22 +53,14 @@ export default function Home() {
       </ListItem>
       <ListItem>
           <Typography variant = "h4" >
-         ALGO SORT
+         Analysis
           </Typography>
       </ListItem>
 <Divider/>
       <ListItem>
-          <Typography variant = "h6" >
-         The one and only place for algorithm learning
+          <Typography variant = "h6" align="center">
+          stuff goes here
           </Typography>
-      </ListItem>
-
-      <ListItem>
-
-
-  
-
-
       </ListItem>
     
     
