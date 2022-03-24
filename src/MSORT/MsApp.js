@@ -369,9 +369,9 @@ function MsApp({mode}) {
       }
       sounds.push(new Audio(rightSound).play());
       setStep(newStep);
-    } else if (mode > 0) {
-      setlives(lives-1);
-      if (lives <= 1) {
+    } else {
+      if (mode > 0) setlives(lives-1);
+      if (mode > 0 && lives <= 1) {
         sounds.push(new Audio(loseSound).play());
         endGame(false);
         return
