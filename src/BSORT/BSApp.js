@@ -393,17 +393,13 @@ return (<div><label>You Have Won......Yay!</label></div>)
 //restart button handeling
 const restart=()=>{
   
-  axios({
-  method: 'post',
-  url: 'http://localhost:5000/newStat',
-  data:{
+  axios.post('http://localhost:5000/newStat',{
   level: difficulty,
   algorithm: "Bubble Sort",
   time: time,
   lives: lives,
   success: winner
-  }
-}).then(res=>console.log(res))
+}).then(res=>console.log(res)).catch(err=>console.log(err));
 
 
   setArray([])
