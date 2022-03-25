@@ -6,6 +6,8 @@ import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import Home from "./Home.js";
+import Login from "./Login.js";
+import auth from './auth'
 
 import L1Home from "./Pages/Sorting/L1Sorting/L1Home";
 import L2Home from "./Pages/Sorting/L2Sorting/L2Home";
@@ -15,6 +17,8 @@ import L4Home from "./Pages/Sorting/L4Sorting/L4Home";
 import Custom from "./Pages/Practice/Custom";
 import Standard from "./Pages/Practice/Standard";
 import LessonsHome from "./Pages/Lessons/LessonsHome";
+import { ProtectedRoute } from "./ProtectedRoute";
+import Analysis from './Analysis';
 
 //Implement Control + C as a button bound.
 
@@ -22,12 +26,13 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <NavbarVer2 />
         <Switch>
           <Route exact path="/">
-            <Redirect to="/Home" />
+            <Redirect to="/Login"component={Login}/>
           </Route>
-          <Route path="/Home" component={Home} />
+          <ProtectedRoute path="/Home" component={Home} />
+          <ProtectedRoute path="/Analysis" component={Analysis} />
+          <Route path="/Login"component={Login}/>
 
           <Route path="/LessonsHome" component={LessonsHome} />
 

@@ -12,6 +12,8 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 
 import errorAudio from '../Sounds/Ooof.mp3';
 import correctAudio from '../Sounds/Yay.mp3';
+import loserAudio from '../Music/Gameover.mp3';
+
 
 export default function ISortL3() {
 
@@ -186,6 +188,7 @@ export default function ISortL3() {
     else if(heartOne == "error"){
       setHeartOne("disabled");
       setLost(true);
+      new Audio(loserAudio).play();
     }
 }
 

@@ -40,6 +40,8 @@ import Tab from '@mui/material/Tab';
 
 import errorAudio from '../Sounds/Ooof.mp3';
 import correctAudio from '../Sounds/Yay.mp3';
+import loserAudio from '../Music/Gameover.mp3';
+
 
 //THIS PAGE IS BUILT ON THE DESIGN INSPIRED BY THE OWL WEBSITE, SKELETON VERSION WITH 2 ACTIVE PAGE BUTTONS, COURSE CONTENT AND OVERVIEW
 import StarIcon from '@mui/icons-material/Star';
@@ -229,6 +231,7 @@ export default function ISortCustom() {
     else if(heartOne == "error"){
       setHeartOne("disabled");
       setLost(true);
+      new Audio(loserAudio).play();
     }
 }
 

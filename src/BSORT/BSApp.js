@@ -6,7 +6,7 @@ import Gameover from "../Music/Gameover.mp3";
 import WinnerSound from "../Music/Winner.mp3";
 import dmgau from "../Music/dmg.mp3";
 import corau from "../Music/cor.mp3";
-
+const axios = require('axios').default;
 function BSApp({mode}) {
 
   //React States Declared
@@ -24,7 +24,7 @@ const [done, setDone]=useState(false);
 const [lives, setlives] = useState(3);
 const [winner, setWinner] = useState(false);
 const [userArray, setUserArray] = useState("");
-
+const [isCorrect, setIsCorrect] = useState(0);
 
 //React Callbacks
 const swapFNRef=useRef(()=>{})
@@ -255,11 +255,13 @@ const swapBTN=()=>{
   
 if(swap)
 {
+  setIsCorrect(1)
  SoundPlay(audioClips[3])
   swapFN()
 }
 else
 {
+  setIsCorrect(2)
   SoundPlay(audioClips[2])
   if(difficulty>0&&difficulty!=4)
   {
@@ -276,11 +278,13 @@ compare()
 const noSwapBTN=()=>{
   
 if(!swap){
+  setIsCorrect(1)
   SoundPlay(audioClips[3])
   noSwapFN()
 }
 else
 {
+  setIsCorrect(2)
   SoundPlay(audioClips[2])
  if(difficulty>0&&difficulty!=4)
  {
@@ -361,7 +365,7 @@ if(playing){
 }
 else if (done)
 {
-  SoundPlay([audioClips[1]])
+  SoundPlay(audioClips[1])
   return (<div><label>Array is Sorted tutorial complete </label></div>)
 }
 
@@ -388,6 +392,16 @@ return (<div><label>You Have Won......Yay!</label></div>)
 }
 //restart button handeling
 const restart=()=>{
+  
+  axios.post('http://localhost:5000/newStat',{
+  level: difficulty,
+  algorithm: "Bubble Sort",
+  time: time,
+  lives: lives,
+  success: winner
+}).then(res=>console.log(res)).catch(err=>console.log(err));
+
+
   setArray([])
 setSortedArray([1])
 setBarEffects([])
@@ -400,7 +414,7 @@ setDone(false)
 setlives(3)
 setWinner(false)
 setUserArray("")
-
+setIsCorrect(0)
 }
 
 //display handeling
@@ -443,6 +457,8 @@ return(<div>
   {difficulty>0&&playing&&difficulty!=4?drawLives():null}
 
   <br/>
+  {playing&&isCorrect==1?<label>Correct</label>:null}
+  {playing&&isCorrect==2?<label>Incorrect</label>:null}
   {done?<button onClick={restart}>Restart?</button>:null}
   </div>)
 

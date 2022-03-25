@@ -3,13 +3,15 @@ import { Grid, Stack, Button, Typography, Box } from '@mui/material';
 import GenerateSteps from './GenerateSteps';
 import errorAudio from '../Sounds/Ooof.mp3';
 import correctAudio from '../Sounds/Yay.mp3';
+import Gameover from "../Music/Gameover.mp3";
+import WinnerSound from "../Music/Winner.mp3";
 
+// Declare variables
 let steps = [];
 let currStep = {};
 
 let length = 10;
 let range = 20;
-let mode = 1;
 
 function QSApp({mode}) {
 
@@ -21,6 +23,7 @@ function QSApp({mode}) {
   // 4: Test level 3 - 20 numbers (1 - 50)
   // 5: Test level 4 - 50 numbers (1 - 100)
 
+  // Set the mode of the app
   if (mode === 2) {
     length = 10;
     range = 20;
@@ -36,6 +39,8 @@ function QSApp({mode}) {
   }
 
   // const [steps, setSteps] = React.useState([]);
+
+  // Declare needed states
   const [stepNo, setStepNo] = React.useState(0);
 
   const [sorted, setSorted] = React.useState(-1);
@@ -47,7 +52,9 @@ function QSApp({mode}) {
   const [playing, setPlaying] = React.useState(false);
   const [lives, setLives] = React.useState(3);
   const [time, setTime] = useState(0);
+  const [clearTime, setClearTime] = React.useState(0);
 
+  // Use effect for incrementing the timer while the game is being played
   useEffect(() => {
     if (playing) {
       const timerId = setInterval(() => setTime(time + 2), 10);
@@ -56,6 +63,7 @@ function QSApp({mode}) {
     }
   }, [time, playing]);
 
+  // Function to split the custom array after commas and then set it
   const splitterOfArrays = () => {
 
     let newArr = userArray.split(',').map(Number)
@@ -69,6 +77,7 @@ function QSApp({mode}) {
     }
   }
 
+  // Increment I button check
   const incrementI = () => {
     // setI(i + 1);
     if (currStep.case === "increment i") {
@@ -85,6 +94,7 @@ function QSApp({mode}) {
     }
   }
 
+  // Increment J button check
   const incrementJ = () => {
     // setJ(j + 1);
     if (currStep.case === "increment j") {
@@ -101,6 +111,7 @@ function QSApp({mode}) {
     }
   }
 
+  // Set needed values when game is started
   const startGame = () => {
     let thisArray = [];
     if (isTestMode() || userArray === "") {
@@ -114,8 +125,16 @@ function QSApp({mode}) {
     setPlaying(true);
     // setSteps(thisSteps);
     updateValues();
+    initializeFirstStep();
   }
 
+  // Function to fix a bug where the first step did nothing
+  const initializeFirstStep = () => {
+    setStepNo(stepNo + 1);
+    updateValues(); 
+  }
+
+  // Update the values with the ones found from the JSON array
   const updateValues = () => {
     // console.log(steps);
     // console.log(steps[stepNo]);
@@ -130,6 +149,7 @@ function QSApp({mode}) {
     setSorted(currStep.sorted);
   }
 
+  // Function to generate a random array with a defined length and range
   const generateArray = (len, ran) => {
     let out = [];
     for (let i = 0; i < len; i++) {
@@ -138,6 +158,7 @@ function QSApp({mode}) {
     return out;
   }
 
+  // Partition button check
   const partition = () => {
     // let v = [...array];
     // let temp = v[i];
@@ -161,6 +182,7 @@ function QSApp({mode}) {
     }
   }
 
+  // Swap button check
   const swap = () => {
     // let v = [...array];
     // let temp = v[i];
@@ -181,6 +203,7 @@ function QSApp({mode}) {
     }
   }
 
+  // Change index button check
   const changeIndex = () => {
     if (currStep.case === "change index") {
       new Audio(correctAudio).play();
@@ -196,6 +219,7 @@ function QSApp({mode}) {
     }
   }
 
+  // Determine the colour of a button
   const checkColor = (n) => {
     if (n <= sorted) {
       return '#9f9f9f'
@@ -214,6 +238,7 @@ function QSApp({mode}) {
   //   console.log(steps);
   // }
 
+  // Go to the next step for practice modes
   const nextStep = () => {
     if (currStep.case === "compare" || isTestMode() === false) {
       new Audio(correctAudio).play();
@@ -229,6 +254,7 @@ function QSApp({mode}) {
     }
   }
 
+  // Check if the game mode is a test mode
   const isTestMode = () => {
     if (mode > 1) {
       return true;
@@ -237,6 +263,7 @@ function QSApp({mode}) {
     }
   }
 
+  // Check if the gamemode is a practice mode
   const isPracticeMode = () => {
     if (mode === 1) {
       return true;
@@ -245,6 +272,7 @@ function QSApp({mode}) {
     }
   }
 
+  // Function to display the timer
   const displayTime = () => {
     let minutes = Math.floor((time / 100 / 60)).toString().padStart(2, "0");
     let seconds = Math.floor((time / 100 % 60)).toString().padStart(2, "0");
@@ -253,6 +281,7 @@ function QSApp({mode}) {
     return minutes + ":" + seconds + ":" + ms;
   }
 
+  // Function to draw the lives
   const drawLives = () => {
     let dispLives = [];
     for (let i = 0; i < lives; i++) {
@@ -267,28 +296,22 @@ function QSApp({mode}) {
     );
   }
 
+  // Function to check when the game has ended
   const endGame = () => {
     if (stepNo === steps.length && steps.length > 0) {
-      alert("You win!");
+      new Audio(WinnerSound).play();
+      setClearTime(time);
       resetGame();
-    } else if (lives <= 0) {
+      alert("You win!\n Time: " + displayTime() +  "\n Lives: " + lives);
+    } else if (lives <= 0 && isTestMode()) {
+      new Audio(Gameover).play();
       alert("You lose! Better luck next time, chump.");
       resetGame();
     }
   }
 
+  // Function to reset game values
   const resetGame = () => {
-    // const [stepNo, setStepNo] = React.useState(0);
-
-    // const [sorted, setSorted] = React.useState(-1);
-    // const [array, setArray] = React.useState([]);
-    // const [userArray, setUserArray] = React.useState("");
-    // const [i, setI] = React.useState(0);
-    // const [j, setJ] = React.useState(1);
-    // const [pivot, setPivot] = React.useState();
-    // const [playing, setPlaying] = React.useState(false);
-    // const [lives, setLives] = React.useState(3);
-    // const [time, setTime] = useState(0);
 
     setPlaying(false);
     setStepNo(0);
@@ -302,6 +325,8 @@ function QSApp({mode}) {
     setTime(0);
     steps = [];
     currStep = {};
+
+    console.log("Reset function is called!");
   }
 
   const setLessonText = () => {
@@ -331,9 +356,12 @@ function QSApp({mode}) {
       <Button variant='contained' onClick={startGame}>
         Start Game
       </Button>
-      <Typography>
+      <Button variant='contained' onClick={resetGame}>
+        Reset Game
+      </Button>
+      {playing ? <Typography>
         Current I: {i} ; Current J: {j} ; Current Pivot: {pivot} ; Timer: {displayTime()}
-      </Typography>
+      </Typography> : null}
       <Grid container alignItems='center' justifyContent='center' spacing={2}>
         {array.map((num, n) => (
           <Grid item>
@@ -345,6 +373,7 @@ function QSApp({mode}) {
           </Grid>
         ))}
       </Grid>
+      {playing ?
       <Stack direction="row" justifyContent="space-between">
         {(isTestMode() || isPracticeMode()) ? <Stack direction="row" justifyContent="left">
           <Button variant='contained' onClick={incrementI}>
@@ -370,10 +399,11 @@ function QSApp({mode}) {
           </Button> */}
 
         </Stack> : null}
-        <Button variant='contained' onClick={nextStep}>
+        {isTestMode() ? null : <Button variant='contained' onClick={nextStep}>
           Next Step
-        </Button>
-      </Stack>
+        </Button>}
+      </Stack> : null}
+      {playing ?
       <Stack direction='column'>
         <Typography variant='h6'>
           {isTestMode() ? null : setLessonText()}
@@ -381,8 +411,8 @@ function QSApp({mode}) {
         <Typography variant='h6'>
           {stepNo}/{steps.length}
         </Typography>
-      </Stack>
-      {drawLives()}
+      </Stack> : null}
+      {(playing && isTestMode())? drawLives() : null}
       {endGame()}
     </Box>
   )
