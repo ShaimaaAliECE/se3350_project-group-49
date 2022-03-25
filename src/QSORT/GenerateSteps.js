@@ -8,6 +8,8 @@ let globalPivot = 0;
 
 export default function GenerateSteps(array) {
 
+    steps = [];
+
     let high = array.length - 1;
 
     globalPivot = high;

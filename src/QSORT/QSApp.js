@@ -6,6 +6,8 @@ import correctAudio from '../Sounds/Yay.mp3';
 import Gameover from "../Music/Gameover.mp3";
 import WinnerSound from "../Music/Winner.mp3";
 
+const axios = require('axios').default;
+
 // Declare variables
 let steps = [];
 let currStep = {};
@@ -53,6 +55,7 @@ function QSApp({mode}) {
   const [lives, setLives] = React.useState(3);
   const [time, setTime] = useState(0);
   const [clearTime, setClearTime] = React.useState(0);
+  const [win, setWin] = React.useState(false);
 
   // Use effect for incrementing the timer while the game is being played
   useEffect(() => {
@@ -113,6 +116,7 @@ function QSApp({mode}) {
 
   // Set needed values when game is started
   const startGame = () => {
+    resetGame();
     let thisArray = [];
     if (isTestMode() || userArray === "") {
       thisArray = generateArray(length, range);
@@ -299,19 +303,26 @@ function QSApp({mode}) {
   // Function to check when the game has ended
   const endGame = () => {
     if (stepNo === steps.length && steps.length > 0) {
+      setWin(true);
       new Audio(WinnerSound).play();
       setClearTime(time);
-      resetGame();
       alert("You win!\n Time: " + displayTime() +  "\n Lives: " + lives);
     } else if (lives <= 0 && isTestMode()) {
       new Audio(Gameover).play();
       alert("You lose! Better luck next time, chump.");
-      resetGame();
     }
   }
 
   // Function to reset game values
   const resetGame = () => {
+
+    axios.post('http://localhost:5000/newStat',{
+      level: mode - 1,
+      algorithm: "QuickSort",
+      time: clearTime,
+      lives: lives,
+      success: win
+    }).then(res=>console.log(res)).catch(err=>console.log(err));
 
     setPlaying(false);
     setStepNo(0);
@@ -323,10 +334,12 @@ function QSApp({mode}) {
     setPivot();
     setLives(3);
     setTime(0);
+    setClearTime(0);
+    setWin(false);
     steps = [];
     currStep = {};
 
-    console.log("Reset function is called!");
+    // console.log("Reset function is called!");
   }
 
   const setLessonText = () => {
@@ -357,7 +370,7 @@ function QSApp({mode}) {
         Start Game
       </Button>
       <Button variant='contained' onClick={resetGame}>
-        Reset Game
+        Save Results
       </Button>
       {playing ? <Typography>
         Current I: {i} ; Current J: {j} ; Current Pivot: {pivot} ; Timer: {displayTime()}
