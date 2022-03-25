@@ -13,9 +13,10 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import errorAudio from '../Sounds/Ooof.mp3';
 import correctAudio from '../Sounds/Yay.mp3';
 import loserAudio from '../Music/Gameover.mp3';
+import winnerAudio from '../Music/Winner.mp3';
+import axios from "axios";
 
-
-export default function ISortL4() {
+export default function ISortL1() {
 
     const [playing, setPlaying] = React.useState(false);
     const [lost, setLost] = React.useState(false);
@@ -32,6 +33,7 @@ export default function ISortL4() {
     const [heartOne, setHeartOne] = React.useState("error");
     const [heartTwo, setHeartTwo] = React.useState("error");
     const [heartThree, setHeartThree] = React.useState("error");
+    const [lives, setLives] = React.useState(3);
     const [lostALife, setLostALife] = React.useState(false);
 
     const [time, setTime] = React.useState(0);
@@ -53,6 +55,8 @@ export default function ISortL4() {
         setLost(false);
         setTime(0);
         setLostALife(false);
+        setLives(3);
+
     }
 
     //starts timer when game playing
@@ -163,6 +167,13 @@ export default function ISortL4() {
   function getText(){
     if(playing){
         if(lost){
+            axios.post('http://localhost:5000/newStat',{
+                level: 1,
+                algorithm: 'Insertion Sort',
+                time: time,
+                lives: lives,
+                success: true
+            }).then(res=>console.log(res)).catch(err=>console.log(err));
             return "LOSER";
         }
         else if(checkEqualArray(secondarySort, sorted)){
@@ -170,6 +181,14 @@ export default function ISortL4() {
         }
     }
     else if(checkEqualArray(secondarySort, sorted) && secondarySort.length > 0){
+      axios.post('http://localhost:5000/newStat',{
+                level: 1,
+                algorithm: 'Insertion Sort',
+                time: time,
+                lives: lives,
+                success: false
+      }).then(res=>console.log(res)).catch(err=>console.log(err));
+      new Audio(winnerAudio).play();
       return "WINNER";
     }
   }
@@ -177,6 +196,10 @@ export default function ISortL4() {
   //removes a heart from screen when user takes a wrongful action
   function loseLife(){
     new Audio(errorAudio).play();
+    console.log(lives);
+    lives--;
+    console.log(lives);
+    setLives(lives);
     if(heartThree == "error"){
         setHeartThree("disabled");
         setLostALife(true);

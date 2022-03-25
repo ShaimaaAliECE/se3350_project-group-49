@@ -41,6 +41,9 @@ import Tab from '@mui/material/Tab';
 import errorAudio from '../Sounds/Ooof.mp3';
 import correctAudio from '../Sounds/Yay.mp3';
 import loserAudio from '../Music/Gameover.mp3';
+import winnerAudio from '../Music/Winner.mp3';
+
+import axios from "axios";
 
 
 //THIS PAGE IS BUILT ON THE DESIGN INSPIRED BY THE OWL WEBSITE, SKELETON VERSION WITH 2 ACTIVE PAGE BUTTONS, COURSE CONTENT AND OVERVIEW
@@ -65,27 +68,29 @@ export default function ISortCustom() {
     const [heartOne, setHeartOne] = React.useState("error");
     const [heartTwo, setHeartTwo] = React.useState("error");
     const [heartThree, setHeartThree] = React.useState("error");
+    const [lives, setLives] = React.useState(3);
 
     // const [customLength, setCustomLength] = React.useState(10);
     // const [customRange, setCustomRange] = React.useState(20);
 
     const [time, setTime] = React.useState(0);
+
+    const [userArray, setUserArray] = React.useState("");
     
   
     function startPlaying(){
-        let customLength = document.getElementById('lengthText').value;
-        let customRange = document.getElementById('rangeText').value;
-
-        if(customLength == "" || customLength == 1){
-            customLength = 10;
-        }
-        if(customRange == ""){
-            customRange = 20;
-        }
-
         setStartButton("Restart");
         setPlaying(true);
-        let out = generateArray(customLength, customRange);
+      
+        let out = [];
+
+        if(userArray == "" || userArray.length == 1){
+          out = generateArray(10, 20);
+        }
+        else{
+          out = splitterOfArrays();
+        }
+
         setUnsorted([...out]);
         let newSorted = insertionsort(out);
         setSorted([...newSorted]);
@@ -98,6 +103,7 @@ export default function ISortCustom() {
         setLost(false);
         setTime(0);
         setLostALife(false);
+        setLives(3);
 
     }
 
@@ -111,6 +117,19 @@ export default function ISortCustom() {
         }
       }
     })
+
+    //converts a text input to an array of numbers
+    const splitterOfArrays=()=>{
+
+      let newArr=userArray.split(',').map(Number)
+
+      if(!newArr.some(isNaN)){
+        return newArr;
+      }
+      else{
+        alert("enter in a valid number array in (a,b,c) format where the letters represent numbers")
+      }
+    }
 
     function displayTime(){
       let minutes = Math.floor((time/100/60)).toString().padStart(2,"0");
@@ -190,8 +209,6 @@ export default function ISortCustom() {
   function checkStep(){
     const clonedSort = [...secondarySort];
     let checkSorted = insertionsort(clonedSort);
-    console.log(secondarySort);
-    console.log(checkSorted);
     if(checkEqualArray(secondarySort, checkSorted)){ console.log("TRUE"); return true;} 
     else{console.log("FALSE"); return false;}
   }
@@ -206,19 +223,39 @@ export default function ISortCustom() {
     return true;
   }
 
+  //displays winner / loser text when game over.
   function getText(){
     if(playing){
         if(lost){
+            axios.post('http://localhost:5000/newStat',{
+                level: 1,
+                algorithm: 'Insertion Sort',
+                time: time,
+                lives: lives,
+                success: true
+            }).then(res=>console.log(res)).catch(err=>console.log(err));
             return "LOSER";
         }
         else if(checkEqualArray(secondarySort, sorted)){
             setPlaying(false);
-            return "WINNER";
         }
+    }
+    else if(checkEqualArray(secondarySort, sorted) && secondarySort.length > 0){
+      axios.post('http://localhost:5000/newStat',{
+                level: 1,
+                algorithm: 'Insertion Sort',
+                time: time,
+                lives: lives,
+                success: false
+      }).then(res=>console.log(res)).catch(err=>console.log(err));
+      new Audio(winnerAudio).play();
+      return "WINNER";
     }
   }
 
   function loseLife(){
+    lives--;
+    setLives(lives);
     new Audio(errorAudio).play();
     if(heartThree == "error"){
       setHeartThree("disabled");
@@ -289,21 +326,12 @@ return (
 
     <Box sx={{ height: '5vh'}} />
 
-      Enter custom length (greater than 1): <TextField 
-        id="lengthText"
+      Enter custom array in form a,b,c (greater than 1): <TextField 
         variant='outlined'
         size='small'
+        required onChange={e=>setUserArray(e.target.value)}
         sx={{ width: '10ch' }}
         />
-
-    <Box sx={{ height: '5vh'}} />
-
-        Enter custom range: <TextField 
-            id="rangeText"
-            variant='outlined'
-            size='small'
-            sx={{ width: '10ch' }}
-            />
 
     <Box sx={{ height: '5vh'}} />
 
