@@ -403,7 +403,7 @@ const restart=()=>{
   lives: lives,
   success: winner
   }
-})
+}).then(res=>console.log(res))
 
 
   setArray([])
