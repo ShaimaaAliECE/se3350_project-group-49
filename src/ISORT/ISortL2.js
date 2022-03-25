@@ -195,10 +195,8 @@ export default function ISortL2() {
   //removes a heart from screen when user takes a wrongful action
   function loseLife(){
     new Audio(errorAudio).play();
-    console.log(lives);
-    lives--;
-    console.log(lives);
-    setLives(lives);
+    let newLives = lives - 1;
+    setLives(newLives);
     if(heartThree == "error"){
         setHeartThree("disabled");
         setLostALife(true);

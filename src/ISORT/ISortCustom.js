@@ -254,8 +254,8 @@ export default function ISortCustom() {
   }
 
   function loseLife(){
-    lives--;
-    setLives(lives);
+    let newLives = lives - 1;
+    setLives(newLives);
     new Audio(errorAudio).play();
     if(heartThree == "error"){
       setHeartThree("disabled");
