@@ -6,7 +6,7 @@ import Gameover from "../Music/Gameover.mp3";
 import WinnerSound from "../Music/Winner.mp3";
 import dmgau from "../Music/dmg.mp3";
 import corau from "../Music/cor.mp3";
-
+const axios = require('axios').default;
 function BSApp({mode}) {
 
   //React States Declared
@@ -392,7 +392,19 @@ return (<div><label>You Have Won......Yay!</label></div>)
 }
 //restart button handeling
 const restart=()=>{
-  const toDB=[time,lives,difficulty]
+  
+  axios({
+  method: 'post',
+  url: 'http://localhost:5000/newStat',
+  data:{
+  level: difficulty,
+  algorithm: "Bubble Sort",
+  time: time,
+  lives: lives,
+  success: winner
+  }
+})
+
 
   setArray([])
 setSortedArray([1])
