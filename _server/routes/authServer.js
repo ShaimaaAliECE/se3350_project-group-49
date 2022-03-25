@@ -6,11 +6,11 @@ require('dotenv').config();
 
 router.post('/register', async (req, res) => {
     const { username, password } = req.body;
-    if (!username || !password) return res.status(400).json({ msg: "Please enter all fields"});
+    if (!username || !password) return res.sendStatus(400);
 
-    let user = await User.findOne({ username }).exec();
+    let user = await User.findOne({ username });
 
-    if (user) return res.status(400).json({ msg:"This username is already registered!"});
+    if (user) return res.sendStatus(400);
 
     const newUser = new User({
         username,
@@ -25,8 +25,8 @@ router.post('/register', async (req, res) => {
             let user = await newUser.save();
             let refreshToken = jwt.sign({id:user.id}, process.env.REFRESH_SECRET, {expiresIn:24*60*60});
             let accessToken = jwt.sign({id:user.id}, process.env.ACCESS_SECRET, {expiresIn:10*60});
-            let matched = (await User.updateOne({id:user.id}, {refreshToken:refreshToken})).matchedCount; 
-            if (!matched) return res.status(500).json({msg:"Unable to create refresh token"});
+            let matched = (await User.findByIdAndUpdate(user.id, {refreshToken:refreshToken})); 
+            if (!matched) return res.sendStatus(500);
             res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24*60*60*1000})
             res.json({accessToken});
         })
@@ -35,18 +35,18 @@ router.post('/register', async (req, res) => {
 
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
-    if (!username || !password) return res.status(400).json({ msg: "Please enter all fields"});
+    if (!username || !password) return res.sendStatus(400);
 
     let user = await User.findOne({ username });
-    if(!user) return res.status(404).json({ msg:"User does not exist"});
+    if(!user) return res.sendStatus(404);
     console.log(user);
     bcrypt.compare(password, user.password)
         .then(async isMatch => {
             if (!isMatch) return res.status(400).json({ msg: 'Incorrect Password'});
             let refreshToken = jwt.sign({id:user.id}, process.env.REFRESH_SECRET, {expiresIn:24*60*60});
             let accessToken = jwt.sign({id:user.id}, process.env.ACCESS_SECRET, {expiresIn:10*60});
-            let matched = (await User.updateOne({id:user.id}, {refreshToken:refreshToken})).matchedCount; 
-            if (!matched) return res.status(500).json({msg:"Unable to create refresh token"});
+            let matched = (await User.findByIdAndUpdate(user.id, {refreshToken:refreshToken})); 
+            if (!matched) return res.sendStatus(500);
             res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24*60*60*1000})
             res.json({accessToken});
         })
@@ -68,8 +68,8 @@ router.get('/refresh', async (req, res) => {
         if (err || foundUser.id != user.id) return res.sendStatus(403);
         let refreshToken = jwt.sign({id:user.id}, process.env.REFRESH_SECRET, {expiresIn:24*60*60});
         let accessToken = jwt.sign({id:user.id}, process.env.ACCESS_SECRET, {expiresIn:10*60});
-        let matched = (await User.updateOne({id:user.id}, {refreshToken:refreshToken})).matchedCount; 
-        if (!matched) return res.status(400).json({msg:"Unable to create refresh token"});
+        let matched = (await User.findByIdAndUpdate(user.id, {refreshToken:refreshToken})); 
+        if (!matched) return res.sendStatus(500);
         res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24*60*60*1000})
         res.json({accessToken});
     })
