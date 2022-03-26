@@ -43,7 +43,7 @@ import correctAudio from '../Sounds/Yay.mp3';
 import loserAudio from '../Music/Gameover.mp3';
 import winnerAudio from '../Music/Winner.mp3';
 
-import axios from "axios";
+import {authAxios} from "../Interceptors/authAxios"
 
 
 //THIS PAGE IS BUILT ON THE DESIGN INSPIRED BY THE OWL WEBSITE, SKELETON VERSION WITH 2 ACTIVE PAGE BUTTONS, COURSE CONTENT AND OVERVIEW
@@ -227,7 +227,7 @@ export default function ISortCustom() {
   function getText(){
     if(playing){
         if(lost){
-            axios.post('http://localhost:5000/newStat',{
+          authAxios.post('http://localhost:5000/newStat',{
                 level: 1,
                 algorithm: 'Insertion Sort',
                 time: time,
@@ -241,7 +241,7 @@ export default function ISortCustom() {
         }
     }
     else if(checkEqualArray(secondarySort, sorted) && secondarySort.length > 0){
-      axios.post('http://localhost:5000/newStat',{
+      authAxios.post('http://localhost:5000/newStat',{
                 level: 1,
                 algorithm: 'Insertion Sort',
                 time: time,

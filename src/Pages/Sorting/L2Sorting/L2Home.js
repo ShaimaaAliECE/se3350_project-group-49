@@ -15,8 +15,7 @@ import L2S2 from "./L2S2";
 import L2S3 from "./L2S3";
 import L2S4 from "./L2S4";
 import ISortL2 from "../../../ISORT/iSortL2";
-
-const axios = require('axios').default;
+import { authAxios } from "../../../Interceptors/authAxios";
 
 const drawerWidth = 170;
 

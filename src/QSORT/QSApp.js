@@ -5,8 +5,8 @@ import errorAudio from '../Sounds/Ooof.mp3';
 import correctAudio from '../Sounds/Yay.mp3';
 import Gameover from "../Music/Gameover.mp3";
 import WinnerSound from "../Music/Winner.mp3";
+import { authAxios } from '../Interceptors/authAxios';
 
-const axios = require('axios').default;
 
 // Declare variables
 let steps = [];
@@ -316,7 +316,7 @@ function QSApp({mode}) {
   // Function to reset game values
   const resetGame = () => {
 
-    axios.post('http://localhost:5000/newStat',{
+    authAxios.post('http://localhost:5000/newStat',{
       level: mode - 1,
       algorithm: "QuickSort",
       time: clearTime,
