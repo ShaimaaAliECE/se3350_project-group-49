@@ -5,8 +5,7 @@ import errorAudio from '../Sounds/Ooof.mp3';
 import correctAudio from '../Sounds/Yay.mp3';
 import Gameover from "../Music/Gameover.mp3";
 import WinnerSound from "../Music/Winner.mp3";
-
-const axios = require('axios').default;
+import {authAxios} from '../Interceptors/authAxios';
 
 // Declare variables
 let steps = [];
@@ -65,6 +64,11 @@ function QSApp({mode}) {
       return () => clearInterval(timerId);
     }
   }, [time, playing]);
+
+
+  useEffect(() => {
+    endGame();
+  }, [lives])
 
   // Function to split the custom array after commas and then set it
   const splitterOfArrays = () => {
@@ -307,16 +311,17 @@ function QSApp({mode}) {
       new Audio(WinnerSound).play();
       setClearTime(time);
       alert("You win!\n Time: " + displayTime() +  "\n Lives: " + lives);
+      startGame();
     } else if (lives <= 0 && isTestMode()) {
       new Audio(Gameover).play();
       alert("You lose! Better luck next time, chump.");
-    }
+    } 
   }
 
   // Function to reset game values
   const resetGame = () => {
 
-    axios.post('http://localhost:5000/newStat',{
+    authAxios.post('http://localhost:5000/newStat',{
       level: mode - 1,
       algorithm: "QuickSort",
       time: clearTime,
@@ -426,7 +431,6 @@ function QSApp({mode}) {
         </Typography>
       </Stack> : null}
       {(playing && isTestMode())? drawLives() : null}
-      {endGame()}
     </Box>
   )
 }

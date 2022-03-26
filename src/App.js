@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import NavbarVer2 from "./NavbarVer2";
 import Divider from "@mui/material/Divider";
@@ -25,9 +25,14 @@ import { authAxios } from "./Interceptors/authAxios";
 //Implement Control + C as a button bound.
 
 function App() {
+  const [refresh, setRefresh] = useState(true);
   const user = useContext(UserContext);
+  
   useEffect(() => {
-    if (!user[1]?.accessToken) authAxios.get('/auth/refresh').then(res => console.log(res));
+    if (!user[0]?.accessToken && refresh) {
+      setRefresh(false);
+      authAxios.get('/auth/refresh').then(res => console.log(res));
+    } 
   }, [])
 
   return (

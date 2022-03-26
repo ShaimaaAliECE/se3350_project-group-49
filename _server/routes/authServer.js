@@ -87,7 +87,7 @@ router.get('/refresh', async (req, res) => {
 
     const foundUser = await User.findOne({ refreshToken:refreshToken });
     console.log('user', foundUser);
-    if (!foundUser) return res.sendStatus(403); //Forbidden 
+    if (!foundUser) return res.sendStatus(401); 
 
     jwt.verify(refreshToken, process.env.REFRESH_SECRET, async (err, user) => {
         if (err || foundUser.id != user.id) return res.sendStatus(401);
