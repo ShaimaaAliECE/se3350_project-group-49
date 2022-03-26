@@ -5,7 +5,12 @@ import errorAudio from '../Sounds/Ooof.mp3';
 import correctAudio from '../Sounds/Yay.mp3';
 import Gameover from "../Music/Gameover.mp3";
 import WinnerSound from "../Music/Winner.mp3";
+<<<<<<< HEAD
 import {authAxios} from '../Interceptors/authAxios';
+=======
+import { authAxios } from '../Interceptors/authAxios';
+
+>>>>>>> 4cedbed38955b020effa3e9f62124d5a244ee3ea
 
 // Declare variables
 let steps = [];

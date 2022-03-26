@@ -32,7 +32,8 @@ import { AppBar } from '@mui/material';
 import NavbarVer2 from './NavbarVer2';
 //THIS PAGE IS BUILT ON THE DESIGN INSPIRED BY THE OWL WEBSITE, SKELETON VERSION WITH 2 ACTIVE PAGE BUTTONS, COURSE CONTENT AND OVERVIEW
 import StarIcon from '@mui/icons-material/Star';
-
+import "./styles.css";
+import YoutubeEmbed from "./VideoEmbed/YoutubeEmbed"
 
 
 
@@ -73,16 +74,13 @@ export default function Home() {
           </Typography>
       </ListItem>
 
-      <ListItem>
-
-
-  
-
-
-      </ListItem>
-    
     
       </List>
+      <Box>
+
+      <YoutubeEmbed embedId="JmyAtg5ll7Y" />
+
+      </Box>
     </Container>
       </Grid>
 

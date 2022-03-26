@@ -239,7 +239,6 @@ const [open, setOpen] = React.useState(false);
         </Button>
       }
 
-         
    
 
 
@@ -251,6 +250,7 @@ const [open, setOpen] = React.useState(false);
 
               
           </Box>
+
           <Button sx={{ my: 1, color: 'white' }} onClick={logoutUser}>
                     Logout
           </Button>
