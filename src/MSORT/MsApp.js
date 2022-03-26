@@ -391,7 +391,7 @@ function MsApp({mode}) {
       'level':mode,
       'algorithm':"Mergesort",
       'time':time,
-      'lives':lives-1,
+      'lives':lives-(1^win),
       'success':win
     });
     console.log(res);
