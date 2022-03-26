@@ -50,14 +50,14 @@ app.post('/newStat', auth, async (req, res, err) => {
 })
 
 app.get('/stats', auth, async (req, res, err) => {
-    if (!req.user) return res.send('Access Denied');
+    if (!req.user) return res.sendStatus(403);
     let statList = await (Stats.find({username:req.user.username}).sort({timestamp:-1}));
     res.json(statList);
 })
 
 app.get('/allStats', auth, async (req, res, err) => {
     console.log(req.user)
-    if (!req.user.admin) return res.send('Access Denied');
+    if (!req.user.admin) return res.sendStatus(403);
     let statList = await (Stats.find().sort({timestamp:-1}));
     res.json(statList);
 })

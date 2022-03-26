@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {useState, useEffect} from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
@@ -32,18 +32,26 @@ import { AppBar } from '@mui/material';
 import NavbarVer2 from './NavbarVer2';
 //THIS PAGE IS BUILT ON THE DESIGN INSPIRED BY THE OWL WEBSITE, SKELETON VERSION WITH 2 ACTIVE PAGE BUTTONS, COURSE CONTENT AND OVERVIEW
 import StarIcon from '@mui/icons-material/Star';
-
-
-
-
-
+import { authAxios } from './Interceptors/authAxios';
+import { DataGrid } from '@mui/x-data-grid';
 
 
 export default function Analysis() {
-   
 
+  const [stats,setStats] = useState();
+  useEffect(() => {
+    authAxios.get('/allStats')
+    .then(res => {
+      console.log(res);
+      let rows = res.data
+      console.log(rows);
+      setStats(rows);
+    });
+  }, [])
 
-
+useEffect(() => {
+  console.log(stats);
+}, [stats])
 
   return (
     <Box >
@@ -71,14 +79,35 @@ export default function Analysis() {
           <Typography variant = "h6" >
          The one and only place for algorithm learning
           </Typography>
+          <br/>
       </ListItem>
 
       <ListItem>
-
-
-  
-
-
+      
+      <table style={{border:'1px solid black'}}>
+        <tr>
+          <th>Username</th>
+          <th>Level</th>
+          <th>Algorithm</th>
+          <th>Lives</th>
+          <th>Success</th>
+          <th>Time (ms)</th>
+        </tr>
+        {
+          stats?
+          stats.map(s => 
+          <tr> 
+            <td>{s.username}</td>
+            <td>{s.level}</td>
+            <td>{s.algorithm}</td>
+            <td>{s.lives}</td>
+            <td>{s.success?"Win":"Lose"}</td>
+            <td>{s.time}</td>
+          </tr>)
+          :<></>
+        }
+      </table>
+      
       </ListItem>
     
     
