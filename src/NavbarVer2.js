@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -30,13 +30,24 @@ import Popper from '@mui/material/Popper';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import MenuList from '@mui/material/MenuList';
 import IdleTimerComponent from './components/IdleTimerComponent'
-
-
+import { authAxios } from "./Interceptors/authAxios";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "./Context/UserContext";
+import { useHistory } from "react-router/cjs/react-router.min"; 
 
 const NavbarVer2 = () => {
-
+  const user = useContext(UserContext);
+  const navigate = useNavigate();
   function closeTab(){
     window.close();
+}
+
+const logoutUser = (e) => {
+  console.log("Logging out...");
+  authAxios.get('/auth/logout').then(res => {
+    console.log(res);user[1]({});
+    console.log("Logged out");})
+    window.location.replace('/Login');
 }
 
 const [open, setOpen] = React.useState(false);
@@ -178,6 +189,7 @@ const [open, setOpen] = React.useState(false);
             <Button  component={Link} to= "/LessonsHome" onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
               LESSONS
             </Button>
+
     
           
          
@@ -221,7 +233,17 @@ const [open, setOpen] = React.useState(false);
     </PopupState>
     </Button>
 
+    {user[0].admin &&
+        <Button  component={Link} to= "/Analysis" onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
+          Analysis
+        </Button>
+      }
 
+    <Button>
+          <Button sx={{ my: 1, color: 'white' }} onClick={logoutUser}>
+            Logout
+          </Button>
+    </Button>
 
 
 

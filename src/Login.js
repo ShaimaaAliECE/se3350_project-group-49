@@ -38,10 +38,9 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import Analysis from './Analysis';
 import Home from "./Home.js";
-import auth from "./auth";
+import { LoginSheet } from './LoginSheet';
 
 export default function Login() {
-  const history = useHistory()
   return (
     
     <Box >
@@ -63,32 +62,12 @@ export default function Login() {
          ALGO SORT
           </Typography>
       </ListItem>
-<Divider/>
+  <Divider/>
       <ListItem>
-          <Typography variant = "h6" >
-          Please Select your viewing type         
-          </Typography>
       </ListItem>
 
       <Grid>
-
-      <ListItem align = "center">
-      <Button variant="contained" size="large" onClick = {() =>{
-        auth.Login(() => {
-          history.push('/Home')}
-        );}}>
-        User
-      </Button>
-      </ListItem>
-      <ListItem>
-      <Button variant="contained"  size="large" onClick = {() =>{
-        auth.Login(() => {
-          history.push('/Analysis')}
-        );}}>
-        Admin
-      </Button>
-      </ListItem>
-
+      <LoginSheet/>
       </Grid>
     
       </List>

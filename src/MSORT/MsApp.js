@@ -7,6 +7,7 @@ import rightSound from '../Sounds/anime-wow-sound-effect.mp3';
 import wrongSound from '../Sounds/movie_1_C2K5NH0.mp3'
 import winSound from '../Sounds/original-sheesh.mp3';
 import loseSound from '../Sounds/bruh_look_at_this_dude1-[AudioTrimmer.com].mp3';
+import { authAxios } from '../Interceptors/authAxios';
 
 // modes: -1 = lesson
 //         0 = practice
@@ -29,7 +30,8 @@ function MsApp({mode}) {
     if (!playing) return;
     if (step === 0) {
       if (sorted.length === 0) { 
-        let newSorted = mergesort(levelSetup(mode));
+        let newSorted = parseUI();
+        if (newSorted.length === 0) newSorted = mergesort(levelSetup(mode));
         setSorted([...newSorted]);
       }
     }
@@ -54,7 +56,6 @@ function MsApp({mode}) {
       default:
         out = generateArray(10,20);
     }
-    
     return out;
   }
 
@@ -262,7 +263,7 @@ function MsApp({mode}) {
   }
 
   const parseUI = () => {
-    if (userArr.length === 0) {setSorted([]); return;}
+    if (userArr.length === 0)  return [];
     let arr = userArr.split(',');
     let goodArr = true;
     console.log(arr);
@@ -273,9 +274,8 @@ function MsApp({mode}) {
       out.push(Number(s));
     }
     if (goodArr)
-      setSorted(mergesort(out.slice(0, out.length>20?20:out.length)));
-    else setSorted([]);
-    console.log(out);
+      return mergesort(out.slice(0, out.length>20?20:out.length));
+    else return [];
   }
 
   const printStep = (cur) => {
@@ -324,7 +324,7 @@ function MsApp({mode}) {
       setGameOver(null);
       setSorted([]);
       setPlaying(false);
-      window.location.reload(false);
+      window.location.reload(true);
       return;
     } 
     console.log(sorted);
@@ -386,7 +386,15 @@ function MsApp({mode}) {
     setUserIn({l:0,r:0});
   }
 
-  const endGame = (win) => {
+  const endGame = async (win) => {
+    let res = await authAxios.post('/newStat', {
+      'level':mode,
+      'algorithm':"Mergesort",
+      'time':time,
+      'lives':lives-1,
+      'success':win
+    });
+    console.log(res);
     let out = "";
     if (win) {
       if (mode > 0) {
