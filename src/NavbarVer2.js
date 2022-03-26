@@ -239,6 +239,10 @@ const [open, setOpen] = React.useState(false);
         </Button>
       }
 
+<<<<<<< HEAD
+=======
+         
+>>>>>>> 53ba9f62a5abc4d65834dbddadbe3c237102c2ed
    
 
 
@@ -250,11 +254,17 @@ const [open, setOpen] = React.useState(false);
 
               
           </Box>
+<<<<<<< HEAD
           <Button>
           <Button sx={{ my: 1, color: 'white' }} onClick={logoutUser}>
             Logout
           </Button>
     </Button>
+=======
+          <Button sx={{ my: 1, color: 'white' }} onClick={logoutUser}>
+                    Logout
+          </Button>
+>>>>>>> 53ba9f62a5abc4d65834dbddadbe3c237102c2ed
           
         </Toolbar>
       </Container>
