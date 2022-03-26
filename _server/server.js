@@ -13,8 +13,9 @@ const port = process.env.PORT || 5000;
 
 
 app.use(cors({ origin: true, credentials: true }));
-
+//app.use(express.urlencoded({extended:false}));
 app.use(express.json());
+
 app.use(cookieParser());
 
 const uri = process.env.DB_URI;
@@ -25,13 +26,13 @@ connection.once('open', () => {console.log("MongoDB databse connection establish
 app.use('/auth', authRouter);
 
 app.get('/', auth, (req, res, err) => {
-    if (!req.user) return res.send('Access Denied');
+    if (!req.user) return res.sendStatus(403);
     res.send("Welcome to ASbackend");
 })
 
 app.post('/newStat', auth, async (req, res, err) => {
-    if (!req.user) return res.send('Access Denied');
-    console.log(req.user);
+    if (!req.user) return res.sendStatus(403);
+    console.log(req.body);
     const newStat = new Stats({
         username: req.user.username,
         level: req.body.level,
@@ -41,6 +42,7 @@ app.post('/newStat', auth, async (req, res, err) => {
         success: req.body.success,
         timestamp: new Date().getTime()
     })
+    console.log(newStat);
     let stat = await newStat.save();
     console.log(stat);
     if (!stat) return res.sendStatus(500);

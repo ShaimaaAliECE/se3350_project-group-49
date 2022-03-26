@@ -7,6 +7,7 @@ import rightSound from '../Sounds/anime-wow-sound-effect.mp3';
 import wrongSound from '../Sounds/movie_1_C2K5NH0.mp3'
 import winSound from '../Sounds/original-sheesh.mp3';
 import loseSound from '../Sounds/bruh_look_at_this_dude1-[AudioTrimmer.com].mp3';
+import { authAxios } from '../Interceptors/authAxios';
 
 // modes: -1 = lesson
 //         0 = practice
@@ -323,7 +324,7 @@ function MsApp({mode}) {
       setGameOver(null);
       setSorted([]);
       setPlaying(false);
-      window.location.reload(false);
+      window.location.reload(true);
       return;
     } 
     console.log(sorted);
@@ -385,7 +386,15 @@ function MsApp({mode}) {
     setUserIn({l:0,r:0});
   }
 
-  const endGame = (win) => {
+  const endGame = async (win) => {
+    let res = await authAxios.post('/newStat', {
+      'level':mode,
+      'algorithm':"Mergesort",
+      'time':time,
+      'lives':lives-1,
+      'success':win
+    });
+    console.log(res);
     let out = "";
     if (win) {
       if (mode > 0) {

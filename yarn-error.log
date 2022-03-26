@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\timofeyh\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js start
+  C:\Program Files\nodejs\node.exe C:\Users\timofeyh\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add useNavigate
 
 PATH: 
   C:\Program Files\Eclipse Adoptium\jdk-17.0.1.12-hotspot\bin;C:\Program Files (x86)\Razer Chroma SDK\bin;C:\Program Files\Razer Chroma SDK\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Users\timofeyh\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Program Files\MySQL\MySQL Shell 8.0\bin\;C:\Users\timofeyh\AppData\Local\Microsoft\WindowsApps;C:\Users\timofeyh\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\timofeyh\AppData\Roaming\npm;C:\Users\timofeyh\AppData\Local\GitHubDesktop\bin;C:\intelFPGA_lite\18.1\modelsim_ase\win32aloem;C:\Program Files\OpenSSL-Win64\bin;
@@ -14,12 +14,17 @@ Platform:
   win32 x64
 
 Trace: 
-  SyntaxError: C:\Users\timofeyh\Github\se3350_project-group-49-1\package.json: Unexpected token } in JSON at position 1078
-      at JSON.parse (<anonymous>)
-      at C:\Users\timofeyh\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:1625:59
-      at Generator.next (<anonymous>)
-      at step (C:\Users\timofeyh\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:310:30)
-      at C:\Users\timofeyh\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:321:13
+  Error: https://registry.yarnpkg.com/useNavigate: Not found
+      at Request.params.callback [as _callback] (C:\Users\timofeyh\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:67029:18)
+      at Request.self.callback (C:\Users\timofeyh\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140883:22)
+      at Request.emit (events.js:400:28)
+      at Request.<anonymous> (C:\Users\timofeyh\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141855:10)
+      at Request.emit (events.js:400:28)
+      at IncomingMessage.<anonymous> (C:\Users\timofeyh\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141777:12)
+      at Object.onceWrapper (events.js:519:28)
+      at IncomingMessage.emit (events.js:412:35)
+      at endReadableNT (internal/streams/readable.js:1334:12)
+      at processTicksAndRejections (internal/process/task_queues.js:82:21)
 
 npm manifest: 
   {
@@ -38,6 +43,7 @@ npm manifest:
       "@testing-library/jest-dom": "^5.11.4",
       "@testing-library/react": "^11.1.0",
       "@testing-library/user-event": "^12.1.10",
+      "axios": "^0.26.1",
       "dependencies": "^0.0.1",
       "howler": "^2.2.3",
       "material-ui-popup-state": "^2.0.0",
@@ -54,7 +60,7 @@ npm manifest:
       "socket.io": "^4.4.0",
       "styled-components": "^5.3.5",
       "use-sound": "^4.0.1",
-      "web-vitals": "^1.0.1",
+      "web-vitals": "^1.0.1"
     },
     "scripts": {
       "start": "react-scripts start",
@@ -2883,6 +2889,13 @@ Lockfile:
     resolved "https://registry.npmjs.org/axe-core/-/axe-core-4.4.1.tgz"
     integrity sha512-gd1kmb21kwNuWr6BQz8fv6GNECPBnUasepcoLbekws23NVBLODdsClRZ+bQ8+9Uomf3Sm3+Vwn0oYG9NvwnJCw==
   
+  axios@^0.26.1:
+    version "0.26.1"
+    resolved "https://registry.yarnpkg.com/axios/-/axios-0.26.1.tgz#1ede41c51fcf51bbbd6fd43669caaa4f0495aaa9"
+    integrity sha512-fPwcX4EvnSHuInCMItEhAGnaSEXRBjtzh9fOtsE6E1G6p7vl7edEeZe11QHf18+6+9gR5PbKV/sGKNaD8YaMeA==
+    dependencies:
+      follow-redirects "^1.14.8"
+  
   axobject-query@^2.2.0:
     version "2.2.0"
     resolved "https://registry.npmjs.org/axobject-query/-/axobject-query-2.2.0.tgz"
@@ -5682,7 +5695,7 @@ Lockfile:
       inherits "^2.0.3"
       readable-stream "^2.3.6"
   
-  follow-redirects@^1.0.0:
+  follow-redirects@^1.0.0, follow-redirects@^1.14.8:
     version "1.14.9"
     resolved "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.14.9.tgz"
     integrity sha512-MQDfihBQYMcyy5dhRDJUHcw7lb2Pv/TuE6xP1vyraLukNDHKbDxDNaOE3NbCAdKQApno+GPRyo1YAp89yCjK4w==
@@ -11526,7 +11539,7 @@ Lockfile:
       loader-utils "^2.0.0"
       schema-utils "^2.7.0"
   
-  styled-components@^5.3.3:
+  styled-components@^5.3.5:
     version "5.3.5"
     resolved "https://registry.npmjs.org/styled-components/-/styled-components-5.3.5.tgz"
     integrity sha512-ndETJ9RKaaL6q41B69WudeqLzOpY1A/ET/glXkNZ2T7dPjPqpPCXXQjDFYZWwNnE5co0wX+gTCqx9mfxTmSIPg==
@@ -12193,7 +12206,7 @@ Lockfile:
   
   use-sound@^4.0.1:
     version "4.0.1"
-    resolved "https://registry.yarnpkg.com/use-sound/-/use-sound-4.0.1.tgz#8c8de4badd16902db7762fd9418a4283b9bf7b3e"
+    resolved "https://registry.npmjs.org/use-sound/-/use-sound-4.0.1.tgz"
     integrity sha512-hykJ86kNcu6y/FzlSHcQxhjSGMslZx2WlfLpZNoPbvueakv4OF3xPxEtGV2YmculrIaH0tPp9LtG4jgy17xMWg==
     dependencies:
       howler "^2.1.3"
