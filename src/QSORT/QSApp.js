@@ -316,6 +316,7 @@ function QSApp({mode}) {
         resetGame();
       }
     } else if (lives <= 0 && isTestMode()) {
+      setRefresh(true);
       new Audio(Gameover).play();
       alert("You lose! Better luck next time, chump.");
       resetGame();
