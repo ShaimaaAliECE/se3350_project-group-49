@@ -55,6 +55,7 @@ function QSApp({mode}) {
   const [time, setTime] = useState(0);
   const [clearTime, setClearTime] = React.useState(0);
   const [win, setWin] = React.useState(false);
+  const [refresh, setRefresh] = React.useState(false);
 
   // Use effect for incrementing the timer while the game is being played
   useEffect(() => {
@@ -308,26 +309,32 @@ function QSApp({mode}) {
   const endGame = () => {
     if (stepNo === steps.length && steps.length > 0) {
       setWin(true);
+      setRefresh(true);
       new Audio(WinnerSound).play();
-      setClearTime(time);
       alert("You win!\n Time: " + displayTime() +  "\n Lives: " + lives);
-      startGame();
+      if (win) {
+        resetGame();
+      }
     } else if (lives <= 0 && isTestMode()) {
       new Audio(Gameover).play();
       alert("You lose! Better luck next time, chump.");
+      resetGame();
     } 
   }
 
   // Function to reset game values
   const resetGame = () => {
 
-    authAxios.post('http://localhost:5000/newStat',{
-      level: mode - 1,
-      algorithm: "QuickSort",
-      time: clearTime,
-      lives: lives,
-      success: win
-    }).then(res=>console.log(res)).catch(err=>console.log(err));
+    if (mode >= 2 && refresh) {
+      authAxios.post('http://localhost:5000/newStat',{
+        level: mode - 1,
+        algorithm: "QuickSort",
+        time: time,
+        lives: lives,
+        success: win
+      }).then(res=>console.log(res)).catch(err=>console.log(err));
+      setRefresh(false);
+    }
 
     setPlaying(false);
     setStepNo(0);
@@ -431,6 +438,7 @@ function QSApp({mode}) {
         </Typography>
       </Stack> : null}
       {(playing && isTestMode())? drawLives() : null}
+      {endGame()}
     </Box>
   )
 }
