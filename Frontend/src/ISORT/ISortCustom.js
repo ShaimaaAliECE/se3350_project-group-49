@@ -227,7 +227,7 @@ export default function ISortCustom() {
   function getText(){
     if(playing){
         if(lost){
-          authAxios.post('http://localhost:5000/newStat',{
+          authAxios.post('https://server-346001.ue.r.appspot.com/newStat',{
                 level: 1,
                 algorithm: 'Insertion Sort',
                 time: time,
@@ -241,7 +241,7 @@ export default function ISortCustom() {
         }
     }
     else if(checkEqualArray(secondarySort, sorted) && secondarySort.length > 0){
-      authAxios.post('http://localhost:5000/newStat',{
+      authAxios.post('https://server-346001.ue.r.appspot.com/newStat',{
                 level: 1,
                 algorithm: 'Insertion Sort',
                 time: time,

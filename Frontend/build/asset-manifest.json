@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/static/css/main.9a363a28.chunk.css",
-    "main.js": "/static/js/main.efc8ff26.chunk.js",
-    "main.js.map": "/static/js/main.efc8ff26.chunk.js.map",
+    "main.js": "/static/js/main.44dc15e2.chunk.js",
+    "main.js.map": "/static/js/main.44dc15e2.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.de552ebb.js",
     "runtime-main.js.map": "/static/js/runtime-main.de552ebb.js.map",
-    "static/js/2.0994ae3e.chunk.js": "/static/js/2.0994ae3e.chunk.js",
-    "static/js/2.0994ae3e.chunk.js.map": "/static/js/2.0994ae3e.chunk.js.map",
+    "static/js/2.d90485ea.chunk.js": "/static/js/2.d90485ea.chunk.js",
+    "static/js/2.d90485ea.chunk.js.map": "/static/js/2.d90485ea.chunk.js.map",
     "index.html": "/index.html",
     "static/css/main.9a363a28.chunk.css.map": "/static/css/main.9a363a28.chunk.css.map",
-    "static/js/2.0994ae3e.chunk.js.LICENSE.txt": "/static/js/2.0994ae3e.chunk.js.LICENSE.txt",
+    "static/js/2.d90485ea.chunk.js.LICENSE.txt": "/static/js/2.d90485ea.chunk.js.LICENSE.txt",
     "static/media/Gameover.f99c6b30.mp3": "/static/media/Gameover.f99c6b30.mp3",
     "static/media/Ooof.2b98e172.mp3": "/static/media/Ooof.2b98e172.mp3",
     "static/media/Winner.687058e6.mp3": "/static/media/Winner.687058e6.mp3",
@@ -23,8 +23,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.de552ebb.js",
-    "static/js/2.0994ae3e.chunk.js",
+    "static/js/2.d90485ea.chunk.js",
     "static/css/main.9a363a28.chunk.css",
-    "static/js/main.efc8ff26.chunk.js"
+    "static/js/main.44dc15e2.chunk.js"
   ]
 }

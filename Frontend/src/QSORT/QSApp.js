@@ -327,7 +327,7 @@ function QSApp({mode}) {
   const resetGame = () => {
 
     if (mode >= 2 && refresh) {
-      authAxios.post('http://localhost:5000/newStat',{
+      authAxios.post('https://server-346001.ue.r.appspot.com/newStat',{
         level: mode - 1,
         algorithm: "QuickSort",
         time: time,
