@@ -21,7 +21,7 @@ router.get('/newAdmin', async (req,res,err) => {
             let accessToken = jwt.sign({id:user.id}, process.env.ACCESS_SECRET, {expiresIn:10*60});
             let matched = (await User.findByIdAndUpdate(user.id, {refreshToken:refreshToken})); 
             if (!matched) return res.sendStatus(500);
-            res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24*60*60*1000})
+            res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24*60*60*1000, secure:true, sameSite: 'none'})
             res.json({accessToken, admin:user.admin});
         })
     })
@@ -51,7 +51,7 @@ router.post('/register', async (req, res) => {
             let accessToken = jwt.sign({id:user.id}, process.env.ACCESS_SECRET, {expiresIn:10*60});
             let matched = (await User.findByIdAndUpdate(user.id, {refreshToken:refreshToken})); 
             if (!matched) return res.sendStatus(500);
-            res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24*60*60*1000})
+            res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24*60*60*1000, secure:true, sameSite: 'none'})
             res.json({accessToken, admin:user.admin});
         })
     })
@@ -72,7 +72,7 @@ router.post('/login', async (req, res) => {
             let matched = (await User.findByIdAndUpdate(user.id, {refreshToken:refreshToken})); 
             if (!matched) return res.sendStatus(500);
             console.log(user);
-            res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24*60*60*1000});
+            res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24*60*60*1000, secure:true, sameSite: 'none'})
             res.json({accessToken, admin:user.admin});
         })
 })
@@ -95,7 +95,7 @@ router.get('/refresh', async (req, res) => {
         let accessToken = jwt.sign({id:user.id}, process.env.ACCESS_SECRET, {expiresIn:10*60});
         let matched = (await User.findByIdAndUpdate(user.id, {refreshToken:refreshToken})); 
         if (!matched) return res.sendStatus(500);
-        res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24*60*60*1000});
+        res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24*60*60*1000, secure:true, sameSite: 'none'})
         res.json({accessToken, admin:foundUser.admin});
     })
 })
@@ -104,6 +104,7 @@ router.get('/logout', async (req,res) => {
     const cookies = req.cookies;
     console.log(cookies.jwt);
     if (!cookies.jwt) return res.sendStatus(202);
+    res.cookie('jwt', '', { httpOnly: true, maxAge: 24*60*60*1000, secure:true, sameSite: 'none'})
     res.clearCookie('jwt');
     res.sendStatus(202);
 })
