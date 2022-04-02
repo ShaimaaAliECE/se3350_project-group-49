@@ -10,7 +10,7 @@ function auth(req, res, next) {
     if (token == null) return res.sendStatus(403);
 
     jwt.verify(token, process.env.ACCESS_SECRET, async (err, decoded) => {
-        if (err || !decoded?.id) return res.sendStatus(401);
+        if (err || !decoded.id) return res.sendStatus(401);
         console.log(decoded.id);
         const user = await User.findById(decoded.id)
         console.log(user);
