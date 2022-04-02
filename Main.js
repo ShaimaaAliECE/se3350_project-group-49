@@ -6,7 +6,7 @@ import LoginPage from '../components/LoginPage/LoginPage'
 
 
 // ***** it will used in dev mode
-const socketUrl = 'https://grand-verve-343121.ue.r.appspot.com/' 
+const socketUrl = 'http://grand-verve-343121.ue.r.appspot.com/' 
 //const socketUrl = '/'
 
 export class Main extends Component {

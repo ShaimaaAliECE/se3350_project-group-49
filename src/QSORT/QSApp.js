@@ -327,7 +327,7 @@ function QSApp({mode}) {
   const resetGame = () => {
 
     if (mode >= 2 && refresh) {
-      authAxios.post('https://grand-verve-343121.ue.r.appspot.com/newStat',{
+      authAxios.post('http://grand-verve-343121.ue.r.appspot.com/newStat',{
         level: mode - 1,
         algorithm: "QuickSort",
         time: time,

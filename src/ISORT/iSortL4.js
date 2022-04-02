@@ -167,7 +167,7 @@ export default function ISortL1() {
   function getText(){
     if(playing){
         if(lost){
-          authAxios.post('https://grand-verve-343121.ue.r.appspot.com/newStat',{
+          authAxios.post('http://grand-verve-343121.ue.r.appspot.com/newStat',{
                 level: 1,
                 algorithm: 'Insertion Sort',
                 time: time,
@@ -181,7 +181,7 @@ export default function ISortL1() {
         }
     }
     else if(checkEqualArray(secondarySort, sorted) && secondarySort.length > 0){
-      authAxios.post('https://grand-verve-343121.ue.r.appspot.com/newStat',{
+      authAxios.post('http://grand-verve-343121.ue.r.appspot.com/newStat',{
                 level: 1,
                 algorithm: 'Insertion Sort',
                 time: time,
