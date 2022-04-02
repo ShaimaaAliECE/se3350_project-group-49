@@ -394,7 +394,7 @@ return (<div><label>You Have Won......Yay!</label></div>)
 //restart button handeling
 const restart=()=>{
   
-  authAxios.post('http://grand-verve-343121.ue.r.appspot.com/newStat',{
+  authAxios.post('https://grand-verve-343121.ue.r.appspot.com/newStat',{
   level: difficulty,
   algorithm: "Bubble Sort",
   time: time,
