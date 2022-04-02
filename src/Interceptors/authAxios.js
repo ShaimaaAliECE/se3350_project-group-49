@@ -3,7 +3,7 @@ import { UserContext } from '../Context/UserContext';
 import axios from 'axios';
 
 const authAxios = axios.create({
-    baseURL: 'http://10.142.0.2:5000',
+    baseURL: 'http://localhost:5000',
     withCredentials: true,
 });
 
