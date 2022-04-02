@@ -72,7 +72,7 @@ router.post('/login', async (req, res) => {
             let matched = (await User.findByIdAndUpdate(user.id, {refreshToken:refreshToken})); 
             if (!matched) return res.sendStatus(500);
             console.log(user);
-            res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24*60*60*1000})
+            res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24*60*60*1000});
             res.json({accessToken, admin:user.admin});
         })
 })
@@ -81,7 +81,7 @@ router.get('/refresh', async (req, res) => {
     const cookies = req.cookies;
     console.log(cookies)
     console.log('jwt', cookies.jwt);
-    if (!cookies?.jwt) return res.sendStatus(401);
+    if (!cookies.jwt) return res.sendStatus(401);
     const refreshToken = cookies.jwt;
     console.log('rt',refreshToken);
 
@@ -95,15 +95,15 @@ router.get('/refresh', async (req, res) => {
         let accessToken = jwt.sign({id:user.id}, process.env.ACCESS_SECRET, {expiresIn:10*60});
         let matched = (await User.findByIdAndUpdate(user.id, {refreshToken:refreshToken})); 
         if (!matched) return res.sendStatus(500);
-        res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24*60*60*1000})
-        res.json({accessToken, admin:foundUser.admin});;
+        res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24*60*60*1000});
+        res.json({accessToken, admin:foundUser.admin});
     })
 })
 
 router.get('/logout', async (req,res) => {
     const cookies = req.cookies;
     console.log(cookies.jwt);
-    if (!cookies?.jwt) return res.sendStatus(202);
+    if (!cookies.jwt) return res.sendStatus(202);
     res.clearCookie('jwt');
     res.sendStatus(202);
 })
