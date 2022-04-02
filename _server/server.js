@@ -10,15 +10,7 @@ const Stats = require('./models/stats');
 require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT || 8080;
-
-app.use(express.static(path.join(__dirname,"../build")));
-
-app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://grand-verve-343121.ue.r.appspot.com");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-})
+const port = process.env.PORT || 5000;
 
 
 app.use(cors({ origin: true, credentials: true }));
@@ -69,10 +61,6 @@ app.get('/allStats', auth, async (req, res, err) => {
     if (!req.user.admin) return res.sendStatus(403);
     let statList = await (Stats.find().sort({timestamp:-1}));
     res.json(statList);
-})
-
-app.get('/*', function(req, res) {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
 })
 
 app.listen(port, () => {console.log(`Server is running on port ${port}`)})

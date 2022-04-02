@@ -3,7 +3,7 @@ import { UserContext } from '../Context/UserContext';
 import axios from 'axios';
 
 const authAxios = axios.create({
-    baseURL: 'http://grand-verve-343121.ue.r.appspot.com:8080',
+    baseURL: 'http://10.142.0.2:5000',
     withCredentials: true,
 });
 
